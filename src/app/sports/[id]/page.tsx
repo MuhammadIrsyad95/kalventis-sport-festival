@@ -37,16 +37,7 @@ async function getSportDetails(id: string) {
   }
 }
 
-// Simple type for params that works with Next.js App Router
-interface SportDetailPageParams {
-  params: {
-    id: string;
-  };
-}
-
-export default async function SportDetailPage({
-  params
-}: SportDetailPageParams) {
+export default async function SportDetailPage({ params }: { params: { id: string } }) {
   // Pastikan params.id tersedia sebelum menggunakannya
   if (!params?.id) return notFound()
   
