@@ -37,11 +37,13 @@ async function getSportDetails(id: string) {
   }
 }
 
-export default async function SportDetailPage({
-  params,
-}: {
+// Fixing the Next.js page props type
+type Props = {
   params: { id: string }
-}) {
+  searchParams?: { [key: string]: string | string[] | undefined }
+}
+
+export default async function SportDetailPage({ params }: Props) {
   // Pastikan params.id tersedia sebelum menggunakannya
   if (!params?.id) return notFound()
   
