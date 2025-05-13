@@ -132,7 +132,7 @@ export default function AdminLogin() {
             href="/admin/register" 
             className="text-blue-400 hover:text-blue-300 text-sm text-center"
           >
-            Don't have an account? Register here
+            Don&apos;t have an account? Register here
           </Link>
         </div>
       </form>
