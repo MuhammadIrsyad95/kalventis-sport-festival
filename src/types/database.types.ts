@@ -3,13 +3,9 @@ export interface Match {
   team1_id: string
   team2_id: string
   sport_id: string
+  winner_id?: string | null
   round: string
-  score1: number
-  score2: number
-  status: 'upcoming' | 'live' | 'finished'
-  start_time: string
-  end_time?: string
-  created_at: string
+  created_at?: string
 }
 
 export interface Medal {
@@ -37,8 +33,7 @@ export interface Team {
   id: string
   name: string
   company: string
-  sport_id: string
-  created_at: string
+  created_at?: string
 }
 
 export interface News {

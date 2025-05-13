@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabaseClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase/client';
 import { Match, Team, Sport } from '@/types';
 
 export default function LiveMatches() {
@@ -10,7 +10,7 @@ export default function LiveMatches() {
 
   useEffect(() => {
     const fetchLiveMatches = async () => {
-      const { data: matches } = await supabaseClient
+      const { data: matches } = await supabase
         .from('matches')
         .select('*, team1:teams!team1_id(name, country), team2:teams!team2_id(name, country), sport:sports(name)')
         .eq('status', 'ongoing')
@@ -23,7 +23,7 @@ export default function LiveMatches() {
     fetchLiveMatches();
     
     // Set up real-time subscription
-    const subscription = supabaseClient
+    const subscription = supabase
       .channel('live-matches')
       .on('postgres_changes', {
         event: '*',
@@ -33,7 +33,7 @@ export default function LiveMatches() {
       .subscribe();
 
     return () => {
-      supabaseClient.removeChannel(subscription);
+      supabase.removeChannel(subscription);
     };
   }, []);
 

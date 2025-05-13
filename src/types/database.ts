@@ -30,7 +30,7 @@ export type Sport = {
 export type Team = {
   id: string
   name: string
-  country: string
+  company: string
 }
 
 // Join types for common queries

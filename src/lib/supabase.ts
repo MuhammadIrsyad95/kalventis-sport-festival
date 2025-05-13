@@ -4,6 +4,12 @@ import { Database } from '@/types/supabase'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
+// Debug log to check environment variables
+if (typeof window !== 'undefined') {
+  console.log('SUPABASE_URL:', typeof supabaseUrl, supabaseUrl ? 'set' : 'not set');
+  console.log('SUPABASE_KEY:', typeof supabaseAnonKey, supabaseAnonKey ? 'set' : 'not set');
+}
+
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
 
 // Types for our database tables

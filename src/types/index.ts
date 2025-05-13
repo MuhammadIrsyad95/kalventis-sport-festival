@@ -7,7 +7,7 @@ export interface Sport {
 export interface Team {
   id: string;  // UUID in PostgreSQL
   name: string;
-  country: string;
+  company: string;
   created_at: string;  // Timestamp in PostgreSQL
 }
 
