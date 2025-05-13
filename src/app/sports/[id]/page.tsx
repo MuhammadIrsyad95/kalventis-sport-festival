@@ -37,13 +37,13 @@ async function getSportDetails(id: string) {
   }
 }
 
-// Fixing the Next.js page props type
-type Props = {
-  params: { id: string }
-  searchParams?: { [key: string]: string | string[] | undefined }
+// Define standard Next.js App Router page props interface
+export interface PageProps {
+  params: Record<string, string>;
+  searchParams?: Record<string, string | string[] | undefined>;
 }
 
-export default async function SportDetailPage({ params }: Props) {
+export default async function SportDetailPage({ params }: PageProps) {
   // Pastikan params.id tersedia sebelum menggunakannya
   if (!params?.id) return notFound()
   

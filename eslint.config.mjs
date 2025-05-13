@@ -7,10 +7,12 @@ const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
-  recommendedConfig: { extends: ["eslint:recommended"] },
 });
 
 export default [
+  {
+    ignores: ['node_modules/**', '.next/**', 'out/**', 'public/**']
+  },
   ...compat.extends("next/core-web-vitals"),
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
