@@ -6,19 +6,19 @@ import { motion } from 'framer-motion'
 import { Trophy } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import MatchCard from '@/components/MatchCard'
-import MedalTally from '@/components/MedalTally'
+// import MedalTally from '@/components/MedalTally'
 import SportsList from '@/components/SportsList'
 import type { Database } from '@/types/supabase'
 
 type Match = Database['public']['Tables']['matches']['Row']
-type Medal = Database['public']['Tables']['medals']['Row']
+// type Medal = Database['public']['Tables']['medals']['Row']
 type Sport = Database['public']['Tables']['sports']['Row']
 
 export default function Home() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [matches, setMatches] = useState<Match[]>([])
-  const [medalTally, setMedalTally] = useState<Medal[]>([])
+  // const [medalTally, setMedalTally] = useState<Medal[]>([])
   const [sports, setSports] = useState<Sport[]>([])
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function Home() {
         if (sportsRes.error) throw new Error(sportsRes.error.message)
 
         setMatches(matchesRes.data || [])
-        setMedalTally(medalsRes.data || [])
+        // setMedalTally(medalsRes.data || [])
         setSports(sportsRes.data || [])
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred')
@@ -108,7 +108,7 @@ export default function Home() {
         {/* Medal Tally Section */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-white mb-6">Medal Tally</h2>
-          <MedalTally medals={medalTally} />
+          {/* <MedalTally medals={medalTally} /> */}
         </section>
 
         {/* Sports Section */}

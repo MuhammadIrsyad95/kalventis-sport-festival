@@ -93,9 +93,9 @@ export default function StatsPage() {
                       <h2 className="text-xl font-bold text-white">
                         {team.name}
                       </h2>
-                      <p className="text-gray-400">
+                      {/* <p className="text-gray-400">
                         {team.country_code}
-                      </p>
+                      </p> */}
                     </div>
                   </div>
                   <div className="mt-6 grid grid-cols-3 gap-4 text-center">
