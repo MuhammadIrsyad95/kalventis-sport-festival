@@ -4,7 +4,9 @@ import { supabase } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 
 interface PageProps {
-  params: { id: string }
+  params: {
+    id: string
+  }
 }
 
 export default async function Page({ params }: PageProps) {
@@ -16,7 +18,7 @@ export default async function Page({ params }: PageProps) {
     .eq('id', id)
     .single()
 
-  if (!sport) return notFound()
+  if (error || !sport) return notFound()
 
   return (
     <div className="p-8">
