@@ -9,14 +9,13 @@ interface MatchWithTeams extends Match {
   winner: { name: string; company: string } | null
 }
 
-// ✅ TAMBAHKAN TIPE INI
 interface PageProps {
-  params: {
-    id: string
-  }
+  params: { id: string }
 }
 
-async function getSportDetails(id: string) {
+// ✅ Halaman detail
+export default async function Page({ params }: PageProps) {
+  const id = params.id
   const [sportRes, rulesRes, matchesRes] = await Promise.all([
     supabase.from('sports').select('*').eq('id', id).single(),
     supabase.from('rules').select('*').eq('sport_id', id),
@@ -32,39 +31,25 @@ async function getSportDetails(id: string) {
       .order('round', { ascending: true }),
   ])
 
-  if (!sportRes.data) {
-    return notFound()
-  }
+  if (!sportRes.data) return notFound()
 
-  return {
-    sport: sportRes.data,
-    rules: rulesRes.data || [],
-    matches: (matchesRes.data || []) as MatchWithTeams[],
-  }
-}
-
-// ✅ GUNAKAN PageProps DI SINI
-export default async function SportDetailPage({ params }: PageProps) {
-  if (!params?.id) return notFound()
-
-  const { sport, rules, matches } = await getSportDetails(params.id)
+  const matches = (matchesRes.data || []) as MatchWithTeams[]
+  const rules = rulesRes.data || []
 
   const matchesByRound = matches.reduce((acc, match) => {
     const round = match.round || 'Unknown'
-    if (!acc[round]) {
-      acc[round] = []
-    }
+    if (!acc[round]) acc[round] = []
     acc[round].push(match)
     return acc
   }, {} as Record<string, MatchWithTeams[]>)
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-8">{sport.name}</h1>
+      <h1 className="text-4xl font-bold mb-8">{sportRes.data.name}</h1>
 
       <div className="grid gap-8 md:grid-cols-2">
         <div>
-          <SportRules rules={rules} sportName={sport.name} />
+          <SportRules rules={rules} sportName={sportRes.data.name} />
         </div>
 
         <div className="bg-white/10 backdrop-blur-lg rounded-lg p-6">
@@ -104,3 +89,4 @@ export default async function SportDetailPage({ params }: PageProps) {
     </div>
   )
 }
+
