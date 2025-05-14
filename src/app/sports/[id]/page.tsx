@@ -1,15 +1,25 @@
+// src/app/sports/[id]/page.tsx
+
 import { supabase } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import SportRules from '@/components/SportRules'
-import { CalendarDays } from 'lucide-react'
 import { Match } from '@/types/database.types'
 
+// Tambahkan tipe eksplisit untuk parameter fungsi halaman
+type PageProps = {
+  params: {
+    id: string
+  }
+}
+
+// Tipe untuk pertandingan dengan data tim yang ditautkan
 interface MatchWithTeams extends Match {
   team1: { name: string; company: string } | null
   team2: { name: string; company: string } | null
   winner: { name: string; company: string } | null
 }
 
+// Fungsi async untuk mengambil detail olahraga dari Supabase
 async function getSportDetails(id: string) {
   const [sportRes, rulesRes, matchesRes] = await Promise.all([
     supabase.from('sports').select('*').eq('id', id).single(),
@@ -37,13 +47,13 @@ async function getSportDetails(id: string) {
   }
 }
 
-export default async function SportDetailPage({ params }: { params: { id: string } }) {
-  // Pastikan params.id tersedia sebelum menggunakannya
+// Fungsi halaman utama
+export default async function SportDetailPage({ params }: PageProps) {
   if (!params?.id) return notFound()
-  
+
   const { sport, rules, matches } = await getSportDetails(params.id)
 
-  // Group matches by round
+  // Group pertandingan berdasarkan round
   const matchesByRound = matches.reduce((acc, match) => {
     const round = match.round || 'Unknown'
     if (!acc[round]) {
@@ -103,4 +113,4 @@ export default async function SportDetailPage({ params }: { params: { id: string
       </div>
     </div>
   )
-} 
+}
