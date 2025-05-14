@@ -1,5 +1,3 @@
-// src/app/sports/[id]/page.tsx
-
 import { supabase } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 
@@ -10,7 +8,7 @@ interface PageProps {
 }
 
 export default async function Page({ params }: PageProps) {
-  const id = params.id
+  const { id } = params
 
   const { data: sport, error } = await supabase
     .from('sports')
@@ -18,12 +16,13 @@ export default async function Page({ params }: PageProps) {
     .eq('id', id)
     .single()
 
-  if (error || !sport) return notFound()
+  if (error || !sport) {
+    return notFound()
+  }
 
   return (
-    <div className="p-8">
-      <h1 className="text-4xl font-bold">{sport.name}</h1>
-      <p className="text-gray-400 mt-2">Sport ID: {id}</p>
+    <div className="p-6">
+      <h1 className="text-3xl font-bold">{sport.name}</h1>
     </div>
   )
 }
