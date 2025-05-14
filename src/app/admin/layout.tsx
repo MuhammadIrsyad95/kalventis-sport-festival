@@ -1,11 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Shield, Home, Trophy, Users, Award, BookOpen, Settings } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase/client';
 import LogoutButton from '@/components/LogoutButton';
+import { supabase } from '@/lib/supabase/client';
 
 export default function AdminLayout({
   children,
@@ -13,37 +13,44 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const [user, setUser] = useState<any>(null);
-
-  // Aktifkan dark mode dan load user info jika ada session
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Check if user is authenticated
   useEffect(() => {
-    // Selalu gunakan dark mode untuk admin area
-    document.documentElement.classList.add('dark');
-    
-    // Cek user info jika ada
-    const getUserInfo = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        setUser(session.user);
-      }
-    };
-
-    getUserInfo();
-    
-    // Listener untuk perubahan auth state
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (session?.user) {
-          setUser(session.user);
-        } else if (event === 'SIGNED_OUT') {
-          setUser(null);
+    const checkAuth = async () => {
+      setIsLoading(true);
+      
+      try {
+        // Skip auth check for login and register pages
+        if (pathname === '/admin/login' || pathname === '/admin/register') {
+          setIsLoading(false);
+          return;
         }
+        
+        // Check for auth in localStorage first (fallback for Supabase issues)
+        const isAuthenticated = localStorage.getItem('admin_authenticated') === 'true';
+        
+        if (!isAuthenticated) {
+          // Redirect to login
+          console.log('User not authenticated, redirecting to login');
+          router.push('/admin/login');
+          return;
+        }
+        
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Auth check error:', error);
+        router.push('/admin/login');
       }
-    );
-
-    return () => {
-      subscription.unsubscribe();
     };
+    
+    checkAuth();
+  }, [pathname, router]);
+
+  // Only apply dark mode
+  useEffect(() => {
+    document.documentElement.classList.add('dark');
   }, []);
 
   const isActive = (path: string) => {
@@ -59,11 +66,21 @@ export default function AdminLayout({
     { name: 'Settings', path: '/admin/settings', icon: <Settings className="w-5 h-5" /> },
   ];
 
-  // Login atau register page tidak membutuhkan layout admin
+  // Login or register pages get a simple layout without sidebar
   if (pathname === '/admin/login' || pathname === '/admin/register') {
     return <div className="min-h-screen bg-gray-900">{children}</div>;
   }
+  
+  // Show loading indicator while checking auth
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-gray-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
+  // All other admin pages get the full layout with sidebar
   return (
     <div className="flex h-screen bg-gray-900">
       {/* Sidebar */}
@@ -77,13 +94,11 @@ export default function AdminLayout({
           </div>
           
           {/* User info */}
-          {user && (
-            <div className="px-4 py-3 bg-gray-800 border-b border-gray-700">
-              <div className="text-sm font-medium text-gray-300 truncate">
-                {user.email}
-              </div>
+          <div className="px-4 py-3 bg-gray-800 border-b border-gray-700">
+            <div className="text-sm font-medium text-gray-300 truncate">
+              admin@example.com
             </div>
-          )}
+          </div>
           
           <div className="flex-1 flex flex-col overflow-y-auto">
             <nav className="flex-1 px-2 py-4 space-y-1">

@@ -23,7 +23,7 @@ export default function RootLayout({
               <div className="flex items-center justify-between h-16">
                 <Link href="/" className="flex items-center space-x-2">
                   <Trophy className="w-8 h-8 text-yellow-500" />
-                  <span className="text-xl font-bold text-white">Kalventis Sport</span>
+                  <span className="text-xl font-bold text-white">Kalventis Sport Festival</span>
                 </Link>
 
                 <div className="hidden md:flex items-center space-x-6">
@@ -53,12 +53,7 @@ export default function RootLayout({
                   </Link>
                 </div>
 
-                <Link
-                  href="/admin"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
-                >
-                  Admin
-                </Link>
+           
               </div>
             </div>
           </nav>

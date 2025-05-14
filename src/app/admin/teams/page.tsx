@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase/client';
 import { PlusCircle, Edit, Trash2 } from 'lucide-react';
 import Modal from '@/components/Modal';
 import TeamForm from '@/components/forms/TeamForm';
+import { supabase } from '@/lib/supabase/client';
 import { Team } from '@/types/database.types';
 
 type FormMode = 'create' | 'edit';
@@ -25,23 +25,22 @@ export default function TeamsPage() {
   async function fetchTeams() {
     try {
       setLoading(true);
-      console.log('Fetching teams...');
+      console.log('Fetching teams from Supabase...');
       
-      const { data, error } = await supabase
+      const { data: teamsData, error } = await supabase
         .from('teams')
         .select('*')
-        .order('name');
-      
+        .order('name', { ascending: true });
+        
       if (error) {
-        console.error('Supabase teams query error:', error);
         throw error;
       }
       
-      console.log('Teams data fetched:', data);
-      setTeams(data || []);
+      if (teamsData) {
+        setTeams(teamsData);
+      }
     } catch (error: any) {
-      console.error('Error fetching teams:', error);
-      console.error('Error details:', error?.message, error?.code, error?.details);
+      console.error('Error fetching teams:', error.message);
     } finally {
       setLoading(false);
     }
@@ -72,57 +71,68 @@ export default function TeamsPage() {
         .from('teams')
         .delete()
         .eq('id', teamToDelete.id);
+        
+      if (error) {
+        throw error;
+      }
       
-      if (error) throw error;
-      
-      fetchTeams();
+      setTeams(teams.filter(team => team.id !== teamToDelete.id));
       setIsDeleteModalOpen(false);
-    } catch (error) {
-      console.error('Error deleting team:', error);
+    } catch (error: any) {
+      console.error('Error deleting team:', error.message);
+      alert('Error deleting team: ' + error.message);
     }
   };
 
   const handleSubmit = async (data: Partial<Team>) => {
     try {
-      // Log request data untuk debug
       console.log('Submitting team data:', data);
       
       if (formMode === 'create') {
-        // Saat membuat data baru, jangan sertakan id atau created_at
-        const { id, created_at, ...createData } = data as any;
-        
-        const { data: result, error } = await supabase
+        // Insert new team
+        const { data: newTeamData, error } = await supabase
           .from('teams')
-          .insert([createData])
+          .insert({
+            name: data.name || '',
+            company: data.company || ''
+          })
           .select();
           
         if (error) {
-          console.error('Insert error details:', error);
           throw error;
         }
-        console.log('Insert result:', result);
-      } else if (selectedTeam) {
-        // Saat update, jangan include created_at
-        const { created_at, ...updateData } = data as any;
         
-        const { data: result, error } = await supabase
+        if (newTeamData && newTeamData.length > 0) {
+          const newTeam = newTeamData[0];
+          setTeams([...teams, newTeam]);
+        }
+      } else if (selectedTeam) {
+        // Update existing team
+        const { data: updatedTeamData, error } = await supabase
           .from('teams')
-          .update(updateData)
+          .update({
+            name: data.name,
+            company: data.company
+          })
           .eq('id', selectedTeam.id)
           .select();
           
         if (error) {
-          console.error('Update error details:', error);
           throw error;
         }
-        console.log('Update result:', result);
+        
+        if (updatedTeamData && updatedTeamData.length > 0) {
+          const updatedTeam = updatedTeamData[0];
+          setTeams(teams.map(team => 
+            team.id === selectedTeam.id ? updatedTeam : team
+          ));
+        }
       }
       
-      fetchTeams();
       setIsModalOpen(false);
-    } catch (error) {
-      console.error('Error saving team:', error);
-      alert('Error saving team: ' + JSON.stringify(error));
+    } catch (error: any) {
+      console.error('Error saving team:', error.message);
+      alert('Error saving team: ' + error.message);
     }
   };
 
