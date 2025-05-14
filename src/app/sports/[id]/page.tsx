@@ -2,10 +2,11 @@
 
 import { supabase } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
+import { Metadata } from 'next'
 import SportRules from '@/components/SportRules'
 import { Match } from '@/types/database.types'
 
-// Tambahkan tipe eksplisit untuk parameter fungsi halaman
+// ✅ Type params sesuai dengan Next.js dynamic routes
 type PageProps = {
   params: {
     id: string
@@ -19,7 +20,23 @@ interface MatchWithTeams extends Match {
   winner: { name: string; company: string } | null
 }
 
-// Fungsi async untuk mengambil detail olahraga dari Supabase
+// ✅ Metadata dinamis agar title berubah sesuai nama cabang olahraga
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { data: sport } = await supabase
+    .from('sports')
+    .select('name')
+    .eq('id', params.id)
+    .single()
+
+  if (!sport) return {}
+
+  return {
+    title: `${sport.name} | Kalventis Sport Festival`,
+    description: `Informasi dan jadwal pertandingan untuk ${sport.name}`,
+  }
+}
+
+// Ambil data detail olahraga dari Supabase
 async function getSportDetails(id: string) {
   const [sportRes, rulesRes, matchesRes] = await Promise.all([
     supabase.from('sports').select('*').eq('id', id).single(),
@@ -33,21 +50,19 @@ async function getSportDetails(id: string) {
         winner:teams!matches_winner_id_fkey(name, company)
       `)
       .eq('sport_id', id)
-      .order('round', { ascending: true })
+      .order('round', { ascending: true }),
   ])
 
-  if (!sportRes.data) {
-    return notFound()
-  }
+  if (!sportRes.data) return notFound()
 
   return {
     sport: sportRes.data,
     rules: rulesRes.data || [],
-    matches: (matchesRes.data || []) as MatchWithTeams[]
+    matches: (matchesRes.data || []) as MatchWithTeams[],
   }
 }
 
-// Fungsi halaman utama
+// Halaman detail olahraga
 export default async function SportDetailPage({ params }: PageProps) {
   if (!params?.id) return notFound()
 
@@ -56,9 +71,7 @@ export default async function SportDetailPage({ params }: PageProps) {
   // Group pertandingan berdasarkan round
   const matchesByRound = matches.reduce((acc, match) => {
     const round = match.round || 'Unknown'
-    if (!acc[round]) {
-      acc[round] = []
-    }
+    if (!acc[round]) acc[round] = []
     acc[round].push(match)
     return acc
   }, {} as Record<string, MatchWithTeams[]>)
