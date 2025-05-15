@@ -1,8 +1,12 @@
 import { createClient } from '@supabase/supabase-js'
 import { Database } from '@/types/supabase'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Missing Supabase environment variables!');
+}
 
 // Debug log to check environment variables
 if (typeof window !== 'undefined') {
@@ -25,14 +29,7 @@ export type Match = {
   created_at: string
 }
 
-export type News = {
-  id: number
-  title: string
-  content: string
-  image_url: string
-  category: string
-  created_at: string
-}
+
 
 export type Team = {
   id: number
