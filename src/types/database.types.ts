@@ -38,14 +38,6 @@ export interface Team {
   created_at?: string;
 }
 
-export interface News {
-  id: number;
-  title: string;
-  content: string;
-  image_url: string;
-  category: string;
-  created_at: string;
-}
 
 export type Database = {
   public: {
@@ -75,11 +67,7 @@ export type Database = {
         Insert: Omit<Team, 'id' | 'created_at'> & { id?: string; created_at?: string };
         Update: Partial<Team>;
       };
-      news: {
-        Row: News;
-        Insert: Omit<News, 'id' | 'created_at'> & { id?: number; created_at?: string };
-        Update: Partial<News>;
-      };
+
     };
   };
 };
