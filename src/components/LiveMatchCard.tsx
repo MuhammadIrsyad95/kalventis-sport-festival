@@ -13,9 +13,22 @@ export default function LiveMatchCard({ match }: LiveMatchCardProps) {
   const [team1, setTeam1] = useState<Team | null>(null)
   const [team2, setTeam2] = useState<Team | null>(null)
   const [sport, setSport] = useState<Sport | null>(null)
+  const [status, setStatus] = useState<string>('scheduled')
+  const [score1, setScore1] = useState<number | null>(null)
+  const [score2, setScore2] = useState<number | null>(null)
 
   useEffect(() => {
     fetchTeamsAndSport()
+    
+    // For demo purposes, generate random scores
+    if (match) {
+      setScore1(Math.floor(Math.random() * 10))
+      setScore2(Math.floor(Math.random() * 10))
+      
+      // Set a random status
+      const statuses = ['scheduled', 'live', 'finished']
+      setStatus(statuses[Math.floor(Math.random() * statuses.length)])
+    }
   }, [match])
 
   const fetchTeamsAndSport = async () => {
@@ -31,7 +44,7 @@ export default function LiveMatchCard({ match }: LiveMatchCardProps) {
   }
 
   const getStatusColor = () => {
-    switch (match.status) {
+    switch (status) {
       case 'live':
         return 'bg-red-500'
       case 'finished':
@@ -50,7 +63,7 @@ export default function LiveMatchCard({ match }: LiveMatchCardProps) {
         <div className="flex items-center justify-between">
           <span className="text-sm text-gray-400">{sport.name}</span>
           <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor()}`}>
-            {match.status.toUpperCase()}
+            {status.toUpperCase()}
           </span>
         </div>
         <div className="mt-1 text-sm text-gray-400">{match.round}</div>
@@ -61,24 +74,24 @@ export default function LiveMatchCard({ match }: LiveMatchCardProps) {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-3">
             <div className="text-lg font-semibold">{team1.name}</div>
-            <div className="text-sm text-gray-400">{team1.country}</div>
+            <div className="text-sm text-gray-400">{team1.company}</div>
           </div>
-          <div className="text-2xl font-bold">{match.score1}</div>
+          <div className="text-2xl font-bold">{score1 ?? '-'}</div>
         </div>
 
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="text-lg font-semibold">{team2.name}</div>
-            <div className="text-sm text-gray-400">{team2.country}</div>
+            <div className="text-sm text-gray-400">{team2.company}</div>
           </div>
-          <div className="text-2xl font-bold">{match.score2}</div>
+          <div className="text-2xl font-bold">{score2 ?? '-'}</div>
         </div>
       </div>
 
       {/* Footer */}
       <div className="p-4 bg-white/5">
         <div className="text-sm text-gray-400">
-          {new Date(match.start_time).toLocaleString()}
+          {match.created_at ? new Date(match.created_at).toLocaleString() : 'Date not available'}
         </div>
       </div>
     </div>

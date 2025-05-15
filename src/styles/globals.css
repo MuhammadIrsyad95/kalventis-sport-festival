@@ -4,8 +4,8 @@
 
 :root {
   --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 17, 24, 39;
-  --background-end-rgb: 31, 41, 55;
+  --background-start-rgb: 17, 24, 39; /* gray-900 */
+  --background-end-rgb: 31, 41, 55;   /* gray-800 */
 }
 
 body {
@@ -43,7 +43,7 @@ body {
 
   body {
     @apply antialiased;
-    background: linear-gradient(to bottom right, #1a1a2e, #16213e, #0f3460);
+    background: linear-gradient(to bottom right, #111827, #1f2937);
     color: #e2e8f0;
   }
 }
@@ -58,7 +58,7 @@ body {
   }
 
   .btn-primary {
-    @apply bg-blue-600 hover:bg-blue-700 text-white;
+    @apply bg-gray-700 hover:bg-gray-600 text-white;
   }
 
   .nav-link {

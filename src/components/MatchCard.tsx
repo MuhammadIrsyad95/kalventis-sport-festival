@@ -63,12 +63,12 @@ export default function MatchCard({ match }: MatchCardProps) {
         <div className="flex justify-between items-center">
           <div className="flex-1">
             <p className="text-white font-semibold">{team1?.name || 'Loading...'}</p>
-            <p className="text-sm text-gray-400">{team1?.country || ''}</p>
+            <p className="text-sm text-gray-400">{team1?.company || ''}</p>
           </div>
           <div className="px-4 text-gray-400">VS</div>
           <div className="flex-1 text-right">
             <p className="text-white font-semibold">{team2?.name || 'Loading...'}</p>
-            <p className="text-sm text-gray-400">{team2?.country || ''}</p>
+            <p className="text-sm text-gray-400">{team2?.company || ''}</p>
           </div>
         </div>
 

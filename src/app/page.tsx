@@ -3,22 +3,21 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Trophy } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import MatchCard from '@/components/MatchCard'
-// import MedalTally from '@/components/MedalTally'
+import MedalTally from '@/components/MedalTally'
 import SportsList from '@/components/SportsList'
 import type { Database } from '@/types/supabase'
+import type { Medal } from '@/types/database.types'
 
 type Match = Database['public']['Tables']['matches']['Row']
-// type Medal = Database['public']['Tables']['medals']['Row']
 type Sport = Database['public']['Tables']['sports']['Row']
 
 export default function Home() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [matches, setMatches] = useState<Match[]>([])
-  // const [medalTally, setMedalTally] = useState<Medal[]>([])
+  const [medalTally, setMedalTally] = useState<Medal[]>([])
   const [sports, setSports] = useState<Sport[]>([])
 
   useEffect(() => {
@@ -42,7 +41,7 @@ export default function Home() {
         if (sportsRes.error) throw new Error(sportsRes.error.message)
 
         setMatches(matchesRes.data || [])
-        // setMedalTally(medalsRes.data || [])
+        setMedalTally(medalsRes.data || [])
         setSports(sportsRes.data || [])
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred')
@@ -108,7 +107,7 @@ export default function Home() {
         {/* Medal Tally Section */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-white mb-6">Medal Tally</h2>
-          {/* <MedalTally medals={medalTally} /> */}
+          <MedalTally medals={medalTally} />
         </section>
 
         {/* Sports Section */}
@@ -117,6 +116,23 @@ export default function Home() {
           <SportsList sports={sports} />
         </section>
       </div>
+
+      {/* Info Section at the bottom */}
+      <section className="w-full bg-gray-900 border-t border-gray-800 py-6 mt-8">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="flex-1 text-left md:pr-8">
+            <h2 className="text-base md:text-lg font-semibold text-white mb-2">About Kalventis Sport Festival</h2>
+            <p className="text-gray-300 text-sm md:text-base mb-0 leading-relaxed">
+              Kalventis Sport Festival is an annual sports event organized by Kalventis, bringing together teams and companies to compete in a spirit of sportsmanship, unity, and excellence.
+            </p>
+          </div>
+          <div className="flex-1 flex flex-col md:items-end items-start gap-2">
+            <a href="/sports" className="underline hover:text-white text-sm transition">Sport</a>
+            <a href="/rules" className="underline hover:text-white text-sm transition">Rules</a>
+            <a href="/about" className="underline hover:text-white text-sm transition">About</a>
+          </div>
+        </div>
+      </section>
     </main>
   )
 }
