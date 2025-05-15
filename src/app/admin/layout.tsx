@@ -23,10 +23,11 @@ export default function AdminLayout({
       
       try {
         // Skip auth check for login and register pages
-        if (pathname === '/admin/login' || pathname === '/admin/register') {
-          setIsLoading(false);
-          return;
-        }
+      if (pathname === '/admin/login' || pathname === '/admin/register') {
+  setIsLoading(false);
+  return;
+}
+
         
         // Check for auth in localStorage first (fallback for Supabase issues)
         const isAuthenticated = localStorage.getItem('admin_authenticated') === 'true';
