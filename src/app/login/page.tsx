@@ -1,21 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Database } from '@/types/supabase';
+import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabase/client'; // ← pakai supabase custom
+// Tidak perlu createClientComponentClient
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  
+
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirectTo = searchParams.get('redirectTo') || '/';
-  
-  const supabase = createClientComponentClient<Database>();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +19,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -33,9 +29,13 @@ export default function LoginPage() {
         return;
       }
 
-      router.push(redirectTo);
-      router.refresh();
+      // Optional: Bisa tambahkan pengecekan role di database user (kalau pakai)
+      localStorage.setItem('admin_authenticated', 'true');
+      localStorage.setItem('admin_email', email);
+
+      router.push('/admin');
     } catch (err) {
+      console.error(err);
       setError('An unexpected error occurred');
     } finally {
       setLoading(false);
@@ -58,9 +58,6 @@ export default function LoginPage() {
           )}
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="email" className="sr-only">
-                Email address
-              </label>
               <input
                 id="email"
                 name="email"
@@ -73,9 +70,6 @@ export default function LoginPage() {
               />
             </div>
             <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
               <input
                 id="password"
                 name="password"
@@ -102,4 +96,4 @@ export default function LoginPage() {
       </div>
     </div>
   );
-} 
+}

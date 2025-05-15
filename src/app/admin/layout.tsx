@@ -23,7 +23,7 @@ export default function AdminLayout({
       
       try {
         // Skip auth check for login and register pages
-      if (pathname === '/admin/login' || pathname === '/admin/register') {
+      if (pathname === '/login') {
   setIsLoading(false);
   return;
 }
@@ -35,14 +35,14 @@ export default function AdminLayout({
         if (!isAuthenticated) {
           // Redirect to login
           console.log('User not authenticated, redirecting to login');
-          router.push('/admin/login');
+          router.push('/login');
           return;
         }
         
         setIsLoading(false);
       } catch (error) {
         console.error('Auth check error:', error);
-        router.push('/admin/login');
+        router.push('/login');
       }
     };
     
@@ -68,7 +68,7 @@ export default function AdminLayout({
   ];
 
   // Login or register pages get a simple layout without sidebar
-  if (pathname === '/admin/login' || pathname === '/admin/register') {
+  if (pathname === '/login') {
     return <div className="min-h-screen bg-gray-900">{children}</div>;
   }
   
