@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Shield, Home, Trophy, Users, Award, BookOpen, Settings } from 'lucide-react';
+import { Shield, Home, Trophy, Users, Award, BookOpen, Settings, Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import LogoutButton from '@/components/LogoutButton';
 import { supabase } from '@/lib/supabase/client';
@@ -15,6 +15,7 @@ export default function AdminLayout({
   const pathname = usePathname();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   // Check if user is authenticated
   useEffect(() => {
@@ -144,13 +145,64 @@ export default function AdminLayout({
             <Shield className="h-8 w-8 text-blue-400" />
             <span className="ml-3 text-xl font-semibold text-white">Admin</span>
           </div>
-          <div className="flex items-center space-x-2">
-            <Link href="/" className="text-gray-300 hover:text-white">
-              <Home className="h-6 w-6" />
-            </Link>
-            <LogoutButton />
-          </div>
+          <button
+            className="text-gray-300 hover:text-white focus:outline-none ml-2"
+            onClick={() => setMobileMenuOpen(true)}
+            aria-label="Open menu"
+          >
+            <Menu className="h-7 w-7" />
+          </button>
         </div>
+
+        {/* Mobile Drawer Menu */}
+        {mobileMenuOpen && (
+          <div className="fixed inset-0 z-50 bg-black bg-opacity-60 flex">
+            <div className="w-64 bg-gray-800 h-full flex flex-col shadow-lg animate-slideInLeft relative">
+              <button
+                className="absolute top-4 right-4 text-gray-400 hover:text-white"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close menu"
+              >
+                <X className="h-7 w-7" />
+              </button>
+              <div className="flex items-center h-16 px-4 border-b border-gray-700">
+                <Shield className="h-8 w-8 text-blue-400" />
+                <span className="ml-3 text-xl font-semibold text-white">Admin</span>
+              </div>
+              <div className="flex-1 flex flex-col overflow-y-auto">
+                <nav className="flex-1 px-2 py-4 space-y-1">
+                  {menuItems.map((item) => (
+                    <Link
+                      key={item.path}
+                      href={item.path}
+                      className={`flex items-center px-4 py-3 text-sm font-medium rounded-md ${isActive(item.path)
+                        ? 'bg-gray-700 text-white border-l-4 border-blue-400'
+                        : 'text-gray-300 hover:bg-gray-700 hover:text-white'}
+                      `}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <div className={`mr-3 ${isActive(item.path) ? 'text-blue-400' : ''}`}>{item.icon}</div>
+                      {item.name}
+                    </Link>
+                  ))}
+                </nav>
+              </div>
+              <div className="p-4 border-t border-gray-700 space-y-2">
+                <Link
+                  href="/"
+                  className="flex items-center text-sm font-medium text-gray-300 hover:text-white"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Home className="mr-3 h-5 w-5" />
+                  Back to Site
+                </Link>
+                <LogoutButton />
+              </div>
+            </div>
+            {/* Overlay click to close */}
+            <div className="flex-1" onClick={() => setMobileMenuOpen(false)} />
+          </div>
+        )}
 
         {/* Main content area */}
         <main className="flex-1 overflow-y-auto bg-gray-900 text-white pt-20 md:pt-6 px-6 pb-6">

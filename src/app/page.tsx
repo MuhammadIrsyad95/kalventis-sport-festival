@@ -232,7 +232,7 @@ export default function Home() {
               Kalventis Sport Festival is an annual sports event organized by Kalventis, bringing together teams and companies to compete in a spirit of sportsmanship, unity, and excellence.
             </p>
           </div>
-          <div className="flex-1 flex flex-col md:items-end items-start gap-2">
+          <div className="flex-1 flex flex-row gap-2 md:flex-col md:items-end items-start">
             <a href="/sports" className="underline hover:text-white text-sm transition">Sport</a>
             <a href="/rules" className="underline hover:text-white text-sm transition">Rules</a>
             <a href="/about" className="underline hover:text-white text-sm transition">About</a>
