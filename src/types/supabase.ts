@@ -17,6 +17,9 @@ export interface Database {
           team2_id: string
           winner_id: string | null
           round: string | null
+          team1_score?: number | null
+          team2_score?: number | null
+          match_time?: string | null
         }
         Insert: {
           id?: string
@@ -25,6 +28,9 @@ export interface Database {
           team2_id: string
           winner_id?: string | null
           round?: string | null
+          team1_score?: number | null
+          team2_score?: number | null
+          match_time?: string | null
         }
         Update: {
           id?: string
@@ -33,6 +39,9 @@ export interface Database {
           team2_id?: string
           winner_id?: string | null
           round?: string | null
+          team1_score?: number | null
+          team2_score?: number | null
+          match_time?: string | null
         }
       }
       rules: {

@@ -16,6 +16,9 @@ interface Match {
   team1?: any;
   team2?: any;
   sport?: any;
+  team1_score?: number;
+  team2_score?: number;
+  match_time?: string;
 }
 
 type FormMode = 'create' | 'edit';
@@ -204,6 +207,8 @@ export default function MatchesPage() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Teams</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Sport</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Round</th>
+              <th className="px-3 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Score</th>
+              <th className="px-3 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Match Time</th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
@@ -229,6 +234,14 @@ export default function MatchesPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                     {match.round}
+                  </td>
+                  <td className="px-3 py-4 whitespace-nowrap text-center text-sm text-white font-bold">
+                    {typeof match.team1_score === 'number' && typeof match.team2_score === 'number'
+                      ? `${match.team1_score} : ${match.team2_score}`
+                      : '-'}
+                  </td>
+                  <td className="px-3 py-4 whitespace-nowrap text-center text-sm text-gray-300">
+                    {match.match_time ? new Date(match.match_time).toLocaleString() : '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button

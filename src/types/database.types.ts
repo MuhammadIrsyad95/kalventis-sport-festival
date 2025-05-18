@@ -8,6 +8,9 @@ export interface Match {
   winner_id?: string | null;
   round: string;
   created_at?: string;
+  team1_score?: number;
+  team2_score?: number;
+  match_time?: string;
 }
 
 export interface Medal {

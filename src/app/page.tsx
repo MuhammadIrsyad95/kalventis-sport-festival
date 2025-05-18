@@ -72,6 +72,12 @@ export default function Home() {
     )
   }
 
+  // Kategorisasi match berdasarkan waktu
+  const now = new Date()
+  const matchesLalu = matches.filter(m => m.match_time && new Date(m.match_time) < new Date(now.getTime() - 2 * 60 * 60 * 1000))
+  const matchesSekarang = matches.filter(m => m.match_time && Math.abs(new Date(m.match_time).getTime() - now.getTime()) <= 2 * 60 * 60 * 1000)
+  const matchesAkanDatang = matches.filter(m => m.match_time && new Date(m.match_time) > new Date(now.getTime() + 2 * 60 * 60 * 1000))
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -92,15 +98,37 @@ export default function Home() {
         {/* Matches Section */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-white mb-6">Matches</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {matches.map((match) => (
-              <MatchCard key={match.id} match={match} />
-            ))}
-            {matches.length === 0 && (
-              <p className="text-gray-400 col-span-full text-center py-8">
-                No matches available
-              </p>
-            )}
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-lg font-semibold text-blue-300 mb-2">Yang Lalu</h3>
+              <div className="flex space-x-4 overflow-x-auto pb-2">
+                {matchesLalu.length > 0 ? matchesLalu.map(match => (
+                  <div key={match.id} className="min-w-[320px] max-w-xs flex-shrink-0">
+                    <MatchCard match={match} />
+                  </div>
+                )) : <span className="text-gray-400">Tidak ada pertandingan lalu</span>}
+              </div>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-green-300 mb-2">Sedang Berlangsung</h3>
+              <div className="flex space-x-4 overflow-x-auto pb-2">
+                {matchesSekarang.length > 0 ? matchesSekarang.map(match => (
+                  <div key={match.id} className="min-w-[320px] max-w-xs flex-shrink-0">
+                    <MatchCard match={match} />
+                  </div>
+                )) : <span className="text-gray-400">Tidak ada pertandingan sekarang</span>}
+              </div>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-yellow-300 mb-2">Akan Datang</h3>
+              <div className="flex space-x-4 overflow-x-auto pb-2">
+                {matchesAkanDatang.length > 0 ? matchesAkanDatang.map(match => (
+                  <div key={match.id} className="min-w-[320px] max-w-xs flex-shrink-0">
+                    <MatchCard match={match} />
+                  </div>
+                )) : <span className="text-gray-400">Tidak ada pertandingan akan datang</span>}
+              </div>
+            </div>
           </div>
         </section>
 

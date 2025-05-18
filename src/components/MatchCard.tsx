@@ -65,7 +65,12 @@ export default function MatchCard({ match }: MatchCardProps) {
             <p className="text-white font-semibold">{team1?.name || 'Loading...'}</p>
             <p className="text-sm text-gray-400">{team1?.company || ''}</p>
           </div>
-          <div className="px-4 text-gray-400">VS</div>
+          <div className="px-4 text-gray-400 flex flex-col items-center">
+            <span>VS</span>
+            {(typeof match.team1_score === 'number' && typeof match.team2_score === 'number') && (
+              <span className="text-lg font-bold text-white">{match.team1_score} : {match.team2_score}</span>
+            )}
+          </div>
           <div className="flex-1 text-right">
             <p className="text-white font-semibold">{team2?.name || 'Loading...'}</p>
             <p className="text-sm text-gray-400">{team2?.company || ''}</p>
@@ -75,6 +80,9 @@ export default function MatchCard({ match }: MatchCardProps) {
         <div className="border-t border-white/10 pt-4">
           <div className="flex justify-between text-sm text-gray-400">
             <span>Round: {match.round || 'TBD'}</span>
+            {match.match_time && (
+              <span>{new Date(match.match_time).toLocaleString()}</span>
+            )}
             {match.winner_id && (
               <span>Winner: {match.winner_id === team1?.id ? team1.name : team2?.name}</span>
             )}
