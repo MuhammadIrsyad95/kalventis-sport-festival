@@ -1,41 +1,87 @@
-<<<<<<< HEAD
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+![License: Proprietary](https://img.shields.io/badge/license-proprietary-red)
 
-## Getting Started
+# 🏅 Kalventis Sport Festival
 
-First, run the development server:
+**Kalventis Sport Festival** is a modern web application for managing and showcasing sports events. Built with Next.js, Supabase, and Tailwind CSS, it provides a smooth, scalable, and responsive experience for event organizers and attendees.
 
+---
+
+## 🚀 Tech Stack
+
+- **Frontend**: [Next.js](https://nextjs.org/), [TypeScript](https://www.typescriptlang.org/), [Tailwind CSS](https://tailwindcss.com/)
+- **Backend & Auth**: [Supabase](https://supabase.com/) (PostgreSQL)
+- **Deployment**: [Vercel](https://vercel.com/)
+
+---
+
+## ✨ Features
+
+- Event listing and detail pages  
+- Admin dashboard for managing events  
+- User authentication via Supabase  
+- Responsive UI with Tailwind CSS  
+- Server-side rendering & static generation with Next.js  
+
+---
+
+## 📥 Getting Started
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/MuhammadIrsyad95/kalventis-sport-festival.git
+cd kalventis-sport-festival
+```
+
+### 2. Install Dependencies
+```bash
+npm install
+# or
+yarn install
+```
+
+### 3. Configure Environment Variables
+Create a `.env.local` file in the root directory and add your Supabase credentials:
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+```
+
+### 4. Start the Development Server
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📷 Screenshots
 
-## Learn More
+*(Insert screenshots or demo GIFs here if available)*
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 💼 Commercial Use
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project is **not open source**. If you're interested in using this application for your organization, event, or for any commercial purpose, please contact me for licensing options or custom development.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📄 License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-=======
-# kalventis-sport-festival
-kalventis-sport-festival
->>>>>>> 839fa12eb09d6ab816541e3ae3db6b959bddcbed
+```
+This project is proprietary and not open source.
+
+The source code is the intellectual property of the author and may not be used, copied, modified, or distributed for personal, educational, or commercial purposes without explicit written permission.
+
+To obtain a license or request custom development, please contact:
+
+📩 Email: irsyadmuhammad001@gmail.com  
+🔗 LinkedIn: https://www.linkedin.com/in/muhammad-irsyad-204821173/
+```
+
+---
+
+Thank you for your interest in Kalventis Sport Festival!
