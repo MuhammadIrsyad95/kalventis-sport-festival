@@ -18,6 +18,7 @@ interface DashboardStats {
   teamsCount: number;
   sportsCount: number;
   rulesCount: number;
+  medalsCount: number;
 }
 
 export default function AdminDashboard() {
@@ -25,7 +26,8 @@ export default function AdminDashboard() {
     matchesCount: 0,
     teamsCount: 0,
     sportsCount: 0,
-    rulesCount: 0
+    rulesCount: 0,
+    medalsCount: 0
   });
   const [loading, setLoading] = useState(true);
 
@@ -36,18 +38,20 @@ export default function AdminDashboard() {
   const fetchStats = async () => {
     try {
       // Fetch counts from all tables
-      const [matchesResponse, teamsResponse, sportsResponse, rulesResponse] = await Promise.all([
+      const [matchesResponse, teamsResponse, sportsResponse, rulesResponse, medalsResponse] = await Promise.all([
         supabase.from('matches').select('id', { count: 'exact', head: true }),
         supabase.from('teams').select('id', { count: 'exact', head: true }),
         supabase.from('sports').select('id', { count: 'exact', head: true }),
-        supabase.from('rules').select('id', { count: 'exact', head: true })
+        supabase.from('rules').select('id', { count: 'exact', head: true }),
+        supabase.from('medals').select('id', { count: 'exact', head: true })
       ]);
 
       setStats({
         matchesCount: matchesResponse.count || 0,
         teamsCount: teamsResponse.count || 0,
         sportsCount: sportsResponse.count || 0,
-        rulesCount: rulesResponse.count || 0
+        rulesCount: rulesResponse.count || 0,
+        medalsCount: medalsResponse.count || 0
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -61,34 +65,42 @@ export default function AdminDashboard() {
     {
       name: 'Matches',
       value: stats.matchesCount,
-      icon: <Trophy className="h-8 w-8 text-blue-600" />,
+      icon: <Trophy className="h-8 w-8 text-blue-400" />,
       href: '/admin/matches',
-      bgColor: 'bg-blue-50 dark:bg-blue-900/20',
-      textColor: 'text-blue-700 dark:text-blue-300',
+      bgColor: 'bg-gray-800',
+      textColor: 'text-white',
     },
     {
       name: 'Teams',
       value: stats.teamsCount,
-      icon: <Users className="h-8 w-8 text-green-600" />,
+      icon: <Users className="h-8 w-8 text-green-400" />,
       href: '/admin/teams',
-      bgColor: 'bg-green-50 dark:bg-green-900/20',
-      textColor: 'text-green-700 dark:text-green-300',
+      bgColor: 'bg-gray-800',
+      textColor: 'text-white',
     },
     {
       name: 'Sports',
       value: stats.sportsCount,
-      icon: <Award className="h-8 w-8 text-purple-600" />,
+      icon: <Award className="h-8 w-8 text-purple-400" />,
       href: '/admin/sports',
-      bgColor: 'bg-purple-50 dark:bg-purple-900/20',
-      textColor: 'text-purple-700 dark:text-purple-300',
+      bgColor: 'bg-gray-800',
+      textColor: 'text-white',
+    },
+    {
+      name: 'Medals',
+      value: stats.medalsCount,
+      icon: <Award className="h-8 w-8 text-yellow-400" />,
+      href: '/admin/medals',
+      bgColor: 'bg-gray-800',
+      textColor: 'text-white',
     },
     {
       name: 'Rules',
       value: stats.rulesCount,
-      icon: <BookOpen className="h-8 w-8 text-yellow-600" />,
+      icon: <BookOpen className="h-8 w-8 text-yellow-400" />,
       href: '/admin/rules',
-      bgColor: 'bg-yellow-50 dark:bg-yellow-900/20',
-      textColor: 'text-yellow-700 dark:text-yellow-300',
+      bgColor: 'bg-gray-800',
+      textColor: 'text-white',
     }
   ];
 
@@ -135,7 +147,7 @@ export default function AdminDashboard() {
       </div>
       
       {/* Quick Actions */}
-      <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg divide-y divide-gray-200 dark:divide-gray-700">
+      <div className="bg-gray-900 overflow-hidden shadow rounded-lg divide-y divide-gray-800">
         <div className="px-4 py-5 sm:px-6">
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">Quick Actions</h3>
         </div>
@@ -158,6 +170,12 @@ export default function AdminDashboard() {
               className="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700"
             >
               Manage Sports
+            </Link>
+            <Link 
+              href="/admin/medals"
+              className="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-600"
+            >
+              Manage Medals
             </Link>
             <Link 
               href="/admin/rules"

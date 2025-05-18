@@ -75,4 +75,14 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Hide default react-slick arrows (super strong selector) */
+.slick-slider .slick-arrow.slick-prev:before,
+.slick-slider .slick-arrow.slick-next:before {
+  content: '' !important;
+  display: none !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
 } 
