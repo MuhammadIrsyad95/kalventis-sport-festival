@@ -65,6 +65,7 @@ export default function SportDetailPage() {
   const [matches, setMatches] = useState<any[]>([]);
   const [rules, setRules] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [zoomed, setZoomed] = useState(false);
 
   useEffect(() => {
     async function fetchAll() {
@@ -98,7 +99,27 @@ export default function SportDetailPage() {
     <main className="max-w-4xl mx-auto py-8 px-4">
       <h1 className="text-3xl font-bold text-white mb-4 text-center">{sport.name}</h1>
       {sport.imageurl && (
-        <img src={sport.imageurl} alt={sport.name} className="w-full max-w-lg mx-auto h-64 object-cover rounded mb-8 border" />
+        <>
+          <img
+            src={sport.imageurl}
+            alt={sport.name}
+            className="w-full max-w-2xl mx-auto h-64 md:h-96 object-cover rounded mb-8 border cursor-zoom-in"
+            onClick={() => setZoomed(true)}
+          />
+          {zoomed && (
+            <div
+              className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center"
+              onClick={() => setZoomed(false)}
+            >
+              <img
+                src={sport.imageurl}
+                alt={sport.name}
+                className="max-w-2xl max-h-[80vh] rounded shadow-lg cursor-zoom-out"
+                onClick={e => { e.stopPropagation(); setZoomed(false); }}
+              />
+            </div>
+          )}
+        </>
       )}
       <section className="mb-8">
         <h2 className="text-2xl font-bold text-white mb-4">Jadwal Pertandingan</h2>
