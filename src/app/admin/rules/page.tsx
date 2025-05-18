@@ -39,11 +39,8 @@ export default function RulesPage() {
           sport:sports(*)
         `)
         .order('id')
-      
-      if (error) {
-        throw error
-      }
-      
+
+      if (error) throw error
       setRules(data || [])
     } catch (error) {
       console.error('Error fetching rules:', error)
@@ -58,11 +55,8 @@ export default function RulesPage() {
         .from('sports')
         .select('*')
         .order('name')
-      
-      if (error) {
-        throw error
-      }
-      
+
+      if (error) throw error
       setSports(data || [])
     } catch (error) {
       console.error('Error fetching sports:', error)
@@ -94,9 +88,8 @@ export default function RulesPage() {
         .from('rules')
         .delete()
         .eq('id', ruleToDelete.id)
-      
+
       if (error) throw error
-      
       fetchRules()
       setIsDeleteModalOpen(false)
     } catch (error) {
@@ -116,7 +109,7 @@ export default function RulesPage() {
           .eq('id', selectedRule.id)
         if (error) throw error
       }
-      
+
       fetchRules()
       setIsModalOpen(false)
     } catch (error) {
@@ -126,7 +119,7 @@ export default function RulesPage() {
 
   if (loading) {
     return (
-      <div className="animate-pulse">
+      <div className="bg-gray-900 min-h-screen p-6 animate-pulse">
         <h2 className="text-2xl font-bold mb-6 h-8 bg-gray-700 rounded w-1/4"></h2>
         <div className="bg-gray-700 h-96 rounded-lg"></div>
       </div>
@@ -134,9 +127,10 @@ export default function RulesPage() {
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-white">Rules Management</h1>
+    <div className="bg-gray-900 min-h-screen p-6 text-white">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6 border-b border-gray-700 pb-2">
+        <h1 className="text-2xl font-bold">Rules Management</h1>
         <button
           onClick={handleAdd}
           className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700"
@@ -146,6 +140,7 @@ export default function RulesPage() {
         </button>
       </div>
 
+      {/* Rule List */}
       <div className="bg-gray-800 shadow overflow-hidden sm:rounded-lg border border-gray-700">
         <div className="divide-y divide-gray-700">
           {rules.length === 0 ? (
@@ -158,7 +153,7 @@ export default function RulesPage() {
                 <div className="flex justify-between items-start">
                   <div className="flex items-center space-x-3">
                     <Book className="h-5 w-5 text-yellow-500" />
-                    <h3 className="text-lg font-medium text-white">
+                    <h3 className="text-lg font-medium">
                       {rule.sport?.name || 'General Rule'}
                     </h3>
                   </div>
@@ -177,7 +172,7 @@ export default function RulesPage() {
                     </button>
                   </div>
                 </div>
-                <div className="mt-4 text-sm text-gray-400 whitespace-pre-line">
+                <div className="mt-4 text-sm text-gray-300 whitespace-pre-line">
                   {rule.content}
                 </div>
               </div>
@@ -186,22 +181,24 @@ export default function RulesPage() {
         </div>
       </div>
 
-      {/* Form Modal */}
+      {/* Modal: Form */}
       {isModalOpen && (
         <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           title={`${formMode === 'create' ? 'Add' : 'Edit'} Rule`}
         >
-          <form onSubmit={(e) => {
-            e.preventDefault()
-            const formData = new FormData(e.currentTarget)
-            const data = {
-              sport_id: formData.get('sport_id'),
-              content: formData.get('content')
-            }
-            handleSubmit(data)
-          }}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              const formData = new FormData(e.currentTarget)
+              const data = {
+                sport_id: formData.get('sport_id'),
+                content: formData.get('content')
+              }
+              handleSubmit(data)
+            }}
+          >
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-200 mb-1">
                 Sport
@@ -250,7 +247,7 @@ export default function RulesPage() {
         </Modal>
       )}
 
-      {/* Delete Confirmation Modal */}
+      {/* Modal: Delete Confirm */}
       {isDeleteModalOpen && (
         <Modal
           isOpen={isDeleteModalOpen}
@@ -282,4 +279,4 @@ export default function RulesPage() {
       )}
     </div>
   )
-} 
+}

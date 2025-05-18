@@ -179,7 +179,7 @@ export default function MatchesPage() {
   }
 
   return (
-    <div>
+    <main className="px-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-white">Matches Management</h1>
         <button
@@ -296,6 +296,6 @@ export default function MatchesPage() {
           </div>
         </Modal>
       )}
-    </div>
+    </main>
   );
 } 

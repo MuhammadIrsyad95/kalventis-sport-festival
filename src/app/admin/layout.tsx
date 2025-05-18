@@ -83,7 +83,7 @@ export default function AdminLayout({
 
   // All other admin pages get the full layout with sidebar
   return (
-    <div className="flex h-screen bg-gray-900">
+    <div className="min-h-screen flex bg-gray-900">
       {/* Sidebar */}
       <div className="hidden md:flex md:flex-shrink-0">
         <div className="flex flex-col w-64 bg-gray-800 text-white border-r border-gray-700">
@@ -136,7 +136,7 @@ export default function AdminLayout({
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-col flex-1 overflow-hidden">
+      <div className="flex flex-col flex-1">
         {/* Mobile Header */}
         <div className="md:hidden bg-gray-800 p-4 flex items-center justify-between border-b border-gray-700">
           <div className="flex items-center">
@@ -152,9 +152,10 @@ export default function AdminLayout({
         </div>
 
         {/* Main content area */}
-        <main className="flex-1 overflow-y-auto bg-gray-900 p-6 text-white">
-          {children}
-        </main>
+        <main className="flex-1 overflow-y-auto bg-gray-900 text-white pt-20 md:pt-6 px-6 pb-6">
+        {children}
+      </main>
+
       </div>
     </div>
   );

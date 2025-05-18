@@ -19,10 +19,10 @@ export default function Header() {
             Rules
           </Link>
           <Link href="/sports" className="font-medium hover:text-gray-300 transition-colors text-white">
-            Sport
+            Cabang Olahraga
           </Link>
           <Link href="/about" className="font-medium hover:text-gray-300 transition-colors text-white">
-            About
+            Tentang
           </Link>
         </div>
       </nav>
