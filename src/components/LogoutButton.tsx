@@ -16,7 +16,7 @@ export default function LogoutButton() {
     localStorage.removeItem('admin_email');
     
     // Redirect to login page
-    window.location.href = '/admin/login';
+    window.location.href = '/login';
   };
 
   return (

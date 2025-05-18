@@ -10,7 +10,7 @@ export default function Header() {
   const pathname = usePathname();
   const isAdmin = pathname.startsWith('/admin');
   return (
-    <header className="w-full z-50 transition-all duration-300 bg-gray-900 py-4 md:fixed">
+    <header className="w-full z-50 fixed top-0 left-0 transition-all duration-300 bg-gray-900 py-4">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
         {/* Mobile header bar */}
         <div className="flex md:hidden items-center justify-between w-full mb-2">
