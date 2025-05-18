@@ -17,8 +17,9 @@ export interface Medal {
   id: string;
   team_id: string;
   sport_id: string;
-  medal_type: 'gold' | 'silver' | 'bronze';
-  created_at: string;
+  gold: number;
+  silver: number;
+  bronze: number;
 }
 
 export interface Rule {

@@ -63,6 +63,7 @@ export default function AdminLayout({
     { name: 'Matches', path: '/admin/matches', icon: <Trophy className="w-5 h-5" /> },
     { name: 'Teams', path: '/admin/teams', icon: <Users className="w-5 h-5" /> },
     { name: 'Sports', path: '/admin/sports', icon: <Award className="w-5 h-5" /> },
+    { name: 'Medals', path: '/admin/medals', icon: <Award className="w-5 h-5" /> },
     { name: 'Rules', path: '/admin/rules', icon: <BookOpen className="w-5 h-5" /> },
     { name: 'Settings', path: '/admin/settings', icon: <Settings className="w-5 h-5" /> },
   ];

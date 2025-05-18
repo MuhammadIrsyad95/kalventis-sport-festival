@@ -98,6 +98,32 @@ export interface Database {
           logo_url?: string | null
         }
       }
+      medals: {
+        Row: {
+          id: string
+          team_id: string
+          sport_id: string
+          gold: number
+          silver: number
+          bronze: number
+        }
+        Insert: {
+          id?: string
+          team_id: string
+          sport_id: string
+          gold: number
+          silver: number
+          bronze: number
+        }
+        Update: {
+          id?: string
+          team_id?: string
+          sport_id?: string
+          gold?: number
+          silver?: number
+          bronze?: number
+        }
+      }
     }
     Views: {
       [_ in never]: never

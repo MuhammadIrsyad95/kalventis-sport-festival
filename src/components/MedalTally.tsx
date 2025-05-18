@@ -48,18 +48,13 @@ export default function MedalTally({ medals }: MedalTallyProps) {
   // Mengelompokkan medali berdasarkan team_id
   const medalsByTeam = medals.reduce<Record<string, MedalCounts>>((acc, medal) => {
     if (!medal.team_id) return acc;
-
     if (!acc[medal.team_id]) {
       acc[medal.team_id] = { gold: 0, silver: 0, bronze: 0, total: 0 };
     }
-
-    if (medal.medal_type === 'gold') acc[medal.team_id].gold += 1;
-    if (medal.medal_type === 'silver') acc[medal.team_id].silver += 1;
-    if (medal.medal_type === 'bronze') acc[medal.team_id].bronze += 1;
-
-    acc[medal.team_id].total =
-      acc[medal.team_id].gold + acc[medal.team_id].silver + acc[medal.team_id].bronze;
-
+    acc[medal.team_id].gold += medal.gold || 0;
+    acc[medal.team_id].silver += medal.silver || 0;
+    acc[medal.team_id].bronze += medal.bronze || 0;
+    acc[medal.team_id].total = acc[medal.team_id].gold + acc[medal.team_id].silver + acc[medal.team_id].bronze;
     return acc;
   }, {} as Record<string, MedalCounts>);
 
