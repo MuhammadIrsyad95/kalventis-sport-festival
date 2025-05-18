@@ -37,18 +37,18 @@ export default function Header() {
           </Link>
         </div>
         <div className="hidden md:flex items-center space-x-6">
-          <Link href="/" className="font-medium hover:text-gray-300 transition-colors text-white">
-            Home
-          </Link>
-          <Link href="/sports" className="font-medium hover:text-gray-300 transition-colors text-white">
-            Cabang Olahraga
-          </Link>
-          <Link href="/rules" className="font-medium hover:text-gray-300 transition-colors text-white">
-            Rules
-          </Link>
-          <Link href="/about" className="font-medium hover:text-gray-300 transition-colors text-white">
-            Tentang
-          </Link>
+          <a href="#matches-section" className="font-medium hover:text-gray-300 transition-colors text-white">
+            Matches
+          </a>
+          <a href="#medals-section" className="font-medium hover:text-gray-300 transition-colors text-white">
+            Medals
+          </a>
+          <a href="#sports-section" className="font-medium hover:text-gray-300 transition-colors text-white">
+            Sports
+          </a>
+          <a href="#about-section" className="font-medium hover:text-gray-300 transition-colors text-white">
+            About
+          </a>
         </div>
         {/* Mobile hamburger (hidden, now in bar above) */}
       </nav>
@@ -67,18 +67,18 @@ export default function Header() {
               <span className="text-2xl font-bold text-white">Kalventis Sport Festival</span>
             </div>
             <nav className="flex-1 px-2 py-4 space-y-1">
-              <Link href="/" className="block px-4 py-3 text-white font-medium rounded hover:bg-gray-800" onClick={() => setMobileMenuOpen(false)}>
-                Home
-              </Link>
-              <Link href="/sports" className="block px-4 py-3 text-white font-medium rounded hover:bg-gray-800" onClick={() => setMobileMenuOpen(false)}>
-                Cabang Olahraga
-              </Link>
-              <Link href="/rules" className="block px-4 py-3 text-white font-medium rounded hover:bg-gray-800" onClick={() => setMobileMenuOpen(false)}>
-                Rules
-              </Link>
-              <Link href="/about" className="block px-4 py-3 text-white font-medium rounded hover:bg-gray-800" onClick={() => setMobileMenuOpen(false)}>
-                Tentang
-              </Link>
+              <a href="#matches-section" className="block px-4 py-3 text-white font-medium rounded hover:bg-gray-800" onClick={() => setMobileMenuOpen(false)}>
+                Matches
+              </a>
+              <a href="#medals-section" className="block px-4 py-3 text-white font-medium rounded hover:bg-gray-800" onClick={() => setMobileMenuOpen(false)}>
+                Medals
+              </a>
+              <a href="#sports-section" className="block px-4 py-3 text-white font-medium rounded hover:bg-gray-800" onClick={() => setMobileMenuOpen(false)}>
+                Sports
+              </a>
+              <a href="#about-section" className="block px-4 py-3 text-white font-medium rounded hover:bg-gray-800" onClick={() => setMobileMenuOpen(false)}>
+                About
+              </a>
             </nav>
           </div>
           {/* Overlay click to close */}

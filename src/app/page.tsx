@@ -152,7 +152,7 @@ export default function Home() {
         </motion.section>
 
         {/* Matches Section */}
-        <section className="mb-12">
+        <section id="matches-section" className="mb-12">
           <h2 className="text-2xl font-bold text-white mb-6">Matches</h2>
           <div className="space-y-8">
             {matchesLalu.length === 0 && matchesSekarang.length === 0 && matchesAkanDatang.length === 0 ? (
@@ -160,7 +160,7 @@ export default function Home() {
             ) : (
               <>
                 <div>
-                  <h3 className="text-lg font-semibold text-blue-300 mb-2">Yang Lalu</h3>
+                  <h3 className="text-lg font-semibold text-blue-300 mb-2">Past</h3>
                   {matchesLalu.length > 0 ? (
                     <div className="relative">
                       <Slider {...getSliderSettings(matchesLalu.length)}>
@@ -176,7 +176,7 @@ export default function Home() {
                   )}
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-green-300 mb-2">Sedang Berlangsung</h3>
+                  <h3 className="text-lg font-semibold text-green-300 mb-2">Ongoing</h3>
                   {matchesSekarang.length > 0 ? (
                     <div className="relative">
                       <Slider {...getSliderSettings(matchesSekarang.length)}>
@@ -192,7 +192,7 @@ export default function Home() {
                   )}
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-yellow-300 mb-2">Akan Datang</h3>
+                  <h3 className="text-lg font-semibold text-yellow-300 mb-2">Upcoming</h3>
                   {matchesAkanDatang.length > 0 ? (
                     <div className="relative">
                       <Slider {...getSliderSettings(matchesAkanDatang.length)}>
@@ -213,13 +213,13 @@ export default function Home() {
         </section>
 
         {/* Medal Tally Section */}
-        <section className="mb-12">
+        <section id="medals-section" className="mb-12">
           <h2 className="text-2xl font-bold text-white mb-6">Medal Tally</h2>
           <MedalTally medals={medalTally} />
         </section>
 
         {/* Sports Section */}
-        <section>
+        <section id="sports-section">
           <h2 className="text-2xl font-bold text-white mb-6">Sports</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {sports.map((sport) => (
@@ -237,7 +237,7 @@ export default function Home() {
       </div>
 
       {/* Info Section at the bottom */}
-      <section className="w-full bg-gray-900 border-t border-gray-800 py-6 mt-8">
+      <section id="about-section" className="w-full bg-gray-900 border-t border-gray-800 py-6 mt-8">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="flex-1 text-left md:pr-8">
             <h2 className="text-base md:text-lg font-semibold text-white mb-2">About Kalventis Sport Festival</h2>
