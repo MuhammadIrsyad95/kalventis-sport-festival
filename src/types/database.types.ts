@@ -32,6 +32,7 @@ export interface Sport {
   id: string;
   name: string;
   created_at: string;
+  imageurl?: string;
 }
 
 export interface Team {

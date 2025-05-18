@@ -10,6 +10,7 @@ interface Sport {
   id: string;
   name: string;
   created_at: string;
+  imageurl?: string;
 }
 
 type FormMode = 'create' | 'edit';
@@ -128,6 +129,7 @@ export default function SportsPage() {
         <table className="min-w-full divide-y divide-gray-700">
           <thead className="bg-gray-700">
             <tr>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Image</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Name</th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
             </tr>
@@ -142,6 +144,13 @@ export default function SportsPage() {
             ) : (
               sports.map((sport) => (
                 <tr key={sport.id} className="hover:bg-gray-700">
+                  <td className="px-4 py-4 whitespace-nowrap">
+                    {sport.imageurl ? (
+                      <img src={sport.imageurl} alt={sport.name} className="w-10 h-10 object-cover rounded border" />
+                    ) : (
+                      <span className="text-gray-500">-</span>
+                    )}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-white">{sport.name}</div>
                   </td>
