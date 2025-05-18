@@ -1,3 +1,5 @@
+![License: Proprietary](https://img.shields.io/badge/license-proprietary-red)
+
 # 🏅 Kalventis Sport Festival
 
 **Kalventis Sport Festival** is a modern web application for managing and showcasing sports events. Built with Next.js, Supabase, and Tailwind CSS, it provides a smooth, scalable, and responsive experience for event organizers and attendees.
