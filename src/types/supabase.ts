@@ -66,16 +66,19 @@ export interface Database {
           id: string
           name: string
           description: string | null
+          imageurl: string | null
         }
         Insert: {
           id?: string
           name: string
           description?: string | null
+          imageurl?: string | null
         }
         Update: {
           id?: string
           name?: string
           description?: string | null
+          imageurl?: string | null
         }
       }
       teams: {

@@ -12,6 +12,8 @@ import type { Medal } from '@/types/database.types'
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
+import SportCard from '@/components/SportCard';
+import Link from 'next/link';
 
 type Match = Database['public']['Tables']['matches']['Row']
 type Sport = Database['public']['Tables']['sports']['Row']
@@ -219,7 +221,18 @@ export default function Home() {
         {/* Sports Section */}
         <section>
           <h2 className="text-2xl font-bold text-white mb-6">Sports</h2>
-          <SportsList sports={sports} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {sports.map((sport) => (
+              <Link key={sport.id} href={`/sports/${sport.id}`} className="block group">
+                <SportCard sport={sport} />
+              </Link>
+            ))}
+            {sports.length === 0 && (
+              <p className="text-gray-400 col-span-full text-center py-8">
+                No sports available
+              </p>
+            )}
+          </div>
         </section>
       </div>
 
