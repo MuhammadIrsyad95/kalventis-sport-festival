@@ -6,8 +6,6 @@ import MatchCard from "@/components/MatchCard";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
-import KnockoutBracket from '@/components/KnockoutBracket';
-import { getKnockoutData } from '@/lib/supabase-helpers';
 
 // Custom Arrow dan getSliderSettings dari home
 function Arrow(props: any) {
@@ -88,23 +86,6 @@ export default function SportDetailPage() {
       setLoading(false);
     }
     if (sportId) fetchAll();
-  }, [sportId]);
-
-  // Fetch knockout data
-  useEffect(() => {
-    async function fetchKnockout() {
-      setLoadingKnockout(true);
-      try {
-        const { matches, teams } = await getKnockoutData(sportId);
-        setKnockoutMatches(matches);
-        setKnockoutTeams(teams);
-      } catch (e) {
-        setKnockoutMatches([]);
-        setKnockoutTeams([]);
-      }
-      setLoadingKnockout(false);
-    }
-    if (sportId) fetchKnockout();
   }, [sportId]);
 
   if (loading) {
