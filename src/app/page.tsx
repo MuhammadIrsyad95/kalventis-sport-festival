@@ -17,6 +17,7 @@ import Link from 'next/link';
 
 type Match = Database['public']['Tables']['matches']['Row']
 type Sport = Database['public']['Tables']['sports']['Row']
+type Team = Database['public']['Tables']['teams']['Row']
 
 // Custom Arrow
 function Arrow(props: any) {
@@ -75,12 +76,13 @@ export default function Home() {
   const [matches, setMatches] = useState<Match[]>([])
   const [medalTally, setMedalTally] = useState<Medal[]>([])
   const [sports, setSports] = useState<Sport[]>([])
+  const [teams, setTeams] = useState<Team[]>([])
   const [filter, setFilter] = useState<'all' | 'ongoing' | 'upcoming' | 'past'>('all');
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const [matchesRes, medalsRes, sportsRes] = await Promise.all([
+        const [matchesRes, medalsRes, sportsRes, teamsRes] = await Promise.all([
           supabase
             .from('matches')
             .select('*')
@@ -90,16 +92,21 @@ export default function Home() {
             .select('*'),
           supabase
             .from('sports')
+            .select('*'),
+          supabase
+            .from('teams')
             .select('*')
         ])
 
         if (matchesRes.error) throw new Error(matchesRes.error.message)
         if (medalsRes.error) throw new Error(medalsRes.error.message)
         if (sportsRes.error) throw new Error(sportsRes.error.message)
+        if (teamsRes.error) throw new Error(teamsRes.error.message)
 
         setMatches(matchesRes.data || [])
         setMedalTally(medalsRes.data || [])
         setSports(sportsRes.data || [])
+        setTeams(teamsRes.data || [])
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred')
       } finally {
@@ -149,10 +156,10 @@ export default function Home() {
               Kalventis Sport Festival
             </h1>
             <p className="text-gray-700 text-lg mb-8 max-w-xl">
-              Real-time scores, live matches, and medal tally for the most exciting sports tournament of the year. Stay updated and support your favorite teams!
+              Skor real-time, pertandingan langsung, dan rekap medali untuk turnamen olahraga paling menarik tahun ini. Tetap terupdate dan dukung tim favorit Anda!
             </p>
             <Link href="/sports">
-              <button className="btn btn-primary text-lg px-8 py-4 rounded-2xl shadow-xl">View Sports List</button>
+              <button className="btn btn-primary text-lg px-8 py-4 rounded-2xl shadow-xl">Lihat Daftar Olahraga</button>
             </Link>
           </div>
           <div className="flex-1 flex justify-center">
@@ -167,21 +174,21 @@ export default function Home() {
             <Link href="#sports-section" className="block">
               <div className="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center border border-gray-100 hover:shadow-2xl transition cursor-pointer">
                 <span className="text-4xl font-extrabold text-indigo-700 mb-2">{sports.length}</span>
-                <span className="text-lg font-semibold text-gray-700">Sports</span>
+                <span className="text-lg font-semibold text-gray-700">Olahraga</span>
               </div>
             </Link>
             {/* Medal Data Entries Card */}
             <Link href="#medals-section" className="block">
               <div className="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center border border-gray-100 hover:shadow-2xl transition cursor-pointer">
-                <span className="text-4xl font-extrabold text-indigo-700 mb-2">{medalTally.length}</span>
-                <span className="text-lg font-semibold text-gray-700">Medal Data Entries</span>
+                <span className="text-4xl font-extrabold text-indigo-700 mb-2">{teams.length}</span>
+                <span className="text-lg font-semibold text-gray-700">Total Tim</span>
               </div>
             </Link>
             {/* Total Matches Card */}
             <Link href="#matches-section" className="block">
               <div className="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center border border-gray-100 hover:shadow-2xl transition cursor-pointer">
                 <span className="text-4xl font-extrabold text-indigo-700 mb-2">{matches.length}</span>
-                <span className="text-lg font-semibold text-gray-700">Total Matches</span>
+                <span className="text-lg font-semibold text-gray-700">Total Pertandingan</span>
               </div>
             </Link>
           </div>
@@ -189,7 +196,7 @@ export default function Home() {
 
         {/* Matches Section */}
         <section id="matches-section" className="mb-12">
-          <h2 className="text-2xl font-bold text-indigo-700 mb-6">Matches</h2>
+          <h2 className="text-2xl font-bold text-indigo-700 mb-6">Pertandingan</h2>
 
           {/* Filter Buttons */}
           <div className="flex space-x-4 mb-8 overflow-x-auto">
@@ -197,25 +204,25 @@ export default function Home() {
               className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'all' ? 'border-indigo-600 text-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
               onClick={() => setFilter('all')}
             >
-              All Matches
+              Semua Pertandingan
             </button>
             <button
               className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'ongoing' ? 'border-indigo-600 text-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
               onClick={() => setFilter('ongoing')}
             >
-              Ongoing
+              Sedang Berlangsung
             </button>
             <button
               className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'upcoming' ? 'border-indigo-600 text-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
               onClick={() => setFilter('upcoming')}
             >
-              Upcoming
+              Akan Datang
             </button>
             <button
               className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'past' ? 'border-indigo-600 text-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
               onClick={() => setFilter('past')}
             >
-              Past
+              Selesai
             </button>
           </div>
 
@@ -224,7 +231,7 @@ export default function Home() {
             {/* Ongoing Matches */}
             {(filter === 'all' || filter === 'ongoing') && (
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Ongoing</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Sedang Berlangsung</h3>
                 {matchesSekarang.length > 0 ? (
                   <div className="relative">
                     <Slider {...getSliderSettings(matchesSekarang.length)}>
@@ -237,9 +244,9 @@ export default function Home() {
                   </div>
                 ) : (
                   filter === 'all' ? (
-                    <div className="text-gray-500 px-4 py-8 text-center">No ongoing matches at the moment.</div>
+                    <div className="text-gray-500 px-4 py-8 text-center">Tidak ada pertandingan yang sedang berlangsung saat ini.</div>
                   ) : (
-                    <div className="text-gray-500 px-4 py-8 text-center">No Ongoing matches available.</div>
+                    <div className="text-gray-500 px-4 py-8 text-center">Tidak ada pertandingan Sedang Berlangsung yang tersedia.</div>
                   )
                 )}
               </div>
@@ -248,7 +255,7 @@ export default function Home() {
             {/* Upcoming Matches */}
             {(filter === 'all' || filter === 'upcoming') && (
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Upcoming</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Akan Datang</h3>
                 {matchesAkanDatang.length > 0 ? (
                   <div className="relative">
                     <Slider {...getSliderSettings(matchesAkanDatang.length)}>
@@ -261,9 +268,9 @@ export default function Home() {
                   </div>
                 ) : (
                   filter === 'all' ? (
-                    <div className="text-gray-500 px-4 py-8 text-center">No upcoming matches.</div>
+                    <div className="text-gray-500 px-4 py-8 text-center">Tidak ada pertandingan akan datang.</div>
                   ) : (
-                    <div className="text-gray-500 px-4 py-8 text-center">No Upcoming matches available.</div>
+                    <div className="text-gray-500 px-4 py-8 text-center">Tidak ada pertandingan Akan Datang yang tersedia.</div>
                   )
                 )}
               </div>
@@ -272,7 +279,7 @@ export default function Home() {
             {/* Past Matches */}
             {(filter === 'all' || filter === 'past') && (
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Past</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Selesai</h3>
                 {matchesLalu.length > 0 ? (
                   <div className="relative">
                     <Slider {...getSliderSettings(matchesLalu.length)}>
@@ -285,9 +292,9 @@ export default function Home() {
                   </div>
                 ) : (
                   filter === 'all' ? (
-                    <div className="text-gray-500 px-4 py-8 text-center">No past matches found.</div>
+                    <div className="text-gray-500 px-4 py-8 text-center">Tidak ada pertandingan selesai ditemukan.</div>
                   ) : (
-                    <div className="text-gray-500 px-4 py-8 text-center">No Past matches available.</div>
+                    <div className="text-gray-500 px-4 py-8 text-center">Tidak ada pertandingan Selesai yang tersedia.</div>
                   )
                 )}
               </div>
@@ -298,25 +305,25 @@ export default function Home() {
              ((filter === 'ongoing' && matchesSekarang.length === 0) ||
               (filter === 'upcoming' && matchesAkanDatang.length === 0) ||
               (filter === 'past' && matchesLalu.length === 0)) && (
-               <div className="text-gray-500 px-4 py-8 text-center text-lg">No matches available for this category.</div>
+               <div className="text-gray-500 px-4 py-8 text-center text-lg">Tidak ada pertandingan tersedia untuk kategori ini.</div>
             )}
 
              {/* Pesan jika tidak ada pertandingan sama sekali dan filter 'all' aktif */}
             {filter === 'all' && matchesLalu.length === 0 && matchesSekarang.length === 0 && matchesAkanDatang.length === 0 && (
-               <div className="text-gray-500 px-4 py-8 text-center text-lg">No matches available.</div>
+               <div className="text-gray-500 px-4 py-8 text-center text-lg">Tidak ada pertandingan tersedia.</div>
             )}
           </div>
         </section>
 
         {/* Medal Tally Section */}
         <section id="medals-section" className="mb-12">
-          <h2 className="text-2xl font-bold text-indigo-700 mb-6">Medal Tally</h2>
+          <h2 className="text-2xl font-bold text-indigo-700 mb-6">Rekap Medali</h2>
           <MedalTally medals={medalTally} />
         </section>
 
         {/* Sports Section */}
         <section id="sports-section">
-          <h2 className="text-2xl font-bold text-indigo-700 mb-6">Sports</h2>
+          <h2 className="text-2xl font-bold text-indigo-700 mb-6">Olahraga</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {sports.map((sport) => (
               <Link key={sport.id} href={`/sports/${sport.id}`} className="block group">
@@ -325,7 +332,7 @@ export default function Home() {
             ))}
             {sports.length === 0 && (
               <p className="text-gray-500 col-span-full text-center py-8">
-                No sports available
+                Tidak ada olahraga tersedia
               </p>
             )}
           </div>
@@ -338,9 +345,9 @@ export default function Home() {
 
           {/* Alamat */}
           <div>
-            <h3 className="text-base md:text-lg font-semibold text-indigo-700 mb-2">Get in touch</h3>
-            <p className="mb-4 text-gray-700">Reach out to us for inquiries or information about the festival.</p>
-            <h4 className="font-semibold text-gray-900 mb-2">Address</h4>
+            <h3 className="text-base md:text-lg font-semibold text-indigo-700 mb-2">Hubungi Kami</h3>
+            <p className="mb-4 text-gray-700">Hubungi kami untuk pertanyaan atau informasi mengenai festival.</p>
+            <h4 className="font-semibold text-gray-900 mb-2">Alamat</h4>
             <p>
               PT Kalventis Sinergi Farma<br/>
               Jl. Jend. Ahmad Yani No. 2<br/>
@@ -352,7 +359,7 @@ export default function Home() {
 
           {/* Kontak & Peta */}
           <div>
-            <h3 className="text-base md:text-lg font-semibold text-indigo-700 mb-4">Contact Us</h3>
+            <h3 className="text-base md:text-lg font-semibold text-indigo-700 mb-4">Kontak Kami</h3>
             <p className="mb-4 text-gray-900 font-semibold">(021) 5089 5000</p>
             <a href="https://kalve.id/kalventismap" target="_blank" rel="noopener noreferrer" className="underline hover:text-indigo-700 transition flex items-center gap-1">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-map-pin"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -362,7 +369,7 @@ export default function Home() {
 
           {/* Follow Us */}
           <div>
-            <h3 className="text-base md:text-lg font-semibold text-indigo-700 mb-4">Follow us</h3>
+            <h3 className="text-base md:text-lg font-semibold text-indigo-700 mb-4">Ikuti Kami</h3>
             <div className="flex flex-col space-y-2">
               <a href="https://instagram.com/kalventis" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-700 transition flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-instagram"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
