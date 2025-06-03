@@ -333,19 +333,52 @@ export default function Home() {
       </div>
 
       {/* Info Section at the bottom */}
-      <section id="about-section" className="w-full bg-indigo-50 border-t border-gray-200 py-6 mt-8">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div className="flex-1 text-left md:pr-8">
-            <h2 className="text-base md:text-lg font-semibold text-indigo-700 mb-2">About Kalventis Sport Festival</h2>
-            <p className="text-gray-700 text-sm md:text-base mb-0 leading-relaxed">
-              Kalventis Sport Festival is an annual sports event organized by Kalventis, bringing together teams and companies to compete in a spirit of sportsmanship, unity, and excellence.
+      <section id="contact-section" className="w-full bg-indigo-50 border-t border-gray-200 py-12 mt-8">
+        <div className="max-w-screen-xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-gray-700 text-sm">
+
+          {/* Alamat */}
+          <div>
+            <h3 className="text-base md:text-lg font-semibold text-indigo-700 mb-2">Get in touch</h3>
+            <p className="mb-4 text-gray-700">Reach out to us for inquiries or information about the festival.</p>
+            <h4 className="font-semibold text-gray-900 mb-2">Address</h4>
+            <p>
+              PT Kalventis Sinergi Farma<br/>
+              Jl. Jend. Ahmad Yani No. 2<br/>
+              Kayu Putih, Pulogadung<br/>
+              Jakarta Timur 13210 - Indonesia
             </p>
+         
           </div>
-          <div className="flex-1 flex flex-row gap-2 md:flex-col md:items-end items-start">
-            <a href="/sports" className="underline hover:text-indigo-700 text-sm transition">Sports</a>
-            <a href="/rules" className="underline hover:text-indigo-700 text-sm transition">Rules</a>
-            <a href="/about" className="underline hover:text-indigo-700 text-sm transition">About</a>
+
+          {/* Kontak & Peta */}
+          <div>
+            <h3 className="text-base md:text-lg font-semibold text-indigo-700 mb-4">Contact Us</h3>
+            <p className="mb-4 text-gray-900 font-semibold">(021) 5089 5000</p>
+            <a href="https://kalve.id/kalventismap" target="_blank" rel="noopener noreferrer" className="underline hover:text-indigo-700 transition flex items-center gap-1">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-map-pin"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              View on map
+            </a>
           </div>
+
+          {/* Follow Us */}
+          <div>
+            <h3 className="text-base md:text-lg font-semibold text-indigo-700 mb-4">Follow us</h3>
+            <div className="flex flex-col space-y-2">
+              <a href="https://instagram.com/kalventis" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-700 transition flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-instagram"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                Instagram
+              </a>
+              <a href="https://www.youtube.com/@kalventis" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-700 transition flex items-center gap-1">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-youtube"><path d="M2.5 17a2.49 2.49 0 0 1-2-2.49V9a2.49 2.49 0 0 1 2-2.49C4.64 6 10 6 12 6s7.36 0 9.5 2.02A2.5 2.5 0 0 1 24 9v5.51a2.5 2.5 0 0 1-2.5 2.49C19.36 17 14 17 12 17s-7.36 0-9.5-2.02Z"/><path d="m10 15 5-3-5-3v6Z"/></svg>
+                Youtube
+              </a>
+              <a href="https://www.linkedin.com/company/kalventis/posts/?feedView=all" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-700 transition flex items-center gap-1">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2c-1 0-2 1-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                LinkedIn
+              </a>
+            </div>
+          </div>
+
         </div>
       </section>
     </main>
