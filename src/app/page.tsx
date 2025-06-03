@@ -168,31 +168,7 @@ export default function Home() {
         </motion.section>
 
         {/* Highlight Statistics */}
-        <section className="mb-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Sports Count Card */}
-            <Link href="#sports-section" className="block">
-              <div className="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center border border-gray-100 hover:shadow-2xl transition cursor-pointer">
-                <span className="text-4xl font-extrabold text-indigo-700 mb-2">{sports.length}</span>
-                <span className="text-lg font-semibold text-gray-700">Olahraga</span>
-              </div>
-            </Link>
-            {/* Medal Data Entries Card */}
-            <Link href="#medals-section" className="block">
-              <div className="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center border border-gray-100 hover:shadow-2xl transition cursor-pointer">
-                <span className="text-4xl font-extrabold text-indigo-700 mb-2">{teams.length}</span>
-                <span className="text-lg font-semibold text-gray-700">Total Tim</span>
-              </div>
-            </Link>
-            {/* Total Matches Card */}
-            <Link href="#matches-section" className="block">
-              <div className="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center border border-gray-100 hover:shadow-2xl transition cursor-pointer">
-                <span className="text-4xl font-extrabold text-indigo-700 mb-2">{matches.length}</span>
-                <span className="text-lg font-semibold text-gray-700">Total Pertandingan</span>
-              </div>
-            </Link>
-          </div>
-        </section>
+      
 
         {/* Matches Section */}
         <section id="matches-section" className="mb-12">
@@ -200,12 +176,7 @@ export default function Home() {
 
           {/* Filter Buttons */}
           <div className="flex space-x-4 mb-8 overflow-x-auto">
-            <button
-              className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'all' ? 'border-indigo-600 text-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
-              onClick={() => setFilter('all')}
-            >
-              Semua Pertandingan
-            </button>
+           
             <button
               className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'ongoing' ? 'border-indigo-600 text-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
               onClick={() => setFilter('ongoing')}
@@ -231,7 +202,7 @@ export default function Home() {
             {/* Ongoing Matches */}
             {(filter === 'all' || filter === 'ongoing') && (
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Sedang Berlangsung</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2"></h3>
                 {matchesSekarang.length > 0 ? (
                   <div className="relative">
                     <Slider {...getSliderSettings(matchesSekarang.length)}>
@@ -255,7 +226,7 @@ export default function Home() {
             {/* Upcoming Matches */}
             {(filter === 'all' || filter === 'upcoming') && (
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Akan Datang</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2"></h3>
                 {matchesAkanDatang.length > 0 ? (
                   <div className="relative">
                     <Slider {...getSliderSettings(matchesAkanDatang.length)}>
@@ -279,7 +250,7 @@ export default function Home() {
             {/* Past Matches */}
             {(filter === 'all' || filter === 'past') && (
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Selesai</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2"></h3>
                 {matchesLalu.length > 0 ? (
                   <div className="relative">
                     <Slider {...getSliderSettings(matchesLalu.length)}>
@@ -317,7 +288,7 @@ export default function Home() {
 
         {/* Medal Tally Section */}
         <section id="medals-section" className="mb-12">
-          <h2 className="text-2xl font-bold text-indigo-700 mb-6">Rekap Medali</h2>
+          <h2 className="text-2xl font-bold text-indigo-700 mb-6">Perolehan Medali Sementara</h2>
           <MedalTally medals={medalTally} />
         </section>
 

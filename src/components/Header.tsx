@@ -33,8 +33,7 @@ export default function Header() {
         {/* Desktop menu */}
         <div className="hidden md:flex items-center mb-2 md:mb-0">
           <Link href="/" className="text-2xl font-bold text-indigo-700">
-            Kalventis Sport Festival
-          </Link>
+KSF 2025          </Link>
         </div>
         <div className="hidden md:flex items-center space-x-8">
           <a href="#matches-section" className="nav-link text-gray-900">

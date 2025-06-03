@@ -78,8 +78,7 @@ export default function MedalTally({ medals }: MedalTallyProps) {
           <thead>
             <tr className="bg-indigo-200">
               <th className="py-4 px-4 text-left text-base font-bold text-indigo-700">Rank</th>
-              <th className="py-4 px-4 text-left text-base font-bold text-indigo-700">Team Name</th>
-              <th className="py-4 px-4 text-left text-base font-bold text-indigo-700">Company</th>
+              <th className="py-4 px-4 text-left text-base font-bold text-indigo-700">Group</th>
               <th className="py-4 px-4 text-center text-base font-bold text-indigo-700">🥇</th>
               <th className="py-4 px-4 text-center text-base font-bold text-indigo-700">🥈</th>
               <th className="py-4 px-4 text-center text-base font-bold text-indigo-700">🥉</th>
@@ -99,9 +98,7 @@ export default function MedalTally({ medals }: MedalTallyProps) {
                 <td className="py-4 px-4 text-gray-900 font-bold">
                   {teams[teamId]?.name || 'Loading...'}
                 </td>
-                <td className="py-4 px-4 text-gray-700 font-semibold">
-                  {teams[teamId]?.company || 'Loading...'}
-                </td>
+              
                 <td className="py-4 px-4 text-center text-yellow-500 font-bold">{counts.gold}</td>
                 <td className="py-4 px-4 text-center text-gray-500 font-bold">{counts.silver}</td>
                 <td className="py-4 px-4 text-center text-orange-500 font-bold">{counts.bronze}</td>
