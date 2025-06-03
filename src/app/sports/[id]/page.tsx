@@ -6,6 +6,8 @@ import MatchCard from "@/components/MatchCard";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
+import KnockoutBracket from '@/components/KnockoutBracket';
+import { getKnockoutData } from '@/lib/supabase-helpers';
 
 // Custom Arrow dan getSliderSettings dari home
 function Arrow(props: any) {
@@ -66,6 +68,12 @@ export default function SportDetailPage() {
   const [rules, setRules] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [zoomed, setZoomed] = useState(false);
+  const [filter, setFilter] = useState<'all' | 'ongoing' | 'upcoming' | 'past'>('all');
+
+  // State untuk knockout
+  const [knockoutMatches, setKnockoutMatches] = useState<any[]>([]);
+  const [knockoutTeams, setKnockoutTeams] = useState<any[]>([]);
+  const [loadingKnockout, setLoadingKnockout] = useState(true);
 
   useEffect(() => {
     async function fetchAll() {
@@ -82,11 +90,28 @@ export default function SportDetailPage() {
     if (sportId) fetchAll();
   }, [sportId]);
 
+  // Fetch knockout data
+  useEffect(() => {
+    async function fetchKnockout() {
+      setLoadingKnockout(true);
+      try {
+        const { matches, teams } = await getKnockoutData(sportId);
+        setKnockoutMatches(matches);
+        setKnockoutTeams(teams);
+      } catch (e) {
+        setKnockoutMatches([]);
+        setKnockoutTeams([]);
+      }
+      setLoadingKnockout(false);
+    }
+    if (sportId) fetchKnockout();
+  }, [sportId]);
+
   if (loading) {
-    return <div className="p-8 text-white">Loading...</div>;
+    return <div className="p-8 text-gray-900">Loading...</div>;
   }
   if (!sport) {
-    return <div className="p-8 text-white">Olahraga tidak ditemukan.</div>;
+    return <div className="p-8 text-gray-900">Sport not found.</div>;
   }
 
   // Kategorisasi match berdasarkan waktu (seperti di home)
@@ -97,7 +122,7 @@ export default function SportDetailPage() {
 
   return (
     <main className="max-w-4xl mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold text-white mb-4 text-center">{sport.name}</h1>
+      <h1 className="text-3xl font-bold text-indigo-700 mb-4 text-center">{sport.name}</h1>
       {sport.imageurl && (
         <>
           <img
@@ -122,68 +147,131 @@ export default function SportDetailPage() {
         </>
       )}
       <section className="mb-8">
-        <h2 className="text-2xl font-bold text-white mb-4">Jadwal Pertandingan</h2>
-        {matchesLalu.length === 0 && matchesSekarang.length === 0 && matchesAkanDatang.length === 0 ? (
-          <div className="text-gray-400">Belum ada jadwal pertandingan untuk olahraga ini.</div>
+        <h2 className="text-2xl font-bold text-indigo-700 mb-4">Match Schedule</h2>
+
+        {/* Filter Buttons */}
+        <div className="flex space-x-4 mb-8 overflow-x-auto">
+          <button
+            className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'all' ? 'border-indigo-600 text-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
+            onClick={() => setFilter('all')}
+          >
+            All Matches
+          </button>
+          <button
+            className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'ongoing' ? 'border-indigo-600 text-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
+            onClick={() => setFilter('ongoing')}
+          >
+            Ongoing
+          </button>
+          <button
+            className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'upcoming' ? 'border-indigo-600 text-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
+            onClick={() => setFilter('upcoming')}
+          >
+            Upcoming
+          </button>
+          <button
+            className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'past' ? 'border-indigo-600 text-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
+            onClick={() => setFilter('past')}
+          >
+            Past
+          </button>
+        </div>
+
+        {matchesLalu.length === 0 && matchesSekarang.length === 0 && matchesAkanDatang.length === 0 && filter === 'all' ? (
+          <div className="text-gray-500">No match schedule available for this sport.</div>
         ) : (
           <div className="space-y-8">
-            <div>
-              <h3 className="text-lg font-semibold text-blue-300 mb-2">Yang Lalu</h3>
-              {matchesLalu.length > 0 ? (
-                <div className="relative">
-                  <Slider {...getSliderSettings(matchesLalu.length)}>
-                    {matchesLalu.map((match) => (
-                      <div key={match.id} className="px-2">
-                        <MatchCard match={match} />
-                      </div>
-                    ))}
-                  </Slider>
-                </div>
-              ) : (
-                <div className="text-gray-400 px-4 py-8 text-center">Tidak ada pertandingan lalu</div>
-              )}
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-green-300 mb-2">Sedang Berlangsung</h3>
-              {matchesSekarang.length > 0 ? (
-                <div className="relative">
-                  <Slider {...getSliderSettings(matchesSekarang.length)}>
-                    {matchesSekarang.map((match) => (
-                      <div key={match.id} className="px-2">
-                        <MatchCard match={match} />
-                      </div>
-                    ))}
-                  </Slider>
-                </div>
-              ) : (
-                <div className="text-gray-400 px-4 py-8 text-center">Tidak ada pertandingan sekarang</div>
-              )}
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-yellow-300 mb-2">Akan Datang</h3>
-              {matchesAkanDatang.length > 0 ? (
-                <div className="relative">
-                  <Slider {...getSliderSettings(matchesAkanDatang.length)}>
-                    {matchesAkanDatang.map((match) => (
-                      <div key={match.id} className="px-2">
-                        <MatchCard match={match} />
-                      </div>
-                    ))}
-                  </Slider>
-                </div>
-              ) : (
-                <div className="text-gray-400 px-4 py-8 text-center">Tidak ada pertandingan akan datang</div>
-              )}
-            </div>
+            {/* Ongoing Matches */}
+            {(filter === 'all' || filter === 'ongoing') && (
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Ongoing</h3>
+                {matchesSekarang.length > 0 ? (
+                  <div className="relative">
+                    <Slider {...getSliderSettings(matchesSekarang.length)}>
+                      {matchesSekarang.map((match) => (
+                        <div key={match.id} className="px-2">
+                          <MatchCard match={match} />
+                        </div>
+                      ))}
+                    </Slider>
+                  </div>
+                ) : (
+                  filter === 'all' ? (
+                    <div className="text-gray-500 px-4 py-8 text-center">No ongoing matches at the moment.</div>
+                  ) : (
+                    <div className="text-gray-500 px-4 py-8 text-center">No Ongoing matches available.</div>
+                  )
+                )}
+              </div>
+            )}
+
+            {/* Upcoming Matches */}
+            {(filter === 'all' || filter === 'upcoming') && (
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Upcoming</h3>
+                {matchesAkanDatang.length > 0 ? (
+                  <div className="relative">
+                    <Slider {...getSliderSettings(matchesAkanDatang.length)}>
+                      {matchesAkanDatang.map((match) => (
+                        <div key={match.id} className="px-2">
+                          <MatchCard match={match} />
+                        </div>
+                      ))}
+                    </Slider>
+                  </div>
+                ) : (
+                  filter === 'all' ? (
+                    <div className="text-gray-500 px-4 py-8 text-center">No upcoming matches.</div>
+                  ) : (
+                    <div className="text-gray-500 px-4 py-8 text-center">No Upcoming matches available.</div>
+                  )
+                )}
+              </div>
+            )}
+
+            {/* Past Matches */}
+            {(filter === 'all' || filter === 'past') && (
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Past</h3>
+                {matchesLalu.length > 0 ? (
+                  <div className="relative">
+                    <Slider {...getSliderSettings(matchesLalu.length)}>
+                      {matchesLalu.map((match) => (
+                        <div key={match.id} className="px-2">
+                          <MatchCard match={match} />
+                        </div>
+                      ))}
+                    </Slider>
+                  </div>
+                ) : (
+                  filter === 'all' ? (
+                    <div className="text-gray-500 px-4 py-8 text-center">No past matches found.</div>
+                  ) : (
+                    <div className="text-gray-500 px-4 py-8 text-center">No Past matches available.</div>
+                  )
+                )}
+              </div>
+            )}
+
+            {/* Message when no matches available for the selected filter */}
+            {filter !== 'all' && 
+             ((filter === 'ongoing' && matchesSekarang.length === 0) ||
+              (filter === 'upcoming' && matchesAkanDatang.length === 0) ||
+              (filter === 'past' && matchesLalu.length === 0)) && (
+               <div className="text-gray-500 px-4 py-8 text-center text-lg">No matches available for this category.</div>
+            )}
+
           </div>
         )}
       </section>
+      {/* Knockout Bracket Section - REMOVED */}
+      {/* Rules Section */}
       <section>
-        <h2 className="text-2xl font-bold text-white mb-4">Peraturan</h2>
+        <h2 className="text-2xl font-bold text-indigo-700 mb-4">Rules</h2>
         {rules.length === 0 ? (
-          <div className="text-gray-400">Belum ada peraturan untuk olahraga ini.</div>
+          <div className="text-gray-500">No rules available for this sport.</div>
         ) : (
-          <ul className="list-disc pl-6 text-gray-200 space-y-2">
+          <ul className="list-disc pl-6 text-gray-700 space-y-2">
             {rules.map((rule) => (
               <li key={rule.id}>{rule.description || rule.content}</li>
             ))}

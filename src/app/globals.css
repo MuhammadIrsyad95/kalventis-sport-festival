@@ -3,59 +3,32 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
-  }
-}
-
-@layer base {
   html {
-    @apply antialiased;
+    @apply font-sans bg-gradient-to-br from-indigo-100 to-white text-gray-900 antialiased;
   }
-  
   body {
-    @apply bg-gray-900 text-white;
+    @apply bg-transparent text-gray-900;
   }
 }
 
 @layer components {
   .card {
-    @apply bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700;
+    @apply bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200;
   }
-
   .btn {
-    @apply px-4 py-2 rounded-lg transition-colors;
+    @apply px-6 py-3 rounded-xl transition-colors font-semibold shadow-md;
   }
-
   .btn-primary {
     @apply bg-blue-600 hover:bg-blue-700 text-white;
   }
-
   .nav-link {
-    @apply text-gray-300 hover:text-white transition-colors;
+    @apply text-gray-700 hover:text-blue-600 transition-colors font-medium;
   }
-  
   .input {
-    @apply bg-gray-700 text-white border border-gray-600 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none w-full;
+    @apply bg-white border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none w-full text-gray-900;
   }
-  
   .modal {
-    @apply bg-gray-800 border border-gray-700 rounded-lg shadow-lg text-white;
+    @apply bg-white border border-gray-200 rounded-2xl shadow-xl text-gray-900;
   }
 }
 

@@ -12,7 +12,7 @@ interface SportsListProps {
 
 export default function SportsList({ sports }: SportsListProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div className="max-w-screen-xl mx-auto p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
       {sports.map((sport) => (
         <Link key={sport.id} href={`/sports/${sport.id}`} className="block group">
           <SportCard sport={sport} />

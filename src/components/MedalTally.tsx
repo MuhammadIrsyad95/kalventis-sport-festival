@@ -65,25 +65,25 @@ export default function MedalTally({ medals }: MedalTallyProps) {
 
   if (!medals || medals.length === 0) {
     return (
-      <div className="bg-white/10 backdrop-blur-lg rounded-lg p-10 text-center">
+      <div className="bg-white rounded-2xl shadow-xl p-10 text-center border border-gray-100">
         <p className="text-gray-400">No medal data available yet</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white/10 backdrop-blur-lg rounded-lg overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="bg-white/5">
-              <th className="py-3 px-4 text-left text-sm font-semibold text-white">Rank</th>
-              <th className="py-3 px-4 text-left text-sm font-semibold text-white">Team Name</th>
-              <th className="py-3 px-4 text-left text-sm font-semibold text-white">Company</th>
-              <th className="py-3 px-4 text-center text-sm font-semibold text-white">🥇</th>
-              <th className="py-3 px-4 text-center text-sm font-semibold text-white">🥈</th>
-              <th className="py-3 px-4 text-center text-sm font-semibold text-white">🥉</th>
-              <th className="py-3 px-4 text-center text-sm font-semibold text-white">Total</th>
+            <tr className="bg-indigo-200">
+              <th className="py-4 px-4 text-left text-base font-bold text-indigo-700">Rank</th>
+              <th className="py-4 px-4 text-left text-base font-bold text-indigo-700">Team Name</th>
+              <th className="py-4 px-4 text-left text-base font-bold text-indigo-700">Company</th>
+              <th className="py-4 px-4 text-center text-base font-bold text-indigo-700">🥇</th>
+              <th className="py-4 px-4 text-center text-base font-bold text-indigo-700">🥈</th>
+              <th className="py-4 px-4 text-center text-base font-bold text-indigo-700">🥉</th>
+              <th className="py-4 px-4 text-center text-base font-bold text-indigo-700">Total</th>
             </tr>
           </thead>
           <tbody>
@@ -93,19 +93,19 @@ export default function MedalTally({ medals }: MedalTallyProps) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="border-t border-white/5 hover:bg-white/5"
+                className="border-t border-gray-100 hover:bg-indigo-50"
               >
-                <td className="py-3 px-4 text-gray-400">{index + 1}</td>
-                <td className="py-3 px-4 text-white font-medium">
+                <td className="py-4 px-4 text-gray-700 font-semibold">{index + 1}</td>
+                <td className="py-4 px-4 text-gray-900 font-bold">
                   {teams[teamId]?.name || 'Loading...'}
                 </td>
-                <td className="py-3 px-4 text-white font-medium">
+                <td className="py-4 px-4 text-gray-700 font-semibold">
                   {teams[teamId]?.company || 'Loading...'}
                 </td>
-                <td className="py-3 px-4 text-center text-white">{counts.gold}</td>
-                <td className="py-3 px-4 text-center text-white">{counts.silver}</td>
-                <td className="py-3 px-4 text-center text-white">{counts.bronze}</td>
-                <td className="py-3 px-4 text-center text-white font-semibold">
+                <td className="py-4 px-4 text-center text-yellow-500 font-bold">{counts.gold}</td>
+                <td className="py-4 px-4 text-center text-gray-500 font-bold">{counts.silver}</td>
+                <td className="py-4 px-4 text-center text-orange-500 font-bold">{counts.bronze}</td>
+                <td className="py-4 px-4 text-center text-indigo-700 font-extrabold">
                   {counts.total}
                 </td>
               </motion.tr>

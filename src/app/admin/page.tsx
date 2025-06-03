@@ -119,72 +119,20 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6 text-white">Admin Dashboard</h1>
-      
+      <h1 className="text-2xl font-bold mb-8 text-white">Admin Dashboard</h1>
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
-        {statsCards.map((card) => (
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-6">
+        {statsCards.slice(0, 4).map((card) => (
           <Link 
             href={card.href} 
             key={card.name}
-            className={`${card.bgColor} overflow-hidden rounded-lg shadow transition-all hover:shadow-md hover:scale-105`}
+            className="bg-gray-900 rounded-2xl shadow-xl p-8 flex flex-col items-center border border-gray-800 hover:shadow-2xl transition"
           >
-            <div className="px-4 py-5 sm:p-6">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">{card.icon}</div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">{card.name}</dt>
-                    <dd>
-                      <div className={`text-3xl font-bold ${card.textColor}`}>{card.value}</div>
-                    </dd>
-                  </dl>
-                </div>
-              </div>
-            </div>
+            <div className="mb-4">{card.icon}</div>
+            <div className="text-3xl font-extrabold text-indigo-300 mb-1">{card.value}</div>
+            <div className="text-lg font-semibold text-white">{card.name}</div>
           </Link>
         ))}
-      </div>
-      
-      {/* Quick Actions */}
-      <div className="bg-gray-900 overflow-hidden shadow rounded-lg divide-y divide-gray-800">
-        <div className="px-4 py-5 sm:px-6">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white">Quick Actions</h3>
-        </div>
-        <div className="px-4 py-5 sm:p-6">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Link 
-              href="/admin/matches"
-              className="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
-            >
-              Manage Matches
-            </Link>
-            <Link 
-              href="/admin/teams"
-              className="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700"
-            >
-              Manage Teams
-            </Link>
-            <Link 
-              href="/admin/sports"
-              className="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700"
-            >
-              Manage Sports
-            </Link>
-            <Link 
-              href="/admin/medals"
-              className="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-600"
-            >
-              Manage Medals
-            </Link>
-            <Link 
-              href="/admin/rules"
-              className="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700"
-            >
-              Manage Rules
-            </Link>
-          </div>
-        </div>
       </div>
     </div>
   );
