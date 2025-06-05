@@ -1,8 +1,12 @@
 'use client'
+
 import { useState } from 'react'
 import Slider from 'react-slick'
 import MatchCard from '@/components/MatchCard'
 import { Database } from '@/types/supabase'
+
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 
 type Match = Database['public']['Tables']['matches']['Row']
 
@@ -58,6 +62,7 @@ function getSliderSettings(length: number) {
 
 export default function MatchesSection({ matches }: { matches: Match[] }) {
   const [filter, setFilter] = useState<'ongoing' | 'upcoming' | 'past'>('ongoing')
+
   const now = new Date()
   const matchesLalu = matches.filter(m => m.match_time && new Date(m.match_time) < new Date(now.getTime() - 2 * 60 * 60 * 1000))
   const matchesSekarang = matches.filter(m => m.match_time && Math.abs(new Date(m.match_time).getTime() - now.getTime()) <= 2 * 60 * 60 * 1000)
@@ -83,6 +88,7 @@ export default function MatchesSection({ matches }: { matches: Match[] }) {
           </button>
         ))}
       </div>
+
       <div>
         {matchList[filter].length > 0 ? (
           <Slider {...getSliderSettings(matchList[filter].length)}>
