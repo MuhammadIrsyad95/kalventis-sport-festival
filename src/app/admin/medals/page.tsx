@@ -77,25 +77,25 @@ export default function MedalsPage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-white">Medals Management</h1>
+        <h1 className="text-2xl font-bold text-white">Manajemen Medali</h1>
         <button
           onClick={handleAdd}
           className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700"
         >
           <PlusCircle className="mr-2 h-4 w-4" />
-          Add Medal
+          Tambahkan Medali
         </button>
       </div>
       <div className="bg-gray-800 shadow overflow-hidden sm:rounded-lg border border-gray-700">
         <table className="min-w-full divide-y divide-gray-700">
           <thead className="bg-gray-700">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Team</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Sport</th>
-              <th className="px-3 py-3 text-center text-xs font-medium text-yellow-300 uppercase tracking-wider">Gold</th>
-              <th className="px-3 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Silver</th>
-              <th className="px-3 py-3 text-center text-xs font-medium text-orange-400 uppercase tracking-wider">Bronze</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Grup</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Olahraga</th>
+              <th className="px-3 py-3 text-center text-xs font-medium text-yellow-300 uppercase tracking-wider">Emas</th>
+              <th className="px-3 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Perak</th>
+              <th className="px-3 py-3 text-center text-xs font-medium text-orange-400 uppercase tracking-wider">Perunggu</th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Aksi</th>
             </tr>
           </thead>
           <tbody className="bg-gray-800 divide-y divide-gray-700">

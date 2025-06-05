@@ -41,8 +41,7 @@ export default function MatchesPage() {
     try {
       setLoading(true);
       setError(null);
-      
-      console.log('Fetching matches...');
+
       const { data, error } = await supabase
         .from('matches')
         .select(`
@@ -52,18 +51,15 @@ export default function MatchesPage() {
           team2:teams!matches_team2_id_fkey(*)
         `)
         .order('round', { ascending: true });
-      
+
       if (error) {
-        console.error('Error fetching matches:', error);
-        setError(`Error fetching matches: ${error.message}`);
+        setError(`Gagal mengambil data pertandingan: ${error.message}`);
         throw error;
       }
-      
-      console.log('Matches fetched:', data);
+
       setMatches(data || []);
     } catch (error: any) {
-      console.error('Error fetching matches:', error);
-      setError(`Error fetching matches: ${error.message || 'Unknown error'}`);
+      setError(`Gagal mengambil data pertandingan: ${error.message || 'Kesalahan tidak diketahui'}`);
     } finally {
       setLoading(false);
     }
@@ -94,81 +90,67 @@ export default function MatchesPage() {
 
     try {
       setError(null);
-      console.log('Deleting match:', matchToDelete.id);
-      
+
       const { error } = await supabase
         .from('matches')
         .delete()
         .eq('id', matchToDelete.id);
-      
+
       if (error) {
-        console.error('Error deleting match:', error);
-        setError(`Error deleting match: ${error.message}`);
+        setError(`Gagal menghapus pertandingan: ${error.message}`);
         throw error;
       }
-      
-      console.log('Match deleted successfully');
+
       fetchMatches();
       setIsDeleteModalOpen(false);
     } catch (error: any) {
-      console.error('Error deleting match:', error);
-      setError(`Error deleting match: ${error.message || 'Unknown error'}`);
+      setError(`Gagal menghapus pertandingan: ${error.message || 'Kesalahan tidak diketahui'}`);
     }
   };
 
   const handleSubmit = async (data: any) => {
     try {
       setError(null);
-      console.log('Submitting match data:', data);
-      
-      // Make sure all required fields are present
+
       if (!data.team1_id || !data.team2_id || !data.sport_id || !data.round) {
         const missingFields = [];
-        if (!data.team1_id) missingFields.push('Team 1');
-        if (!data.team2_id) missingFields.push('Team 2');
-        if (!data.sport_id) missingFields.push('Sport');
-        if (!data.round) missingFields.push('Round');
-        
-        const errorMsg = `Missing required fields: ${missingFields.join(', ')}`;
-        console.error(errorMsg);
+        if (!data.team1_id) missingFields.push('Tim 1');
+        if (!data.team2_id) missingFields.push('Tim 2');
+        if (!data.sport_id) missingFields.push('Olahraga');
+        if (!data.round) missingFields.push('Babak');
+
+        const errorMsg = `Kolom wajib belum diisi: ${missingFields.join(', ')}`;
         setError(errorMsg);
         return;
       }
-      
+
       if (formMode === 'create') {
-        const { data: result, error } = await supabase
+        const { error } = await supabase
           .from('matches')
           .insert([data])
           .select();
-          
+
         if (error) {
-          console.error('Error inserting match:', error);
-          setError(`Error creating match: ${error.message}`);
+          setError(`Gagal menambahkan pertandingan: ${error.message}`);
           throw error;
         }
-        
-        console.log('Match created successfully:', result);
       } else if (selectedMatch) {
-        const { data: result, error } = await supabase
+        const { error } = await supabase
           .from('matches')
           .update(data)
           .eq('id', selectedMatch.id)
           .select();
-          
+
         if (error) {
-          console.error('Error updating match:', error);
-          setError(`Error updating match: ${error.message}`);
+          setError(`Gagal memperbarui pertandingan: ${error.message}`);
           throw error;
         }
-        
-        console.log('Match updated successfully:', result);
       }
-      
+
       fetchMatches();
       setIsModalOpen(false);
     } catch (error: any) {
-      console.error('Error saving match:', error);
-      setError(`Error saving match: ${error.message || JSON.stringify(error)}`);
+      setError(`Gagal menyimpan pertandingan: ${error.message || JSON.stringify(error)}`);
     }
   };
 
@@ -184,13 +166,13 @@ export default function MatchesPage() {
   return (
     <main className="px-4">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-white">Matches Management</h1>
+        <h1 className="text-2xl font-bold text-white">Manajemen Pertandingan</h1>
         <button
           onClick={handleAdd}
           className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
         >
           <PlusCircle className="mr-2 h-4 w-4" />
-          Add Match
+          Tambah Pertandingan
         </button>
       </div>
 
@@ -204,19 +186,19 @@ export default function MatchesPage() {
         <table className="min-w-full divide-y divide-gray-700">
           <thead className="bg-gray-700">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Teams</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Sport</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Round</th>
-              <th className="px-3 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Score</th>
-              <th className="px-3 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Match Time</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Tim</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Olahraga</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Babak</th>
+              <th className="px-3 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Skor</th>
+              <th className="px-3 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Waktu</th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Aksi</th>
             </tr>
           </thead>
           <tbody className="bg-gray-800 divide-y divide-gray-700">
             {matches.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-6 py-4 text-center text-sm text-gray-400">
-                  No matches available. Add your first match.
+                <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-400">
+                  Belum ada pertandingan. Tambahkan pertandingan pertama Anda.
                 </td>
               </tr>
             ) : (
@@ -224,12 +206,12 @@ export default function MatchesPage() {
                 <tr key={match.id} className="hover:bg-gray-700">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-white">
-                      {match.team1?.name || 'Team 1'} vs {match.team2?.name || 'Team 2'}
+                      {match.team1?.name || 'Tim 1'} vs {match.team2?.name || 'Tim 2'}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-900/50 text-blue-300">
-                      {match.sport?.name || 'Sport'}
+                      {match.sport?.name || 'Olahraga'}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
@@ -241,7 +223,7 @@ export default function MatchesPage() {
                       : '-'}
                   </td>
                   <td className="px-3 py-4 whitespace-nowrap text-center text-sm text-gray-300">
-                    {match.match_time ? new Date(match.match_time).toLocaleString() : '-'}
+                    {match.match_time ? new Date(match.match_time).toLocaleString('id-ID') : '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button
@@ -269,7 +251,7 @@ export default function MatchesPage() {
         <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          title={`${formMode === 'create' ? 'Add' : 'Edit'} Match`}
+          title={`${formMode === 'create' ? 'Tambah' : 'Edit'} Pertandingan`}
         >
           <MatchForm
             match={selectedMatch}
@@ -284,11 +266,11 @@ export default function MatchesPage() {
         <Modal
           isOpen={isDeleteModalOpen}
           onClose={() => setIsDeleteModalOpen(false)}
-          title="Confirm Delete"
+          title="Konfirmasi Hapus"
         >
           <div className="mt-2">
             <p className="text-sm text-gray-400">
-              Are you sure you want to delete this match? This action cannot be undone.
+              Apakah Anda yakin ingin menghapus pertandingan ini? Tindakan ini tidak dapat dibatalkan.
             </p>
           </div>
           <div className="mt-4 flex justify-end space-x-3">
@@ -297,18 +279,18 @@ export default function MatchesPage() {
               className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-200 bg-gray-700 border border-gray-600 rounded-md hover:bg-gray-600"
               onClick={() => setIsDeleteModalOpen(false)}
             >
-              Cancel
+              Batal
             </button>
             <button
               type="button"
               className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700"
               onClick={confirmDelete}
             >
-              Delete
+              Hapus
             </button>
           </div>
         </Modal>
       )}
     </main>
   );
-} 
+}

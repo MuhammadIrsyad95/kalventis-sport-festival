@@ -130,13 +130,13 @@ export default function RulesPage() {
     <div className="bg-gray-900 min-h-screen p-6 text-white">
       {/* Header */}
       <div className="flex justify-between items-center mb-6 border-b border-gray-700 pb-2">
-        <h1 className="text-2xl font-bold">Rules Management</h1>
+        <h1 className="text-2xl font-bold">Manajemen Peraturan</h1>
         <button
           onClick={handleAdd}
           className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700"
         >
           <PlusCircle className="mr-2 h-4 w-4" />
-          Add Rule
+          Tambahkan Peraturan
         </button>
       </div>
 

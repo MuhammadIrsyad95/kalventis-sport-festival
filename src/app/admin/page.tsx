@@ -119,7 +119,7 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-8 text-white">Admin Dashboard</h1>
+      <h1 className="text-2xl font-bold mb-8 text-white">Dasbor Admin</h1>
       {/* Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-6">
         {statsCards.slice(0, 4).map((card) => (
