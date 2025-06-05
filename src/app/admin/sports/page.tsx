@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase/client';
 import { PlusCircle, Edit, Trash2 } from 'lucide-react';
 import Modal from '@/components/Modal';
 import SportForm from '@/components/forms/SportForm';
+import { deleteOldImage } from '@/lib/storage';
 
 interface Sport {
   id: string;
@@ -65,43 +66,52 @@ export default function SportsPage() {
     setIsDeleteModalOpen(true);
   };
 
+
+
+const handleSubmit = async (data: Partial<Sport>) => {
+  try {
+    if (formMode === 'create') {
+      const { error } = await supabase.from('sports').insert([data])
+      if (error) throw error
+    } else if (selectedSport) {
+      // Biarkan uploadFile yang menangani penghapusan file lama
+      const { error } = await supabase
+        .from('sports')
+        .update(data)
+        .eq('id', selectedSport.id)
+
+      if (error) throw error
+    }
+
+    fetchSports()
+    setIsModalOpen(false)
+  } catch (error) {
+    console.error('Error saving sport:', error)
+  }
+}
   const confirmDelete = async () => {
-    if (!sportToDelete) return;
+    if (!sportToDelete) return
 
     try {
+      // Hapus gambar dari storage jika ada
+      if (sportToDelete.imageurl) {
+        await deleteOldImage(sportToDelete.imageurl)
+      }
+
       const { error } = await supabase
         .from('sports')
         .delete()
-        .eq('id', sportToDelete.id);
-      
-      if (error) throw error;
-      
-      fetchSports();
-      setIsDeleteModalOpen(false);
-    } catch (error) {
-      console.error('Error deleting sport:', error);
-    }
-  };
+        .eq('id', sportToDelete.id)
 
-  const handleSubmit = async (data: any) => {
-    try {
-      if (formMode === 'create') {
-        const { error } = await supabase.from('sports').insert([data]);
-        if (error) throw error;
-      } else if (selectedSport) {
-        const { error } = await supabase
-          .from('sports')
-          .update(data)
-          .eq('id', selectedSport.id);
-        if (error) throw error;
-      }
-      
-      fetchSports();
-      setIsModalOpen(false);
+      if (error) throw error
+
+      fetchSports()
+      setIsDeleteModalOpen(false)
     } catch (error) {
-      console.error('Error saving sport:', error);
+      console.error('Error deleting sport:', error)
     }
-  };
+  }
+
 
   if (loading) {
     return (
