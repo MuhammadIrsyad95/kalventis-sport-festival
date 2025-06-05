@@ -50,6 +50,8 @@ export default function MatchCard({ match }: MatchCardProps) {
     fetchData()
   }, [match])
 
+  const primaryColor = 'rgb(0, 52, 98)'
+
   const cardContent = (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -57,8 +59,14 @@ export default function MatchCard({ match }: MatchCardProps) {
       className="bg-white rounded-2xl p-6 transition cursor-pointer flex flex-col gap-4"
     >
       <div className="flex justify-between items-center mb-2">
-        <span className="text-base text-indigo-600 font-semibold truncate block max-w-[120px] sm:max-w-none">{sport?.name || 'Loading...'}</span>
+        <span
+          className="text-base font-semibold truncate block max-w-[120px] sm:max-w-none"
+          style={{ color: primaryColor }}
+        >
+          {sport?.name || 'Loading...'}
+        </span>
       </div>
+
       <div className="flex flex-col gap-6">
         <div className="flex justify-between items-center gap-4">
           <div className="flex-1 min-w-0">
@@ -66,9 +74,11 @@ export default function MatchCard({ match }: MatchCardProps) {
             <p className="text-sm text-gray-500 truncate">{team1?.company || ''}</p>
           </div>
           <div className="px-6 flex flex-col items-center">
-            <span className="text-indigo-500 font-bold text-xl">VS</span>
+            <span style={{ color: primaryColor }} className="font-bold text-xl">VS</span>
             {(typeof match.team1_score === 'number' && typeof match.team2_score === 'number') && (
-              <span className="text-2xl font-extrabold text-indigo-700 mt-1">{match.team1_score} : {match.team2_score}</span>
+              <span className="text-2xl font-extrabold mt-1" style={{ color: primaryColor }}>
+                {match.team1_score} : {match.team2_score}
+              </span>
             )}
           </div>
           <div className="flex-1 text-right min-w-0">
@@ -76,13 +86,18 @@ export default function MatchCard({ match }: MatchCardProps) {
             <p className="text-sm text-gray-500 truncate">{team2?.company || ''}</p>
           </div>
         </div>
+
         <div className="border-t border-gray-100 pt-4 flex flex-wrap justify-between text-sm text-gray-500 gap-2">
-          <span>Round: <span className="font-semibold text-gray-700">{match.round || 'TBD'}</span></span>
+          <span>
+            Round: <span className="font-semibold text-gray-700">{match.round || 'TBD'}</span>
+          </span>
           {match.match_time && (
             <span>{new Date(match.match_time).toLocaleString()}</span>
           )}
           {match.winner_id && (
-            <span className="text-indigo-600 font-semibold">Winner: {match.winner_id === team1?.id ? team1.name : team2?.name}</span>
+            <span style={{ color: primaryColor }} className="font-semibold">
+              Winner: {match.winner_id === team1?.id ? team1.name : team2?.name}
+            </span>
           )}
         </div>
       </div>
@@ -96,5 +111,5 @@ export default function MatchCard({ match }: MatchCardProps) {
     >
       {cardContent}
     </Link>
-  ) : cardContent;
-} 
+  ) : cardContent
+}

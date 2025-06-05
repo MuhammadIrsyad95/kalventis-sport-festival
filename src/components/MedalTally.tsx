@@ -76,14 +76,20 @@ export default function MedalTally({ medals }: MedalTallyProps) {
         <table className="w-full">
           <thead>
             <tr className="bg-indigo-200">
-              <th className="py-4 px-4 text-left text-base font-bold text-indigo-700">Peringkat</th>
-              <th className="py-4 px-4 text-left text-base font-bold text-indigo-700">Grup</th>
+            <th className="py-4 px-4 text-left text-base font-bold" style={{ color: 'rgb(0, 52, 98)' }}>
+              Peringkat
+            </th>              
+                        <th className="py-4 px-4 text-left text-base font-bold" style={{ color: 'rgb(0, 52, 98)' }}>
+                Grup
+              </th>
               <th className="py-6 px-4 text-center text-4xl font-black text-yellow-400 drop-shadow-md">🥇</th>
               <th className="py-6 px-4 text-center text-4xl font-black text-gray-400 drop-shadow-md">🥈</th>
               <th className="py-6 px-4 text-center text-4xl font-black text-orange-400 drop-shadow-md">🥉</th>
 
 
-              <th className="py-4 px-4 text-center text-base font-bold text-indigo-700">Total</th>
+            <th className="py-4 px-4 text-center text-base font-bold" style={{ color: 'rgb(0, 52, 98)' }}>
+  Total
+</th>
             </tr>
           </thead>
           <tbody>
@@ -102,7 +108,10 @@ export default function MedalTally({ medals }: MedalTallyProps) {
                 <td className="py-4 px-4 text-center text-yellow-500 font-bold">{counts.gold}</td>
                 <td className="py-4 px-4 text-center text-gray-500 font-bold">{counts.silver}</td>
                 <td className="py-4 px-4 text-center text-orange-500 font-bold">{counts.bronze}</td>
-                <td className="py-4 px-4 text-center text-indigo-700 font-extrabold">{counts.total}</td>
+                <td className="py-4 px-4 text-center font-extrabold" style={{ color: 'rgb(0, 52, 98)' }}>
+  {counts.total}
+</td>
+
               </motion.tr>
             ))}
           </tbody>

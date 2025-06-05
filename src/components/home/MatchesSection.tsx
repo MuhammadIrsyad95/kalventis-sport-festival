@@ -76,12 +76,22 @@ export default function MatchesSection({ matches }: { matches: Match[] }) {
 
   return (
     <section id="matches-section" className="mb-12">
-      <h2 className="text-2xl font-bold text-indigo-700 mb-6">Pertandingan</h2>
+      <h2
+        className="text-2xl font-bold mb-6"
+        style={{ color: 'rgb(0, 52, 98)' }}
+      >
+        Pertandingan
+      </h2>
+
       <div className="flex space-x-4 mb-8 overflow-x-auto">
         {(['ongoing', 'upcoming', 'past'] as const).map(key => (
           <button
             key={key}
-            className={`pb-2 border-b-2 whitespace-nowrap ${filter === key ? 'border-indigo-600 text-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
+            className={`pb-2 border-b-2 whitespace-nowrap ${
+              filter === key
+                ? 'border-[rgb(0,52,98)] text-[rgb(0,52,98)] font-semibold'
+                : 'border-transparent text-gray-600 hover:text-[rgb(0,52,98)] transition'
+            }`}
             onClick={() => setFilter(key)}
           >
             {key === 'ongoing' ? 'Sedang Berlangsung' : key === 'upcoming' ? 'Akan Datang' : 'Selesai'}
@@ -100,7 +110,8 @@ export default function MatchesSection({ matches }: { matches: Match[] }) {
           </Slider>
         ) : (
           <div className="text-gray-500 px-4 py-8 text-center">
-            Tidak ada pertandingan {filter === 'ongoing' ? 'Sedang Berlangsung' : filter === 'upcoming' ? 'Akan Datang' : 'Selesai'} yang tersedia.
+            Tidak ada pertandingan{' '}
+            {filter === 'ongoing' ? 'Sedang Berlangsung' : filter === 'upcoming' ? 'Akan Datang' : 'Selesai'} yang tersedia.
           </div>
         )}
       </div>

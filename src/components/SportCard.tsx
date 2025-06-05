@@ -16,9 +16,12 @@ export default function SportCard({ sport }: SportCardProps) {
         alt={sport.name}
         className="w-full h-40 object-cover rounded-xl mb-4 group-hover:opacity-90 transition"
       />
-      <h3 className="text-lg font-bold text-gray-900 group-hover:text-indigo-600 transition text-center truncate w-full">
+      <h3
+        className="text-lg font-bold transition text-center truncate w-full"
+        style={{ color: 'rgb(0, 52, 98)' }}
+      >
         {sport.name}
       </h3>
     </div>
   );
-} 
+}

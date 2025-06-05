@@ -10,7 +10,9 @@ export default function ContactSection() {
 
         {/* Kiri - Hubungi Kami */}
         <div>
-          <h3 className="text-base md:text-lg font-semibold text-indigo-700 mb-2">Hubungi Kami</h3>
+          <h3 className="text-base md:text-lg font-semibold mb-2" style={{ color: 'rgb(0, 52, 98)' }}>
+            Hubungi Kami
+          </h3>
           <p className="mb-4">
             Apabila terdapat pertanyaan seputar KSF (Kalventis Sport Festival), silakan hubungi panitia Kalventis untuk informasi lebih lanjut.
           </p>
@@ -21,13 +23,16 @@ export default function ContactSection() {
 
         {/* Kanan - Follow Us */}
         <div>
-          <h3 className="text-base md:text-lg font-semibold text-indigo-700 mb-4">Ikuti Kami</h3>
+          <h3 className="text-base md:text-lg font-semibold mb-4" style={{ color: 'rgb(0, 52, 98)' }}>
+            Ikuti Kami
+          </h3>
           <div className="flex flex-col space-y-2">
             <a
               href="https://instagram.com/kalventis"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-indigo-700 transition flex items-center gap-1"
+              className="transition flex items-center gap-1 hover:underline"
+              style={{ color: 'rgb(0, 52, 98)' }}
             >
               {/* Icon Instagram */}
               <svg xmlns="http://www.w3.org/2000/svg" className="lucide lucide-instagram" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -42,7 +47,8 @@ export default function ContactSection() {
               href="https://www.youtube.com/@kalventis"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-indigo-700 transition flex items-center gap-1"
+              className="transition flex items-center gap-1 hover:underline"
+              style={{ color: 'rgb(0, 52, 98)' }}
             >
               {/* Icon YouTube */}
               <svg xmlns="http://www.w3.org/2000/svg" className="lucide lucide-youtube" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -56,7 +62,8 @@ export default function ContactSection() {
               href="https://www.linkedin.com/company/kalventis/posts/?feedView=all"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-indigo-700 transition flex items-center gap-1"
+              className="transition flex items-center gap-1 hover:underline"
+              style={{ color: 'rgb(0, 52, 98)' }}
             >
               {/* Icon LinkedIn */}
               <svg xmlns="http://www.w3.org/2000/svg" className="lucide lucide-linkedin" width="16" height="16" viewBox="0 0 24 24" fill="none"

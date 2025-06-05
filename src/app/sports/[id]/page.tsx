@@ -8,7 +8,6 @@ import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import type { Database } from '@/types/supabase';
 
-// Custom Arrow dan getSliderSettings dari home
 function Arrow(props: any) {
   const { style, onClick, direction } = props;
   return (
@@ -125,7 +124,7 @@ export default function SportDetailPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-white flex items-center justify-center text-gray-800">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4 text-indigo-700">Olahraga tidak ditemukan</h2>
+          <h2 className="text-2xl font-bold mb-4" style={{ color: 'rgb(0, 52, 98)' }}>Olahraga tidak ditemukan</h2>
           <p className="text-gray-700">Olahraga yang diminta tidak dapat ditemukan.</p>
         </div>
       </div>
@@ -140,7 +139,7 @@ export default function SportDetailPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-indigo-100 to-white text-gray-800">
       <div className="max-w-screen-xl mx-auto px-6 py-12">
-        <h1 className="text-4xl font-extrabold text-indigo-700 mb-8">{sport.name}</h1>
+        <h1 className="text-4xl font-extrabold mb-8" style={{ color: 'rgb(0, 52, 98)' }}>{sport.name}</h1>
 
         {sport.imageurl && (
           <>
@@ -164,24 +163,27 @@ export default function SportDetailPage() {
         )}
 
         <section className="mb-8">
-          <h2 className="text-2xl font-bold text-indigo-700 mb-4">Pertandingan</h2>
+          <h2 className="text-2xl font-bold mb-4" style={{ color: 'rgb(0, 52, 98)' }}>Pertandingan</h2>
 
           {/* Filter Buttons */}
           <div className="flex space-x-4 mb-8 overflow-x-auto">
             <button
-              className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'ongoing' ? 'border-indigo-600 text-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
+              className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'ongoing' ? 'border-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
+              style={filter === 'ongoing' ? { color: 'rgb(0, 52, 98)' } : undefined}
               onClick={() => setFilter('ongoing')}
             >
               Sedang Berlangsung
             </button>
             <button
-              className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'upcoming' ? 'border-indigo-600 text-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
+              className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'upcoming' ? 'border-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
+              style={filter === 'upcoming' ? { color: 'rgb(0, 52, 98)' } : undefined}
               onClick={() => setFilter('upcoming')}
             >
               Akan Datang
             </button>
             <button
-              className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'past' ? 'border-indigo-600 text-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
+              className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'past' ? 'border-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
+              style={filter === 'past' ? { color: 'rgb(0, 52, 98)' } : undefined}
               onClick={() => setFilter('past')}
             >
               Selesai
@@ -247,7 +249,7 @@ export default function SportDetailPage() {
 
         {/* Rules Section */}
         <section>
-          <h2 className="text-2xl font-bold text-indigo-700 mb-4">Peraturan</h2>
+          <h2 className="text-2xl font-bold mb-4" style={{ color: 'rgb(0, 52, 98)' }}>Peraturan</h2>
           {rules.length === 0 ? (
             <div className="text-gray-700">Tidak ada peraturan tersedia untuk olahraga ini.</div>
           ) : (
