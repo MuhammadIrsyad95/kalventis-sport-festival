@@ -12,7 +12,7 @@ export default function ContactSection() {
         <div>
           <h3 className="text-base md:text-lg font-semibold text-indigo-700 mb-2">Hubungi Kami</h3>
           <p className="mb-4">
-            Apabila terdapat pertanyaan seputar KSF (Kalventis Sinergi Farma), silakan hubungi panitia Kalventis untuk informasi lebih lanjut.
+            Apabila terdapat pertanyaan seputar KSF (Kalventis Sport Festival), silakan hubungi panitia Kalventis untuk informasi lebih lanjut.
           </p>
         </div>
 
