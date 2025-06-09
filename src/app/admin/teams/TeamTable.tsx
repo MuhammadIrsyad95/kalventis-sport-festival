@@ -27,7 +27,7 @@ export default function TeamTable({ teams, loading, onEdit, onDelete }: Props) {
         <thead className="bg-gray-700">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Nama</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Perusahaan</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">PIC</th>
             <th className="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Aksi</th>
           </tr>
         </thead>

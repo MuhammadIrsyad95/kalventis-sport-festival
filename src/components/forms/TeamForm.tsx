@@ -37,7 +37,7 @@ export default function TeamForm({ team, onSubmit, onCancel }: TeamFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block mb-2 text-gray-200 font-medium">Team Name</label>
+        <label className="block mb-2 text-gray-200 font-medium">Nama Tim</label>
         <input
           type="text"
           value={formData.name}
@@ -49,7 +49,7 @@ export default function TeamForm({ team, onSubmit, onCancel }: TeamFormProps) {
       </div>
 
       <div>
-        <label className="block mb-2 text-gray-200 font-medium">Company</label>
+        <label className="block mb-2 text-gray-200 font-medium">Pic (Person In Charge)</label>
         <input
           type="text"
           value={formData.company}
