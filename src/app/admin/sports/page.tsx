@@ -12,6 +12,14 @@ import { Sport } from '@/types/database.types';
 
 type FormMode = 'create' | 'edit';
 
+const kategoriOptions = [
+  { label: 'Semua', value: 'semua' },
+  { label: 'Sport', value: 'sport' },
+  { label: 'Esport', value: 'esport' },
+  { label: 'Fun Games', value: 'fungames' },
+  { label: 'Exhibition', value: 'exhibition' },
+];
+
 export default function SportsPage() {
   const [sports, setSports] = useState<Sport[]>([]);
   const [loading, setLoading] = useState(true);
@@ -20,6 +28,8 @@ export default function SportsPage() {
   const [selectedSport, setSelectedSport] = useState<Sport | undefined>();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [sportToDelete, setSportToDelete] = useState<Sport | null>(null);
+  const [kategoriFilter, setKategoriFilter] = useState<string>('semua');
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     fetchSports();
@@ -61,6 +71,14 @@ export default function SportsPage() {
     }
   };
 
+  const filteredSports = searchQuery.trim()
+    ? sports.filter((s) =>
+        s.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : kategoriFilter === 'semua'
+      ? sports
+      : sports.filter((s) => s.kategori === kategoriFilter);
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -78,23 +96,62 @@ export default function SportsPage() {
         </button>
       </div>
 
+      {/* Kategori + Search */}
+      <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
+        <div className="flex gap-2 flex-wrap">
+          {kategoriOptions.map((item) => (
+            <button
+              key={item.value}
+              onClick={() => setKategoriFilter(item.value)}
+              className={`px-4 py-1 rounded-full text-sm font-medium ${
+                kategoriFilter === item.value
+                  ? 'bg-purple-600 text-white'
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+
+        <input
+          type="text"
+          placeholder="Cari olahraga..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="px-3 py-1 rounded bg-gray-800 text-white border border-gray-600 placeholder-gray-400 text-sm w-56"
+        />
+      </div>
+
       {loading ? (
         <div className="animate-pulse h-96 bg-gray-700 rounded" />
       ) : (
-        <SportTable sports={sports} onEdit={(sport) => {
-          setFormMode('edit');
-          setSelectedSport(sport);
-          setIsModalOpen(true);
-        }} onDelete={(sport) => {
-          setSportToDelete(sport);
-          setIsDeleteModalOpen(true);
-        }} />
+        <SportTable
+          sports={filteredSports}
+          onEdit={(sport) => {
+            setFormMode('edit');
+            setSelectedSport(sport);
+            setIsModalOpen(true);
+          }}
+          onDelete={(sport) => {
+            setSportToDelete(sport);
+            setIsDeleteModalOpen(true);
+          }}
+        />
       )}
 
       {/* Form Modal */}
       {isModalOpen && (
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={`${formMode === 'create' ? 'Add' : 'Edit'} Sport`}>
-          <SportForm sport={selectedSport} onSubmit={handleSubmit} onCancel={() => setIsModalOpen(false)} />
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title={`${formMode === 'create' ? 'Add' : 'Edit'} Sport`}
+        >
+          <SportForm
+            sport={selectedSport}
+            onSubmit={handleSubmit}
+            onCancel={() => setIsModalOpen(false)}
+          />
         </Modal>
       )}
 

@@ -21,7 +21,6 @@ export default function SportForm({ sport, onSubmit, onCancel }: SportFormProps)
   const [imageUrl, setImageUrl] = useState<string>(sport?.imageurl || '');
   const [mediaLink, setMediaLink] = useState<string>(sport?.media_link || '');
   const [kategori, setKategori] = useState<string>(sport?.kategori || 'sport');
-  const [isFootball, setIsFootball] = useState<boolean>(sport?.is_football || false);
   const [rules, setRules] = useState<string>(sport?.rules || '');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -30,141 +29,116 @@ export default function SportForm({ sport, onSubmit, onCancel }: SportFormProps)
 
     onSubmit({
       name: formData.get('name') as string,
-      imageurl: imageUrl,
+      kategori,
+      rules,
       media_link: mediaLink,
-      kategori: kategori,
-      is_football: isFootball,
-      rules: rules,
+      imageurl: imageUrl,
     });
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-90 flex justify-center items-start overflow-auto pt-10 z-50">
-      <div className="bg-gray-900 rounded-lg shadow-lg w-full max-w-5xl mx-4 md:mx-0 border border-gray-700 text-gray-100">
-        <div className="p-6">
-          <h2 className="text-2xl font-semibold mb-6">
-            {sport ? 'Edit Sport' : 'Create Sport'}
-          </h2>
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-80 overflow-auto pt-10 flex justify-center items-start">
+      <div className="bg-gray-900 border border-gray-700 rounded-xl shadow-lg w-full max-w-6xl mx-4 md:mx-0 text-gray-100">
+        <form onSubmit={handleSubmit} className="p-8 space-y-8">
 
-          <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Judul */}
+          <div className="text-center">
+            <h2 className="text-2xl font-bold">
+              {sport ? 'Edit Sport' : 'Create Sport'}
+            </h2>
+          </div>
 
-            {/* Informasi Dasar */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-gray-200">Informasi Dasar</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Sport Name */}
-                <div>
-                  <label className="block mb-2 font-medium">Sport Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    defaultValue={sport?.name}
-                    required
-                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-100"
-                  />
-                </div>
-
-                {/* Kategori */}
-                <div>
-                  <label className="block mb-2 font-medium">Kategori</label>
-                  <select
-                    value={kategori}
-                    onChange={(e) => setKategori(e.target.value)}
-                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-100"
-                  >
-                    {kategoriOptions.map((opt) => (
-                      <option
-                        key={opt.value}
-                        value={opt.value}
-                        className="bg-gray-900 text-gray-100"
-                      >
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+          {/* Konten 2 kolom */}
+          <div className="flex flex-col md:flex-row gap-8">
+            {/* Kolom kiri */}
+            <div className="flex-1 space-y-6">
+              {/* Nama */}
+              <div>
+                <label htmlFor="name" className="block font-semibold text-gray-200 mb-1">Nama Olahraga</label>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  defaultValue={sport?.name}
+                  required
+                  className="w-full p-3 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
               </div>
-            </div>
 
-            {/* Media Section */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-gray-200">Media</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Image */}
-                <div>
-                  <label className="block mb-2 font-medium">Image (max 1MB)</label>
-                  <ImageUploader
-                    currentUrl={imageUrl}
-                    onUpload={setImageUrl}
-                    folder="upload"
-                  />
-                </div>
-
-                {/* Media Link */}
-                <div>
-                  <label className="block mb-2 font-medium">Media Link</label>
-                  <input
-                    type="url"
-                    value={mediaLink}
-                    onChange={(e) => setMediaLink(e.target.value)}
-                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-100"
-                    placeholder="https://youtube.com/..."
-                  />
-                </div>
+              {/* Kategori */}
+              <div>
+                <label htmlFor="kategori" className="block font-semibold text-gray-200 mb-1">Kategori</label>
+                <select
+                  id="kategori"
+                  value={kategori}
+                  onChange={(e) => setKategori(e.target.value)}
+                  className="w-full p-3 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  {kategoriOptions.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
               </div>
-            </div>
 
-            {/* Informasi Tambahan */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-gray-200">Informasi Tambahan</h3>
-              
               {/* Rules */}
-              <div className="mb-6">
-                <label className="block mb-2 font-medium">Rules</label>
+              <div>
+                <label htmlFor="rules" className="block font-semibold text-gray-200 mb-1">Rules / Penjelasan</label>
                 <textarea
+                  id="rules"
                   name="rules"
                   value={rules}
                   onChange={(e) => setRules(e.target.value)}
-                  rows={5}
-                  className="w-full p-3 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-100"
+                  rows={8}
                   placeholder="Masukkan aturan/penjelasan olahraga..."
+                  className="w-full p-3 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
+            </div>
 
-              {/* Checkbox Is Football */}
-              {/* <div className="flex items-center space-x-3">
+            {/* Kolom kanan */}
+            <div className="flex-1 space-y-6">
+              {/* Media Link */}
+              <div>
+                <label htmlFor="media_link" className="block font-semibold text-gray-200 mb-1">Media Link (YouTube, dll.)</label>
                 <input
-                  type="checkbox"
-                  id="isFootball"
-                  checked={isFootball}
-                  onChange={(e) => setIsFootball(e.target.checked)}
-                  className="w-5 h-5 text-blue-600 bg-gray-800 border border-gray-700 rounded checked:bg-blue-500 focus:ring-blue-500 focus:ring-2"
+                  type="url"
+                  id="media_link"
+                  value={mediaLink}
+                  onChange={(e) => setMediaLink(e.target.value)}
+                  placeholder="https://youtube.com/..."
+                  className="w-full p-3 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <label htmlFor="isFootball" className="font-medium select-none">
-                  Tandai jika ini adalah olahraga Sepak Bola
-                </label>
               </div>
-              <p className="text-sm text-gray-400 mt-1">Jika ini bukan sepak bola, abaikan saja.</p> */}
-            </div>
 
-            {/* Tombol Aksi */}
-            <div className="flex justify-end space-x-4 pt-4 border-t border-gray-700">
-              <button
-                type="button"
-                onClick={onCancel}
-                className="px-6 py-3 bg-gray-700 rounded hover:bg-gray-600 transition text-gray-100"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-6 py-3 bg-blue-600 rounded hover:bg-blue-700 transition text-white"
-              >
-                {sport ? 'Update' : 'Create'} Sport
-              </button>
+              {/* Upload Gambar */}
+              <div>
+                <label className="block font-semibold text-gray-200 mb-1">Upload Gambar (max 1MB)</label>
+                <ImageUploader
+                  currentUrl={imageUrl}
+                  onUpload={setImageUrl}
+                  folder="upload"
+                />
+              </div>
             </div>
-          </form>
-        </div>
+          </div>
+
+          {/* Tombol aksi */}
+          <div className="flex justify-end gap-4 pt-6 border-t border-gray-700">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="px-5 py-2.5 rounded bg-gray-700 hover:bg-gray-600 text-white transition"
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              className="px-5 py-2.5 rounded bg-blue-600 hover:bg-blue-700 text-white transition"
+            >
+              {sport ? 'Simpan Perubahan' : 'Tambah Olahraga'}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
