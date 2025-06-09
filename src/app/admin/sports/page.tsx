@@ -17,7 +17,6 @@ const kategoriOptions = [
   { label: 'Sport', value: 'sport' },
   { label: 'Esport', value: 'esport' },
   { label: 'Fun Games', value: 'fungames' },
-  { label: 'Exhibition', value: 'exhibition' },
 ];
 
 export default function SportsPage() {
