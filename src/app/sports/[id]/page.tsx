@@ -66,7 +66,6 @@ export default function SportDetailPage() {
   const sportId = params?.id as string;
   const [sport, setSport] = useState<Sport | null>(null);
   const [matches, setMatches] = useState<Match[]>([]);
-  const [rules, setRules] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [zoomed, setZoomed] = useState(false);
   const [filter, setFilter] = useState<'ongoing' | 'upcoming' | 'past'>('ongoing');
@@ -141,10 +140,11 @@ export default function SportDetailPage() {
       <div className="max-w-screen-xl mx-auto px-6 py-12">
         <h1 className="text-4xl font-extrabold mb-8" style={{ color: 'rgb(0, 52, 98)' }}>{sport.name}</h1>
 
-        {sport.imageurl && (
+        {/* Ganti imageurl -> bagan_url */}
+        {sport.bagan_url && (
           <>
             <img
-              src={sport.imageurl}
+              src={sport.bagan_url}
               alt={sport.name}
               className="w-full max-w-2xl mx-auto h-64 md:h-96 object-cover rounded mb-8 border cursor-zoom-in"
               onClick={() => setZoomed(true)}
@@ -152,7 +152,7 @@ export default function SportDetailPage() {
             {zoomed && (
               <div className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center" onClick={() => setZoomed(false)}>
                 <img
-                  src={sport.imageurl}
+                  src={sport.bagan_url}
                   alt={sport.name}
                   className="max-w-2xl max-h-[80vh] rounded shadow-lg cursor-zoom-out"
                   onClick={e => { e.stopPropagation(); setZoomed(false); }}
@@ -165,7 +165,6 @@ export default function SportDetailPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-4" style={{ color: 'rgb(0, 52, 98)' }}>Pertandingan</h2>
 
-          {/* Filter Buttons */}
           <div className="flex space-x-4 mb-8 overflow-x-auto">
             <button
               className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'ongoing' ? 'border-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
@@ -194,15 +193,13 @@ export default function SportDetailPage() {
             {filter === 'ongoing' && (
               <div>
                 {matchesSekarang.length > 0 ? (
-                  <div className="relative">
-                    <Slider {...getSliderSettings(matchesSekarang.length)}>
-                      {matchesSekarang.map((match) => (
-                        <div key={match.id} className="px-2">
-                          <MatchCard match={match} />
-                        </div>
-                      ))}
-                    </Slider>
-                  </div>
+                  <Slider {...getSliderSettings(matchesSekarang.length)}>
+                    {matchesSekarang.map((match) => (
+                      <div key={match.id} className="px-2">
+                        <MatchCard match={match} />
+                      </div>
+                    ))}
+                  </Slider>
                 ) : (
                   <div className="text-gray-700 px-4 py-8 text-center text-lg">Tidak ada pertandingan Sedang Berlangsung yang tersedia.</div>
                 )}
@@ -212,15 +209,13 @@ export default function SportDetailPage() {
             {filter === 'upcoming' && (
               <div>
                 {matchesAkanDatang.length > 0 ? (
-                  <div className="relative">
-                    <Slider {...getSliderSettings(matchesAkanDatang.length)}>
-                      {matchesAkanDatang.map((match) => (
-                        <div key={match.id} className="px-2">
-                          <MatchCard match={match} />
-                        </div>
-                      ))}
-                    </Slider>
-                  </div>
+                  <Slider {...getSliderSettings(matchesAkanDatang.length)}>
+                    {matchesAkanDatang.map((match) => (
+                      <div key={match.id} className="px-2">
+                        <MatchCard match={match} />
+                      </div>
+                    ))}
+                  </Slider>
                 ) : (
                   <div className="text-gray-700 px-4 py-8 text-center text-lg">Tidak ada pertandingan Akan Datang yang tersedia.</div>
                 )}
@@ -230,15 +225,13 @@ export default function SportDetailPage() {
             {filter === 'past' && (
               <div>
                 {matchesLalu.length > 0 ? (
-                  <div className="relative">
-                    <Slider {...getSliderSettings(matchesLalu.length)}>
-                      {matchesLalu.map((match) => (
-                        <div key={match.id} className="px-2">
-                          <MatchCard match={match} />
-                        </div>
-                      ))}
-                    </Slider>
-                  </div>
+                  <Slider {...getSliderSettings(matchesLalu.length)}>
+                    {matchesLalu.map((match) => (
+                      <div key={match.id} className="px-2">
+                        <MatchCard match={match} />
+                      </div>
+                    ))}
+                  </Slider>
                 ) : (
                   <div className="text-gray-700 px-4 py-8 text-center text-lg">Tidak ada pertandingan Selesai yang tersedia.</div>
                 )}
@@ -247,17 +240,17 @@ export default function SportDetailPage() {
           </div>
         </section>
 
-        {/* Rules Section */}
+        {/* Rules dari kolom sport.rules */}
         <section>
           <h2 className="text-2xl font-bold mb-4" style={{ color: 'rgb(0, 52, 98)' }}>Peraturan</h2>
-          {rules.length === 0 ? (
-            <div className="text-gray-700">Tidak ada peraturan tersedia untuk olahraga ini.</div>
-          ) : (
+          {sport.rules ? (
             <ul className="list-disc pl-6 text-gray-700 space-y-2">
-              {rules.map((rule) => (
-                <li key={rule.id}>{rule.description || rule.content}</li>
+              {sport.rules.split('\n').map((rule, idx) => (
+                <li key={idx}>{rule}</li>
               ))}
             </ul>
+          ) : (
+            <div className="text-gray-700">Tidak ada peraturan tersedia untuk olahraga ini.</div>
           )}
         </section>
       </div>

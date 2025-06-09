@@ -67,18 +67,33 @@ export interface Database {
           name: string
           description: string | null
           imageurl: string | null
+          rules: string | null
+          media_link: string | null
+          bagan_url: string | null
+          is_football: boolean | null
+          kategori: string | null
         }
         Insert: {
           id?: string
           name: string
           description?: string | null
           imageurl?: string | null
+          rules?: string | null
+          media_link?: string | null
+          bagan_url?: string | null
+          is_football?: boolean | null
+          kategori?: string | null
         }
         Update: {
           id?: string
           name?: string
           description?: string | null
           imageurl?: string | null
+          rules?: string | null
+          media_link?: string | null
+          bagan_url?: string | null
+          is_football?: boolean | null
+          kategori?: string | null
         }
       }
       teams: {
@@ -138,4 +153,4 @@ export interface Database {
       [_ in never]: never
     }
   }
-} 
+}
