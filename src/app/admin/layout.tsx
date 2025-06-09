@@ -2,7 +2,10 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Shield, Home, Trophy, Users, Award, BookOpen, Settings, Menu, X } from 'lucide-react';
+import { 
+  Shield, Home, Trophy, Users, Award, BookOpen, Settings, Menu, X,
+  Upload, Star
+} from 'lucide-react'; // tambah Upload dan Star
 import { useEffect, useState } from 'react';
 import LogoutButton from '@/components/LogoutButton';
 import { supabase } from '@/lib/supabase/client';
@@ -24,17 +27,15 @@ export default function AdminLayout({
       
       try {
         // Skip auth check for login and register pages
-      if (pathname === '/login') {
-  setIsLoading(false);
-  return;
-}
+        if (pathname === '/login') {
+          setIsLoading(false);
+          return;
+        }
 
-        
         // Check for auth in localStorage first (fallback for Supabase issues)
         const isAuthenticated = localStorage.getItem('admin_authenticated') === 'true';
         
         if (!isAuthenticated) {
-          // Redirect to login
           console.log('User not authenticated, redirecting to login');
           router.push('/login');
           return;
@@ -60,13 +61,15 @@ export default function AdminLayout({
   };
 
   const menuItems = [
-    { name: 'Dashboard', path: '/admin', icon: <Home className="w-5 h-5" /> },
-    { name: 'Matches', path: '/admin/matches', icon: <Trophy className="w-5 h-5" /> },
-    { name: 'Teams', path: '/admin/teams', icon: <Users className="w-5 h-5" /> },
-    { name: 'Sports', path: '/admin/sports', icon: <Award className="w-5 h-5" /> },
-    { name: 'Medals', path: '/admin/medals', icon: <Award className="w-5 h-5" /> },
-    { name: 'Rules', path: '/admin/rules', icon: <BookOpen className="w-5 h-5" /> },
-    { name: 'Settings', path: '/admin/settings', icon: <Settings className="w-5 h-5" /> },
+    { name: 'Dasbor', path: '/admin', icon: <Home className="w-5 h-5" /> },
+    { name: 'Pertandingan', path: '/admin/matches', icon: <Trophy className="w-5 h-5" /> },
+    { name: 'Tim', path: '/admin/teams', icon: <Users className="w-5 h-5" /> },
+    { name: 'Olahraga', path: '/admin/sports', icon: <Award className="w-5 h-5" /> },
+    { name: 'Medali', path: '/admin/medals', icon: <Award className="w-5 h-5" /> },
+    // { name: 'Aturan', path: '/admin/rules', icon: <BookOpen className="w-5 h-5" /> },
+    { name: 'Upload Bagan', path: '/admin/upload-bagan', icon: <Upload className="w-5 h-5" /> }, // baru
+    // { name: 'Top Skor', path: '/admin/top-skor', icon: <Star className="w-5 h-5" /> }, // baru
+    { name: 'Pengaturan', path: '/admin/settings', icon: <Settings className="w-5 h-5" /> },
   ];
 
   // Login or register pages get a simple layout without sidebar
@@ -206,10 +209,10 @@ export default function AdminLayout({
 
         {/* Main content area */}
         <main className="flex-1 overflow-y-auto bg-gray-900 text-white pt-20 md:pt-6 px-6 pb-6">
-        {children}
-      </main>
+          {children}
+        </main>
 
       </div>
     </div>
   );
-} 
+}

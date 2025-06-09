@@ -6,8 +6,8 @@ import { uploadFile } from '@/lib/storage';
 interface ImageUploaderProps {
   currentUrl?: string;
   onUpload: (url: string) => void;
-  folder?: string;
-  maxSizeMB?: number;
+  folder?: string;      // bucket folder untuk upload, default "images"
+  maxSizeMB?: number;   // max size upload, default 1MB
 }
 
 export default function ImageUploader({
@@ -41,13 +41,14 @@ export default function ImageUploader({
     setUploading(true);
     setError(null);
 
-    const result = await uploadFile(file, folder, imageUrl, 'upload');
+    // Upload file ke bucket dan folder yang ditentukan
+    const result = await uploadFile(file, 'images', imageUrl, folder);
     if ('error' in result) {
       setError('Gagal upload gambar: ' + result.error);
       setImageUrl('');
     } else {
       setImageUrl(result.url);
-      onUpload(result.url);
+      onUpload(result.url); // Kirim URL hasil upload ke parent
     }
 
     setUploading(false);

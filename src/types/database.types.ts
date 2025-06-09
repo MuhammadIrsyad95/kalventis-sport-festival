@@ -1,5 +1,3 @@
-// src/types/database.types.ts
-
 export interface Match {
   id: string;
   team1_id: string;
@@ -34,6 +32,11 @@ export interface Sport {
   name: string;
   created_at: string;
   imageurl?: string;
+  bagan_url?: string;
+  media_link?: string;
+  kategori?: string;
+  is_football: boolean;
+  rules?: string;  // Tambahkan properti ini supaya tidak error di form
 }
 
 export interface Team {
@@ -42,7 +45,6 @@ export interface Team {
   company: string;
   created_at?: string;
 }
-
 
 export type Database = {
   public: {
@@ -72,7 +74,6 @@ export type Database = {
         Insert: Omit<Team, 'id' | 'created_at'> & { id?: string; created_at?: string };
         Update: Partial<Team>;
       };
-
     };
   };
 };
