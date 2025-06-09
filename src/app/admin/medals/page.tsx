@@ -13,11 +13,14 @@ export default function MedalsPage() {
   const [sports, setSports] = useState<Sport[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formMode, setFormMode] = useState<'create' | 'edit'>("create");
+  const [formMode, setFormMode] = useState<"create" | "edit">("create");
   const [selectedMedal, setSelectedMedal] = useState<Medal | undefined>(undefined);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [medalToDelete, setMedalToDelete] = useState<Medal | null>(null);
-  const [error, setError] = useState<string | null>(null);
+
+  const [teamFilter, setTeamFilter] = useState<string>("semua");
+  const [sportFilter, setSportFilter] = useState<string>("semua");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchAll();
@@ -60,15 +63,25 @@ export default function MedalsPage() {
     setIsDeleteModalOpen(false);
   };
 
-  const handleSubmit = async (data: Partial<Medal>) => {
-    if (formMode === "create") {
-      await supabase.from("medals").insert([data]);
-    } else if (selectedMedal) {
-      await supabase.from("medals").update(data).eq("id", selectedMedal.id);
-    }
-    fetchAll();
-    setIsModalOpen(false);
+  const resetFilters = () => {
+    setTeamFilter("semua");
+    setSportFilter("semua");
+    setSearchQuery("");
   };
+
+  const filteredMedals = medals.filter((medal) => {
+    const teamName = teams.find((t) => t.id === medal.team_id)?.name || "";
+    const sportName = sports.find((s) => s.id === medal.sport_id)?.name || "";
+
+    const matchesTeam = teamFilter === "semua" || medal.team_id === teamFilter;
+    const matchesSport = sportFilter === "semua" || medal.sport_id === sportFilter;
+
+    const matchesSearch =
+      teamName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      sportName.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return matchesTeam && matchesSport && (searchQuery ? matchesSearch : true);
+  });
 
   if (loading) {
     return <div className="p-8 text-white">Loading...</div>;
@@ -86,36 +99,106 @@ export default function MedalsPage() {
           Tambahkan Medali
         </button>
       </div>
+
+      {/* Filter dan Search */}
+      <div className="flex flex-wrap justify-between gap-4 items-center mb-4">
+        <div className="flex gap-4 flex-wrap">
+          <select
+            className="bg-gray-800 text-white px-3 py-1 rounded border border-gray-600"
+            value={teamFilter}
+            onChange={(e) => setTeamFilter(e.target.value)}
+          >
+            <option value="semua">Semua Tim</option>
+            {teams.map((team) => (
+              <option key={team.id} value={team.id}>
+                {team.name}
+              </option>
+            ))}
+          </select>
+
+          <select
+            className="bg-gray-800 text-white px-3 py-1 rounded border border-gray-600"
+            value={sportFilter}
+            onChange={(e) => setSportFilter(e.target.value)}
+          >
+            <option value="semua">Semua Olahraga</option>
+            {sports.map((sport) => (
+              <option key={sport.id} value={sport.id}>
+                {sport.name}
+              </option>
+            ))}
+          </select>
+
+          <button
+            onClick={resetFilters}
+            className="px-3 py-1 rounded bg-gray-600 text-white hover:bg-gray-500 text-sm"
+          >
+            Reset Filter
+          </button>
+        </div>
+
+        <input
+          type="text"
+          placeholder="Cari tim atau olahraga..."
+          className="px-3 py-1 rounded bg-gray-800 text-white border border-gray-600 w-64"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+
+      {/* Tabel Medali */}
       <div className="bg-gray-800 shadow overflow-hidden sm:rounded-lg border border-gray-700">
         <table className="min-w-full divide-y divide-gray-700">
           <thead className="bg-gray-700">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Grup</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Olahraga</th>
-              <th className="px-3 py-3 text-center text-xs font-medium text-yellow-300 uppercase tracking-wider">Emas</th>
-              <th className="px-3 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Perak</th>
-              <th className="px-3 py-3 text-center text-xs font-medium text-orange-400 uppercase tracking-wider">Perunggu</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Aksi</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Grup
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Olahraga
+              </th>
+              <th className="px-3 py-3 text-center text-xs font-medium text-yellow-300 uppercase tracking-wider">
+                Emas
+              </th>
+              <th className="px-3 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Perak
+              </th>
+              <th className="px-3 py-3 text-center text-xs font-medium text-orange-400 uppercase tracking-wider">
+                Perunggu
+              </th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Aksi
+              </th>
             </tr>
           </thead>
           <tbody className="bg-gray-800 divide-y divide-gray-700">
-            {medals.length === 0 ? (
+            {filteredMedals.length === 0 ? (
               <tr>
                 <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-400">
-                  No medals available. Add your first medal.
+                  Tidak ada medali ditemukan. Tambahkan medali pertama.
                 </td>
               </tr>
             ) : (
-              medals.map((medal) => {
+              filteredMedals.map((medal) => {
                 const team = teams.find((t) => t.id === medal.team_id);
                 const sport = sports.find((s) => s.id === medal.sport_id);
                 return (
                   <tr key={medal.id} className="hover:bg-gray-700">
-                    <td className="px-6 py-4 whitespace-nowrap text-white font-medium">{team?.name || '-'}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-white">{sport?.name || '-'}</td>
-                    <td className="px-3 py-4 whitespace-nowrap text-center text-yellow-300 font-bold">{medal.gold}</td>
-                    <td className="px-3 py-4 whitespace-nowrap text-center text-gray-300 font-bold">{medal.silver}</td>
-                    <td className="px-3 py-4 whitespace-nowrap text-center text-orange-400 font-bold">{medal.bronze}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-white font-medium">
+                      {team?.name || "-"}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-white">
+                      {sport?.name || "-"}
+                    </td>
+                    <td className="px-3 py-4 whitespace-nowrap text-center text-yellow-300 font-bold">
+                      {medal.gold}
+                    </td>
+                    <td className="px-3 py-4 whitespace-nowrap text-center text-gray-300 font-bold">
+                      {medal.silver}
+                    </td>
+                    <td className="px-3 py-4 whitespace-nowrap text-center text-orange-400 font-bold">
+                      {medal.bronze}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button
                         onClick={() => handleEdit(medal)}
@@ -137,31 +220,44 @@ export default function MedalsPage() {
           </tbody>
         </table>
       </div>
-      {/* Form Modal */}
+
+      {/* Modal Tambah/Edit */}
       {isModalOpen && (
         <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          title={`${formMode === 'create' ? 'Add' : 'Edit'} Medal`}
+          title={`${formMode === "create" ? "Tambah" : "Edit"} Medali`}
         >
           <MedalForm
             medal={selectedMedal}
-            onSubmit={handleSubmit}
+            onSubmit={async (data) => {
+              if (formMode === "create") {
+                await supabase.from("medals").insert([data]);
+              } else if (selectedMedal) {
+                await supabase
+                  .from("medals")
+                  .update(data)
+                  .eq("id", selectedMedal.id);
+              }
+              fetchAll();
+              setIsModalOpen(false);
+            }}
             onCancel={() => setIsModalOpen(false)}
             medals={medals}
           />
         </Modal>
       )}
-      {/* Delete Confirmation Modal */}
+
+      {/* Modal Konfirmasi Hapus */}
       {isDeleteModalOpen && (
         <Modal
           isOpen={isDeleteModalOpen}
           onClose={() => setIsDeleteModalOpen(false)}
-          title="Confirm Delete"
+          title="Hapus Medali"
         >
           <div className="mt-2">
             <p className="text-sm text-gray-400">
-              Are you sure you want to delete this medal? This action cannot be undone.
+              Yakin ingin menghapus medali ini? Tindakan ini tidak dapat dibatalkan.
             </p>
           </div>
           <div className="mt-4 flex justify-end space-x-3">
@@ -170,18 +266,18 @@ export default function MedalsPage() {
               className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-200 bg-gray-700 border border-gray-600 rounded-md hover:bg-gray-600"
               onClick={() => setIsDeleteModalOpen(false)}
             >
-              Cancel
+              Batal
             </button>
             <button
               type="button"
               className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700"
               onClick={confirmDelete}
             >
-              Delete
+              Hapus
             </button>
           </div>
         </Modal>
       )}
     </div>
   );
-} 
+}

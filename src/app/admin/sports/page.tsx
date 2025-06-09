@@ -29,7 +29,6 @@ export default function SportsPage() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [sportToDelete, setSportToDelete] = useState<Sport | null>(null);
   const [kategoriFilter, setKategoriFilter] = useState<string>('semua');
-  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     fetchSports();
@@ -71,13 +70,9 @@ export default function SportsPage() {
     }
   };
 
-  const filteredSports = searchQuery.trim()
-    ? sports.filter((s) =>
-        s.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : kategoriFilter === 'semua'
-      ? sports
-      : sports.filter((s) => s.kategori === kategoriFilter);
+  const filteredSports = kategoriFilter === 'semua'
+    ? sports
+    : sports.filter((s) => s.kategori === kategoriFilter);
 
   return (
     <div>
@@ -96,31 +91,21 @@ export default function SportsPage() {
         </button>
       </div>
 
-      {/* Kategori + Search */}
-      <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
-        <div className="flex gap-2 flex-wrap">
-          {kategoriOptions.map((item) => (
-            <button
-              key={item.value}
-              onClick={() => setKategoriFilter(item.value)}
-              className={`px-4 py-1 rounded-full text-sm font-medium ${
-                kategoriFilter === item.value
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-
-        <input
-          type="text"
-          placeholder="Cari olahraga..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="px-3 py-1 rounded bg-gray-800 text-white border border-gray-600 placeholder-gray-400 text-sm w-56"
-        />
+      {/* Kategori Tabs */}
+      <div className="flex gap-2 mb-4 flex-wrap">
+        {kategoriOptions.map((item) => (
+          <button
+            key={item.value}
+            onClick={() => setKategoriFilter(item.value)}
+            className={`px-4 py-1 rounded-full text-sm font-medium ${
+              kategoriFilter === item.value
+                ? 'bg-purple-600 text-white'
+                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+            }`}
+          >
+            {item.label}
+          </button>
+        ))}
       </div>
 
       {loading ? (
