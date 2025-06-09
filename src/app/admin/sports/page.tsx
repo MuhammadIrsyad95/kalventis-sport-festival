@@ -2,17 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase/client';
-import { PlusCircle, Edit, Trash2 } from 'lucide-react';
-import Modal from '@/components/Modal';
 import SportForm from '@/components/forms/SportForm';
+import SportTable from '@/components/table/SportTable';
+import Modal from '@/components/Modal';
+import DeleteConfirmationModal from '@/components/modals/DeleteConfirmationModal';
+import { PlusCircle } from 'lucide-react';
 import { deleteOldImage } from '@/lib/storage';
-
-interface Sport {
-  id: string;
-  name: string;
-  created_at: string;
-  imageurl?: string;
-}
+import { Sport } from '@/types/database.types';
 
 type FormMode = 'create' | 'edit';
 
@@ -21,7 +17,7 @@ export default function SportsPage() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formMode, setFormMode] = useState<FormMode>('create');
-  const [selectedSport, setSelectedSport] = useState<Sport | undefined>(undefined);
+  const [selectedSport, setSelectedSport] = useState<Sport | undefined>();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [sportToDelete, setSportToDelete] = useState<Sport | null>(null);
 
@@ -29,207 +25,85 @@ export default function SportsPage() {
     fetchSports();
   }, []);
 
-  async function fetchSports() {
+  const fetchSports = async () => {
+    const { data, error } = await supabase.from('sports').select('*').order('name');
+    if (!error && data) setSports(data);
+    setLoading(false);
+  };
+
+  const handleSubmit = async (data: Partial<Sport>) => {
     try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('sports')
-        .select('*')
-        .order('name');
-      
-      if (error) {
-        throw error;
+      if (formMode === 'create') {
+        const { error } = await supabase.from('sports').insert([data]);
+        if (error) throw error;
+      } else if (selectedSport) {
+        const { error } = await supabase.from('sports').update(data).eq('id', selectedSport.id);
+        if (error) throw error;
       }
-      
-      setSports(data || []);
+
+      fetchSports();
+      setIsModalOpen(false);
     } catch (error) {
-      console.error('Error fetching sports:', error);
-    } finally {
-      setLoading(false);
+      console.error('Error saving sport:', error);
     }
-  }
-
-  const handleAdd = () => {
-    setFormMode('create');
-    setSelectedSport(undefined);
-    setIsModalOpen(true);
   };
 
-  const handleEdit = (sport: Sport) => {
-    setFormMode('edit');
-    setSelectedSport(sport);
-    setIsModalOpen(true);
-  };
-
-  const handleDelete = (sport: Sport) => {
-    setSportToDelete(sport);
-    setIsDeleteModalOpen(true);
-  };
-
-
-
-const handleSubmit = async (data: Partial<Sport>) => {
-  try {
-    if (formMode === 'create') {
-      const { error } = await supabase.from('sports').insert([data])
-      if (error) throw error
-    } else if (selectedSport) {
-      // Biarkan uploadFile yang menangani penghapusan file lama
-      const { error } = await supabase
-        .from('sports')
-        .update(data)
-        .eq('id', selectedSport.id)
-
-      if (error) throw error
-    }
-
-    fetchSports()
-    setIsModalOpen(false)
-  } catch (error) {
-    console.error('Error saving sport:', error)
-  }
-}
   const confirmDelete = async () => {
-    if (!sportToDelete) return
+    if (!sportToDelete) return;
 
     try {
-      // Hapus gambar dari storage jika ada
-      if (sportToDelete.imageurl) {
-        await deleteOldImage(sportToDelete.imageurl)
-      }
-
-      const { error } = await supabase
-        .from('sports')
-        .delete()
-        .eq('id', sportToDelete.id)
-
-      if (error) throw error
-
-      fetchSports()
-      setIsDeleteModalOpen(false)
+      if (sportToDelete.imageurl) await deleteOldImage(sportToDelete.imageurl);
+      await supabase.from('sports').delete().eq('id', sportToDelete.id);
+      fetchSports();
+      setIsDeleteModalOpen(false);
     } catch (error) {
-      console.error('Error deleting sport:', error)
+      console.error('Error deleting sport:', error);
     }
-  }
-
-
-  if (loading) {
-    return (
-      <div className="animate-pulse">
-        <h2 className="text-2xl font-bold mb-6 h-8 bg-gray-700 rounded w-1/4"></h2>
-        <div className="bg-gray-700 h-96 rounded-lg"></div>
-      </div>
-    );
-  }
+  };
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-white">Manajemen Olahraga</h1>
         <button
-          onClick={handleAdd}
-          className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700"
+          onClick={() => {
+            setFormMode('create');
+            setSelectedSport(undefined);
+            setIsModalOpen(true);
+          }}
+          className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
         >
           <PlusCircle className="mr-2 h-4 w-4" />
           Tambahkan Olahraga
         </button>
       </div>
 
-      <div className="bg-gray-800 shadow overflow-hidden sm:rounded-lg border border-gray-700">
-        <table className="min-w-full divide-y divide-gray-700">
-          <thead className="bg-gray-700">
-            <tr>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Gambar</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Nama</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Aksi</th>
-            </tr>
-          </thead>
-          <tbody className="bg-gray-800 divide-y divide-gray-700">
-            {sports.length === 0 ? (
-              <tr>
-                <td colSpan={2} className="px-6 py-4 text-center text-sm text-gray-400">
-                  No sports available. Add your first sport.
-                </td>
-              </tr>
-            ) : (
-              sports.map((sport) => (
-                <tr key={sport.id} className="hover:bg-gray-700">
-                  <td className="px-4 py-4 whitespace-nowrap">
-                    {sport.imageurl ? (
-                      <img src={sport.imageurl} alt={sport.name} className="w-10 h-10 object-cover rounded border" />
-                    ) : (
-                      <span className="text-gray-500">-</span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-white">{sport.name}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button
-                      onClick={() => handleEdit(sport)}
-                      className="text-blue-400 hover:text-blue-300 mr-4"
-                    >
-                      <Edit className="h-4 w-4" />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(sport)}
-                      className="text-red-400 hover:text-red-300"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+      {loading ? (
+        <div className="animate-pulse h-96 bg-gray-700 rounded" />
+      ) : (
+        <SportTable sports={sports} onEdit={(sport) => {
+          setFormMode('edit');
+          setSelectedSport(sport);
+          setIsModalOpen(true);
+        }} onDelete={(sport) => {
+          setSportToDelete(sport);
+          setIsDeleteModalOpen(true);
+        }} />
+      )}
 
       {/* Form Modal */}
       {isModalOpen && (
-        <Modal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          title={`${formMode === 'create' ? 'Add' : 'Edit'} Sport`}
-        >
-          <SportForm
-            sport={selectedSport}
-            onSubmit={handleSubmit}
-            onCancel={() => setIsModalOpen(false)}
-          />
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={`${formMode === 'create' ? 'Add' : 'Edit'} Sport`}>
+          <SportForm sport={selectedSport} onSubmit={handleSubmit} onCancel={() => setIsModalOpen(false)} />
         </Modal>
       )}
 
-      {/* Delete Confirmation Modal */}
-      {isDeleteModalOpen && (
-        <Modal
-          isOpen={isDeleteModalOpen}
-          onClose={() => setIsDeleteModalOpen(false)}
-          title="Confirm Delete"
-        >
-          <div className="mt-2">
-            <p className="text-sm text-gray-400">
-              Are you sure you want to delete this sport? This action cannot be undone.
-            </p>
-          </div>
-          <div className="mt-4 flex justify-end space-x-3">
-            <button
-              type="button"
-              className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-200 bg-gray-700 border border-gray-600 rounded-md hover:bg-gray-600"
-              onClick={() => setIsDeleteModalOpen(false)}
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700"
-              onClick={confirmDelete}
-            >
-              Delete
-            </button>
-          </div>
-        </Modal>
-      )}
+      {/* Delete Modal */}
+      <DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
-} 
+}

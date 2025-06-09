@@ -1,17 +1,15 @@
+// src/app/admin/teams/page.tsx
 'use client';
 
 import { useState } from 'react';
 import { PlusCircle } from 'lucide-react';
-
 import { useTeams } from './useTeams';
-import TeamTable from './TeamTable';
-import DeleteConfirmModal from './DeleteConfirmModal';
-
 import Modal from '@/components/Modal';
 import TeamForm from '@/components/forms/TeamForm';
-
+import TeamTable from './TeamTable';
+import DeleteConfirmModal from './DeleteConfirmModal';
 import { Team } from '@/types/database.types';
-import { supabase } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase';
 
 export default function TeamsPage() {
   const { teams, setTeams, loading } = useTeams();
@@ -40,54 +38,31 @@ export default function TeamsPage() {
 
   const confirmDelete = async () => {
     if (!teamToDelete) return;
-
-    try {
-      const { error } = await supabase
-        .from('teams')
-        .delete()
-        .eq('id', teamToDelete.id);
-
-      if (error) throw error;
-
+    const { error } = await supabase.from('teams').delete().eq('id', teamToDelete.id);
+    if (!error) {
       setTeams(teams.filter(t => t.id !== teamToDelete.id));
       setIsDeleteModalOpen(false);
-    } catch (error: any) {
-      console.error('Error deleting team:', error.message);
-      alert('Failed to delete team: ' + error.message);
     }
   };
 
   const handleSubmit = async (data: Partial<Team>) => {
     try {
       if (formMode === 'create') {
-        const { data: newData, error } = await supabase
-          .from('teams')
-          .insert({ name: data.name, company: data.company })
-          .select();
-
-        if (error) throw error;
-        if (newData && newData.length) {
-          setTeams([...teams, newData[0]]);
-        }
+        const { data: newData, error } = await supabase.from('teams').insert({ name: data.name, company: data.company }).select();
+        if (!error && newData?.length) setTeams([...teams, newData[0]]);
       } else if (selectedTeam) {
         const { data: updatedData, error } = await supabase
           .from('teams')
           .update({ name: data.name, company: data.company })
           .eq('id', selectedTeam.id)
           .select();
-
-        if (error) throw error;
-        if (updatedData && updatedData.length) {
-          setTeams(
-            teams.map(team => team.id === selectedTeam.id ? updatedData[0] : team)
-          );
+        if (!error && updatedData?.length) {
+          setTeams(teams.map(t => t.id === selectedTeam.id ? updatedData[0] : t));
         }
       }
-
       setIsModalOpen(false);
-    } catch (error: any) {
-      console.error('Error saving team:', error.message);
-      alert('Failed to save team: ' + error.message);
+    } catch (err: any) {
+      console.error('Error saving team:', err.message);
     }
   };
 
@@ -104,24 +79,11 @@ export default function TeamsPage() {
         </button>
       </div>
 
-      <TeamTable
-        teams={teams}
-        loading={loading}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      <TeamTable teams={teams} loading={loading} onEdit={handleEdit} onDelete={handleDelete} />
 
       {isModalOpen && (
-        <Modal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          title={`${formMode === 'create' ? 'Tambah' : 'Edit'} Grup`}
-        >
-          <TeamForm
-            team={selectedTeam}
-            onSubmit={handleSubmit}
-            onCancel={() => setIsModalOpen(false)}
-          />
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={`${formMode === 'create' ? 'Add' : 'Edit'} Team`}>
+          <TeamForm team={selectedTeam} onSubmit={handleSubmit} onCancel={() => setIsModalOpen(false)} />
         </Modal>
       )}
 

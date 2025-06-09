@@ -8,7 +8,7 @@ export default function Footer() {
           Kalventis Sport Festival © {new Date().getFullYear()} - Kalventis. All rights reserved.
         </div>
         <div className="w-full md:w-auto text-left md:text-right text-indigo-700 font-semibold">
-          Version 1.1.1
+          Version 1.0.0
         </div>
       </div>
     </footer>

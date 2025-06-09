@@ -109,7 +109,7 @@ export default function MedalTally({ medals }: MedalTallyProps) {
                 <td className="py-4 px-4 text-center text-gray-500 font-bold">{counts.silver}</td>
                 <td className="py-4 px-4 text-center text-orange-500 font-bold">{counts.bronze}</td>
                 <td className="py-4 px-4 text-center font-extrabold" style={{ color: 'rgb(0, 52, 98)' }}>
-  {counts.total}
+                 {counts.total}
 </td>
 
               </motion.tr>
