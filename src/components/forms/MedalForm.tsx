@@ -28,8 +28,23 @@ export default function MedalForm({ medal, onSubmit, onCancel, medals = [] }: Me
   const fetchTeamsAndSports = async () => {
     const { data: teamsData } = await supabase.from('teams').select('*');
     const { data: sportsData } = await supabase.from('sports').select('*');
+
+    if (sportsData) {
+      const filteredSports: Sport[] = [];
+
+      const fungamesSport = sportsData.find((sport) => sport.kategori === 'fungames');
+      if (fungamesSport) {
+        // Ubah nama jadi "FUN GAMES"
+        filteredSports.push({ ...fungamesSport, name: 'FUN GAMES' });
+      }
+
+      const otherSports = sportsData.filter((sport) => sport.kategori !== 'esport' && sport.kategori !== 'fungames');
+      filteredSports.push(...otherSports);
+
+      setSports(filteredSports);
+    }
+
     if (teamsData) setTeams(teamsData);
-    if (sportsData) setSports(sportsData);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -38,7 +53,6 @@ export default function MedalForm({ medal, onSubmit, onCancel, medals = [] }: Me
     const { sport_id, gold, silver, bronze } = formData;
     if (!sport_id) return;
 
-    // Ambil semua entri untuk olahraga yang sama (kecuali diri sendiri jika sedang edit)
     const sameSportMedals = medals.filter(
       (m) => m.sport_id === sport_id && (!medal || m.id !== medal.id)
     );

@@ -26,18 +26,49 @@ export default function MedalsPage() {
     fetchAll();
   }, []);
 
-  async function fetchAll() {
-    setLoading(true);
-    const [medalRes, teamRes, sportRes] = await Promise.all([
-      supabase.from("medals").select("*"),
-      supabase.from("teams").select("*"),
-      supabase.from("sports").select("*"),
-    ]);
-    setMedals(medalRes.data || []);
-    setTeams(teamRes.data || []);
-    setSports(sportRes.data || []);
-    setLoading(false);
+const fetchAll = async () => {
+  setLoading(true);
+
+  const [medalRes, teamRes, sportRes] = await Promise.all([
+    supabase.from("medals").select("*"),
+    supabase.from("teams").select("*"),
+    supabase.from("sports").select("*"),
+  ]);
+
+  const medalsData = medalRes.data || [];
+  const teamsData = teamRes.data || [];
+  const sportsData = sportRes.data || [];
+
+  const usedFungames = new Set(
+    medalsData
+      .map((m) => sportsData.find((s) => s.id === m.sport_id))
+      .filter((s) => s?.kategori === "fungames")
+      .map((s) => s!.id)
+  );
+
+  const filteredSports: Sport[] = [];
+
+  // 1. Tambahkan semua sport biasa (non esport dan non fungames)
+  for (const sport of sportsData) {
+    if (sport.kategori === "esport" || sport.kategori === "fungames") continue;
+    filteredSports.push(sport);
   }
+
+  // 2. Tambahkan satu "fungames" jika digunakan
+  const oneFungames = sportsData.find(
+    (s) => s.kategori === "fungames" && usedFungames.has(s.id)
+  );
+  if (oneFungames) {
+    filteredSports.push({ ...oneFungames, name: "FUN GAMES" });
+  }
+
+  setMedals(medalsData);
+  setTeams(teamsData);
+  setSports(filteredSports);
+  setLoading(false);
+};
+
+
 
   const handleAdd = () => {
     setFormMode("create");
@@ -71,7 +102,8 @@ export default function MedalsPage() {
 
   const filteredMedals = medals.filter((medal) => {
     const teamName = teams.find((t) => t.id === medal.team_id)?.name || "";
-    const sportName = sports.find((s) => s.id === medal.sport_id)?.name || "";
+    const sport = sports.find((s) => s.id === medal.sport_id);
+    const sportName = sport?.kategori === "fungames" ? "FUN GAMES" : sport?.name || "";
 
     const matchesTeam = teamFilter === "semua" || medal.team_id === teamFilter;
     const matchesSport = sportFilter === "semua" || medal.sport_id === sportFilter;
@@ -124,7 +156,7 @@ export default function MedalsPage() {
             <option value="semua">Semua Olahraga</option>
             {sports.map((sport) => (
               <option key={sport.id} value={sport.id}>
-                {sport.name}
+                {sport.kategori === "fungames" ? "FUN GAMES" : sport.name}
               </option>
             ))}
           </select>
@@ -182,13 +214,15 @@ export default function MedalsPage() {
               filteredMedals.map((medal) => {
                 const team = teams.find((t) => t.id === medal.team_id);
                 const sport = sports.find((s) => s.id === medal.sport_id);
+                const sportDisplayName = sport?.kategori === "fungames" ? "FUN GAMES" : sport?.name;
+
                 return (
                   <tr key={medal.id} className="hover:bg-gray-700">
                     <td className="px-6 py-4 whitespace-nowrap text-white font-medium">
                       {team?.name || "-"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-white">
-                      {sport?.name || "-"}
+                      {sportDisplayName || "-"}
                     </td>
                     <td className="px-3 py-4 whitespace-nowrap text-center text-yellow-300 font-bold">
                       {medal.gold}
