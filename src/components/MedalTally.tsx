@@ -61,11 +61,17 @@ export default function MedalTally({ medals }: MedalTallyProps) {
   }
 
   // ✅ Perbaikan perengkingan sesuai aturan olimpiade
-  const sortedWithMedals = Object.entries(medalsByTeam).sort(([, a], [, b]) => {
-    if (b.gold !== a.gold) return b.gold - a.gold
-    if (b.silver !== a.silver) return b.silver - a.silver
-    return b.bronze - a.bronze
-  })
+ const sortedWithMedals = Object.entries(medalsByTeam).sort(([idA, a], [idB, b]) => {
+  if (b.gold !== a.gold) return b.gold - a.gold
+  if (b.silver !== a.silver) return b.silver - a.silver
+  if (b.bronze !== a.bronze) return b.bronze - a.bronze
+
+  // Tie-break: urutkan berdasarkan nama tim (Grup A, Grup B, ...)
+  const nameA = teams[idA]?.name || ''
+  const nameB = teams[idB]?.name || ''
+  return nameA.localeCompare(nameB)
+})
+
 
   const sortedWithoutMedals = teamsWithNoMedals
     .map(id => [id, { gold: 0, silver: 0, bronze: 0, total: 0, score: 0 }] as [string, MedalCounts])
