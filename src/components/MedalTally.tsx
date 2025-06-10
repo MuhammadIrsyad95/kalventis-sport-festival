@@ -60,8 +60,8 @@ export default function MedalTally({ medals }: MedalTallyProps) {
     return match ? match[1].toUpperCase() : ''
   }
 
+  // ✅ Perbaikan perengkingan sesuai aturan olimpiade
   const sortedWithMedals = Object.entries(medalsByTeam).sort(([, a], [, b]) => {
-    if (b.score !== a.score) return b.score - a.score
     if (b.gold !== a.gold) return b.gold - a.gold
     if (b.silver !== a.silver) return b.silver - a.silver
     return b.bronze - a.bronze
