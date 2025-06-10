@@ -61,7 +61,7 @@ export default function SportsSection({ sports }: { sports: Sport[] }) {
             {Object.entries(kategoriLainnya).map(([kategori, list]) => {
               const sportContoh = list[0] // Ambil satu olahraga dari kategori tsb
               return (
-                <Link key={kategori} href={`/sports/${sportContoh.id}`} className="group block">
+                <Link key={kategori} href={`/kategori/${kategori}`} className="group block">
                   <div className="rounded-xl overflow-hidden shadow hover:shadow-lg transition bg-white">
                     {sportContoh.imageurl ? (
                       <img
