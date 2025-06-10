@@ -35,7 +35,6 @@ export default function MedalTally({ medals }: MedalTallyProps) {
     score: number
   }
 
-  // Hitung medal counts per tim
   const medalsByTeam = medals.reduce<Record<string, MedalCounts>>((acc, medal) => {
     if (!medal.team_id) return acc
     if (!acc[medal.team_id]) {
@@ -52,21 +51,15 @@ export default function MedalTally({ medals }: MedalTallyProps) {
 
   const allTeamIds = Object.keys(teams)
   const teamsWithNoMedals = allTeamIds.filter(id => !medalsByTeam[id])
-
-  // Cek apakah SEMUA tim belum punya medali (medals kosong atau medalsByTeam kosong untuk semua tim)
   const noMedalsAtAll = medals.length === 0 || teamsWithNoMedals.length === allTeamIds.length
 
-  // Urutan khusus untuk grup jika belum ada medali
   const specialOrder = ['K', 'A', 'L', 'V', 'E', 'N', 'T', 'I', 'S']
 
-  // Fungsi bantu untuk dapatkan huruf awal nama tim (misal 'Grup K' -> 'K')
   function getGroupLetter(teamName: string) {
-    // Cari huruf kapital pertama di nama, biasanya di "Grup X"
-    const match = teamName.match(/[A-Z]/)
-    return match ? match[0] : ''
+    const match = teamName.match(/Grup\s([A-Z])/i)
+    return match ? match[1].toUpperCase() : ''
   }
 
-  // Sorting tim dengan medali (ranking normal)
   const sortedWithMedals = Object.entries(medalsByTeam).sort(([, a], [, b]) => {
     if (b.score !== a.score) return b.score - a.score
     if (b.gold !== a.gold) return b.gold - a.gold
@@ -74,7 +67,6 @@ export default function MedalTally({ medals }: MedalTallyProps) {
     return b.bronze - a.bronze
   })
 
-  // Tim tanpa medali, urutkan sesuai alfabet nama tim
   const sortedWithoutMedals = teamsWithNoMedals
     .map(id => [id, { gold: 0, silver: 0, bronze: 0, total: 0, score: 0 }] as [string, MedalCounts])
     .sort(([idA], [idB]) => {
@@ -83,17 +75,14 @@ export default function MedalTally({ medals }: MedalTallyProps) {
       return nameA.localeCompare(nameB)
     })
 
-  // Kalau belum ada medali sama sekali, tampilkan SEMUA tim urut berdasarkan specialOrder
-  // Urutkan semua tim sesuai posisi huruf awal di specialOrder
   const finalSorted = noMedalsAtAll
     ? allTeamIds
         .map(id => [id, { gold: 0, silver: 0, bronze: 0, total: 0, score: 0 }] as [string, MedalCounts])
         .sort(([idA], [idB]) => {
           const letterA = getGroupLetter(teams[idA]?.name || '') || 'Z'
           const letterB = getGroupLetter(teams[idB]?.name || '') || 'Z'
-          const indexA = specialOrder.indexOf(letterA.toUpperCase())
-          const indexB = specialOrder.indexOf(letterB.toUpperCase())
-          // Kalau huruf tidak ditemukan di specialOrder, taruh di belakang (index = 999)
+          const indexA = specialOrder.indexOf(letterA)
+          const indexB = specialOrder.indexOf(letterB)
           return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB)
         })
     : [...sortedWithMedals, ...sortedWithoutMedals]
@@ -112,31 +101,16 @@ export default function MedalTally({ medals }: MedalTallyProps) {
         <table className="w-full">
           <thead>
             <tr className="bg-indigo-200">
-              <th
-                className="py-4 px-4 text-left text-base font-bold"
-                style={{ color: 'rgb(0, 52, 98)' }}
-              >
+              <th className="py-4 px-4 text-left text-base font-bold" style={{ color: 'rgb(0, 52, 98)' }}>
                 Peringkat
               </th>
-              <th
-                className="py-4 px-4 text-left text-base font-bold"
-                style={{ color: 'rgb(0, 52, 98)' }}
-              >
+              <th className="py-4 px-4 text-left text-base font-bold" style={{ color: 'rgb(0, 52, 98)' }}>
                 Grup
               </th>
-              <th className="py-6 px-4 text-center text-4xl font-black text-yellow-400 drop-shadow-md">
-                🥇
-              </th>
-              <th className="py-6 px-4 text-center text-4xl font-black text-gray-400 drop-shadow-md">
-                🥈
-              </th>
-              <th className="py-6 px-4 text-center text-4xl font-black text-orange-400 drop-shadow-md">
-                🥉
-              </th>
-              <th
-                className="py-4 px-4 text-center text-base font-bold"
-                style={{ color: 'rgb(0, 52, 98)' }}
-              >
+              <th className="py-6 px-4 text-center text-4xl font-black text-yellow-400 drop-shadow-md">🥇</th>
+              <th className="py-6 px-4 text-center text-4xl font-black text-gray-400 drop-shadow-md">🥈</th>
+              <th className="py-6 px-4 text-center text-4xl font-black text-orange-400 drop-shadow-md">🥉</th>
+              <th className="py-4 px-4 text-center text-base font-bold" style={{ color: 'rgb(0, 52, 98)' }}>
                 Total
               </th>
             </tr>
@@ -157,10 +131,7 @@ export default function MedalTally({ medals }: MedalTallyProps) {
                 <td className="py-4 px-4 text-center text-yellow-500 font-bold">{counts.gold}</td>
                 <td className="py-4 px-4 text-center text-gray-500 font-bold">{counts.silver}</td>
                 <td className="py-4 px-4 text-center text-orange-500 font-bold">{counts.bronze}</td>
-                <td
-                  className="py-4 px-4 text-center font-extrabold"
-                  style={{ color: 'rgb(0, 52, 98)' }}
-                >
+                <td className="py-4 px-4 text-center font-extrabold" style={{ color: 'rgb(0, 52, 98)' }}>
                   {counts.total}
                 </td>
               </motion.tr>
@@ -170,8 +141,8 @@ export default function MedalTally({ medals }: MedalTallyProps) {
       </div>
 
       <div className="px-6 py-3 bg-gray-50 border-t border-gray-200 text-sm text-gray-600 text-left">
-        <em>Disclaimer:</em> Ini adalah perolehan medali <strong>sementara</strong>. Hasil akhir dapat berubah setelah proses{' '}
-        <strong>verifikasi final</strong>.
+        <em>Disclaimer:</em> Ini adalah perolehan medali <strong>sementara</strong>. Hasil akhir dapat
+        berubah setelah proses <strong>verifikasi final</strong>.
       </div>
     </div>
   )
