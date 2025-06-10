@@ -55,7 +55,6 @@ export default function SportsByKategoriPage() {
       return;
     }
 
-    // Set default tab untuk sport yang baru diexpand
     setActiveTabs((prev) => ({
       ...prev,
       [sportId]: prev[sportId] || 'ongoing',
@@ -105,14 +104,12 @@ export default function SportsByKategoriPage() {
                   isExpanded ? 'col-span-full' : ''
                 )}
               >
-                {/* Sport Card */}
+                {/* Sport Card (Clickable) */}
                 <div
                   onClick={() => handleExpand(sport.id)}
-                  className="cursor-pointer transition group"
+                  className="cursor-pointer group"
                 >
-                  <div className="bg-white rounded-lg shadow-md hover:ring-2 hover:ring-indigo-200 transition overflow-hidden">
-                    <SportCard sport={sport} />
-                  </div>
+                  <SportCard sport={sport} />
                 </div>
 
                 {/* Expand Detail */}
@@ -125,7 +122,7 @@ export default function SportsByKategoriPage() {
                   )}
                 >
                   <div className="bg-white rounded-lg shadow-md p-4">
-                    {/* Bagan */}
+                    {/* Bagan Turnamen */}
                     {sport.bagan_url && (
                       <div className="mb-6">
                         <img
@@ -136,7 +133,7 @@ export default function SportsByKategoriPage() {
                       </div>
                     )}
 
-                    {/* Filter Tab */}
+                    {/* Tab Filter Pertandingan */}
                     <div className="flex space-x-4 mb-6 overflow-x-auto">
                       {(['ongoing', 'upcoming', 'past'] as const).map((key) => (
                         <button
@@ -157,7 +154,7 @@ export default function SportsByKategoriPage() {
                       ))}
                     </div>
 
-                    {/* Match Carousel */}
+                    {/* Carousel Pertandingan */}
                     {filteredMatches[activeTab].length > 0 ? (
                       <MatchCarousel matches={filteredMatches[activeTab]} />
                     ) : (
@@ -171,7 +168,7 @@ export default function SportsByKategoriPage() {
                       </div>
                     )}
 
-                    {/* Rules */}
+                    {/* Peraturan */}
                     {sport.rules && (
                       <div>
                         <h4 className="text-lg font-semibold text-indigo-600 mt-6 mb-2">

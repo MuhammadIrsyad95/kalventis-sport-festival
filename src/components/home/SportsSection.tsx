@@ -59,30 +59,10 @@ export default function SportsSection({ sports }: { sports: Sport[] }) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {Object.entries(kategoriLainnya).map(([kategori, list]) => {
-              const sportContoh = list[0] // Ambil satu olahraga dari kategori tsb
+              const sportContoh = list[0] // Ambil satu sport dari kategori tsb
               return (
-                <Link key={kategori} href={`/kategori/${kategori}`} className="group block">
-                  <div className="rounded-xl overflow-hidden shadow hover:shadow-lg transition bg-white">
-                    {sportContoh.imageurl ? (
-                      <img
-                        src={sportContoh.imageurl}
-                        alt={sportContoh.name}
-                        className="w-full h-40 object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-40 bg-gray-200 flex items-center justify-center text-gray-400">
-                        Tidak ada gambar
-                      </div>
-                    )}
-                    <div className="p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 group-hover:text-indigo-600">
-                        {kategoriLabels[kategori] || kategori}
-                      </h3>
-                      <p className="text-sm text-gray-500">
-                        {list.length} cabang dalam kategori ini
-                      </p>
-                    </div>
-                  </div>
+                <Link key={kategori} href={`/kategori/${kategori}`} className="block group">
+                  <SportCard sport={sportContoh} />
                 </Link>
               )
             })}
