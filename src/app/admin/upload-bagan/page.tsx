@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase/client';
 import ImageUploader from '@/components/upload/ImageUploader';
 import Modal from '@/components/Modal';
 import DeleteConfirmationModal from '@/components/modals/DeleteConfirmationModal';
-import ModalActionButtons from '@/components/modals/ModalActionButtons'; 
+import ModalActionButtons from '@/components/modals/ModalActionButtons';
 import { Sport } from '@/types/database.types';
 import { deleteOldImage } from '@/lib/storage';
 import { Plus, Edit, Trash2 } from 'lucide-react';
@@ -21,21 +21,15 @@ export default function BaganSportsPage() {
   const [baganUrl, setBaganUrl] = useState<string>('');
   const [uploading, setUploading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedFilter, setSelectedFilter] = useState('');
 
   useEffect(() => {
     fetchSports();
   }, []);
 
   useEffect(() => {
-    if (!searchTerm) {
-      setFilteredSports(sports);
-    } else {
-      const lower = searchTerm.toLowerCase();
-      setFilteredSports(
-        sports.filter((s) => s.name.toLowerCase().includes(lower))
-      );
-    }
-  }, [searchTerm, sports]);
+    filterSports();
+  }, [searchTerm, selectedFilter, sports]);
 
   const fetchSports = async () => {
     setLoading(true);
@@ -45,6 +39,18 @@ export default function BaganSportsPage() {
       setFilteredSports(data);
     }
     setLoading(false);
+  };
+
+  const filterSports = () => {
+    let result = [...sports];
+    if (searchTerm) {
+      const lower = searchTerm.toLowerCase();
+      result = result.filter((s) => s.name.toLowerCase().includes(lower));
+    }
+    if (selectedFilter) {
+      result = result.filter((s) => s.name === selectedFilter);
+    }
+    setFilteredSports(result);
   };
 
   const openEditModal = (sport: Sport) => {
@@ -61,7 +67,10 @@ export default function BaganSportsPage() {
     }
     setUploading(true);
     try {
-      const { error } = await supabase.from('sports').update({ bagan_url: baganUrl }).eq('id', selectedSport.id);
+      const { error } = await supabase
+        .from('sports')
+        .update({ bagan_url: baganUrl })
+        .eq('id', selectedSport.id);
       if (error) throw error;
       await fetchSports();
       setIsModalOpen(false);
@@ -76,7 +85,10 @@ export default function BaganSportsPage() {
     try {
       if (sportToDeleteImage.bagan_url) {
         await deleteOldImage(sportToDeleteImage.bagan_url);
-        await supabase.from('sports').update({ bagan_url: null }).eq('id', sportToDeleteImage.id);
+        await supabase
+          .from('sports')
+          .update({ bagan_url: null })
+          .eq('id', sportToDeleteImage.id);
         await fetchSports();
       }
       setIsDeleteImageModalOpen(false);
@@ -85,26 +97,44 @@ export default function BaganSportsPage() {
     }
   };
 
+  const sportNames = Array.from(new Set(sports.map((s) => s.name))).sort();
+
   return (
     <div>
       <h1 className="text-2xl font-bold text-white mb-6">Upload Bagan Disini</h1>
 
-      {/* Search Bar */}
-      <div className="mb-4 flex max-w-md">
+      {/* Search & Filter Bar */}
+      <div className="mb-4 flex flex-wrap items-center gap-2">
+        <select
+          value={selectedFilter}
+          onChange={(e) => setSelectedFilter(e.target.value)}
+          className="px-3 py-2 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">Semua Olahraga</option>
+          {sportNames.map((name) => (
+            <option key={name} value={name}>
+              {name}
+            </option>
+          ))}
+        </select>
+
+        <button
+          onClick={() => {
+            setSearchTerm('');
+            setSelectedFilter('');
+          }}
+          className="px-4 py-2 bg-gray-600 rounded-md hover:bg-gray-500 transition text-white"
+        >
+          Reset
+        </button>
+
         <input
           type="text"
           placeholder="Cari olahraga..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="flex-grow px-4 py-2 rounded-l-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="ml-auto px-4 py-2 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <button
-          onClick={() => setSearchTerm('')}
-          className="px-4 py-2 bg-gray-600 rounded-r-md hover:bg-gray-500 transition text-white"
-          aria-label="Reset pencarian"
-        >
-          Reset
-        </button>
       </div>
 
       {loading ? (
@@ -190,7 +220,6 @@ export default function BaganSportsPage() {
               />
             </div>
 
-            {/* Ganti tombol dengan komponen ModalActionButtons */}
             <ModalActionButtons
               onCancel={() => setIsModalOpen(false)}
               onSave={handleSave}
