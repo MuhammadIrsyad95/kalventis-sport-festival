@@ -3,68 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import MatchCard from '@/components/MatchCard';
+import MatchCarousel from '@/components/MatchCarousel';
 import SportCard from '@/components/SportCard';
-import Slider from 'react-slick';
 import clsx from 'clsx';
-
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 
 import type { Database } from '@/types/supabase';
 
 type Sport = Database['public']['Tables']['sports']['Row'];
 type Match = Database['public']['Tables']['matches']['Row'];
-
-function Arrow(props: any) {
-  const { style, onClick, direction } = props;
-  return (
-    <div
-      style={{
-        ...style,
-        position: 'absolute',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        [direction === 'left' ? 'left' : 'right']: 0,
-        display: 'flex',
-        background: 'rgba(30,30,30,0.5)',
-        borderRadius: '50%',
-        width: 48,
-        height: 48,
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 2,
-        fontSize: 0,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-        cursor: 'pointer',
-      }}
-      onClick={onClick}
-    >
-      <span style={{ fontSize: 32, color: '#fff', opacity: 0.8, lineHeight: 1 }}>
-        {direction === 'left' ? '‹' : '›'}
-      </span>
-    </div>
-  );
-}
-
-function getSliderSettings(length: number) {
-  return {
-    dots: false,
-    infinite: length > 3,
-    speed: 500,
-    slidesToShow: length >= 3 ? 3 : length,
-    slidesToScroll: 1,
-    arrows: true,
-    autoplay: length > 1,
-    autoplaySpeed: 3000,
-    nextArrow: <Arrow direction="right" />,
-    prevArrow: <Arrow direction="left" />,
-    responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: length >= 2 ? 2 : length } },
-      { breakpoint: 640, settings: { slidesToShow: 1 } },
-    ],
-  };
-}
 
 function filterMatchesByTime(matches: Match[]) {
   const now = Date.now();
@@ -86,8 +32,8 @@ export default function SportsByKategoriPage() {
   const [sports, setSports] = useState<Sport[]>([]);
   const [expandedSportId, setExpandedSportId] = useState<string | null>(null);
   const [matchesBySport, setMatchesBySport] = useState<Record<string, Match[]>>({});
+  const [activeTabs, setActiveTabs] = useState<Record<string, 'ongoing' | 'upcoming' | 'past'>>({});
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'ongoing' | 'upcoming' | 'past'>('ongoing');
 
   useEffect(() => {
     async function fetchSports() {
@@ -108,6 +54,13 @@ export default function SportsByKategoriPage() {
       setExpandedSportId(null);
       return;
     }
+
+    // Set default tab untuk sport yang baru diexpand
+    setActiveTabs((prev) => ({
+      ...prev,
+      [sportId]: prev[sportId] || 'ongoing',
+    }));
+
     if (!matchesBySport[sportId]) {
       const { data, error } = await supabase
         .from('matches')
@@ -120,7 +73,12 @@ export default function SportsByKategoriPage() {
         setMatchesBySport((prev) => ({ ...prev, [sportId]: data || [] }));
       }
     }
+
     setExpandedSportId(sportId);
+  }
+
+  function handleTabChange(sportId: string, tab: 'ongoing' | 'upcoming' | 'past') {
+    setActiveTabs((prev) => ({ ...prev, [sportId]: tab }));
   }
 
   if (loading) return <div className="p-6 text-center">Loading...</div>;
@@ -137,6 +95,7 @@ export default function SportsByKategoriPage() {
             const isExpanded = expandedSportId === sport.id;
             const allMatches = matchesBySport[sport.id] || [];
             const filteredMatches = filterMatchesByTime(allMatches);
+            const activeTab = activeTabs[sport.id] || 'ongoing';
 
             return (
               <div
@@ -187,7 +146,7 @@ export default function SportsByKategoriPage() {
                               ? 'border-[rgb(0,52,98)] text-[rgb(0,52,98)] font-semibold'
                               : 'border-transparent text-gray-600 hover:text-[rgb(0,52,98)] transition'
                           }`}
-                          onClick={() => setActiveTab(key)}
+                          onClick={() => handleTabChange(sport.id, key)}
                         >
                           {key === 'ongoing'
                             ? 'Sedang Berlangsung'
@@ -198,15 +157,9 @@ export default function SportsByKategoriPage() {
                       ))}
                     </div>
 
-                    {/* Carousel */}
+                    {/* Match Carousel */}
                     {filteredMatches[activeTab].length > 0 ? (
-                      <Slider {...getSliderSettings(filteredMatches[activeTab].length)}>
-                        {filteredMatches[activeTab].map((match) => (
-                          <div key={match.id} className="px-2">
-                            <MatchCard match={match} />
-                          </div>
-                        ))}
-                      </Slider>
+                      <MatchCarousel matches={filteredMatches[activeTab]} />
                     ) : (
                       <div className="text-gray-500 px-4 py-8 text-center">
                         Tidak ada pertandingan{' '}
