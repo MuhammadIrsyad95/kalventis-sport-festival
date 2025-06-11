@@ -60,18 +60,15 @@ export default function MedalTally({ medals }: MedalTallyProps) {
     return match ? match[1].toUpperCase() : ''
   }
 
-  // ✅ Perbaikan perengkingan sesuai aturan olimpiade
- const sortedWithMedals = Object.entries(medalsByTeam).sort(([idA, a], [idB, b]) => {
-  if (b.gold !== a.gold) return b.gold - a.gold
-  if (b.silver !== a.silver) return b.silver - a.silver
-  if (b.bronze !== a.bronze) return b.bronze - a.bronze
+  const sortedWithMedals = Object.entries(medalsByTeam).sort(([idA, a], [idB, b]) => {
+    if (b.gold !== a.gold) return b.gold - a.gold
+    if (b.silver !== a.silver) return b.silver - a.silver
+    if (b.bronze !== a.bronze) return b.bronze - a.bronze
 
-  // Tie-break: urutkan berdasarkan nama tim (Grup A, Grup B, ...)
-  const nameA = teams[idA]?.name || ''
-  const nameB = teams[idB]?.name || ''
-  return nameA.localeCompare(nameB)
-})
-
+    const nameA = teams[idA]?.name || ''
+    const nameB = teams[idB]?.name || ''
+    return nameA.localeCompare(nameB)
+  })
 
   const sortedWithoutMedals = teamsWithNoMedals
     .map(id => [id, { gold: 0, silver: 0, bronze: 0, total: 0, score: 0 }] as [string, MedalCounts])
@@ -101,24 +98,21 @@ export default function MedalTally({ medals }: MedalTallyProps) {
     )
   }
 
+  const headerTextStyle = 'text-base font-bold'
+  const textColor = 'text-gray-800'
+
   return (
     <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="bg-indigo-200">
-              <th className="py-4 px-4 text-left text-base font-bold" style={{ color: 'rgb(0, 52, 98)' }}>
-                Peringkat
-              </th>
-              <th className="py-4 px-4 text-left text-base font-bold" style={{ color: 'rgb(0, 52, 98)' }}>
-                Grup
-              </th>
-              <th className="py-6 px-4 text-center text-4xl font-black text-yellow-400 drop-shadow-md">🥇</th>
-              <th className="py-6 px-4 text-center text-4xl font-black text-gray-400 drop-shadow-md">🥈</th>
-              <th className="py-6 px-4 text-center text-4xl font-black text-orange-400 drop-shadow-md">🥉</th>
-              <th className="py-4 px-4 text-center text-base font-bold" style={{ color: 'rgb(0, 52, 98)' }}>
-                Total
-              </th>
+              <th className={`py-4 px-4 text-left ${headerTextStyle} ${textColor}`}>Peringkat</th>
+              <th className={`py-4 px-4 text-left ${headerTextStyle} ${textColor}`}>Grup</th>
+              <th className={`py-4 px-4 text-center ${headerTextStyle} ${textColor}`}>Emas</th>
+              <th className={`py-4 px-4 text-center ${headerTextStyle} ${textColor}`}>Perak</th>
+              <th className={`py-4 px-4 text-center ${headerTextStyle} ${textColor}`}>Perunggu</th>
+              <th className={`py-4 px-4 text-center ${headerTextStyle} ${textColor}`}>Total</th>
             </tr>
           </thead>
           <tbody>
@@ -130,14 +124,14 @@ export default function MedalTally({ medals }: MedalTallyProps) {
                 transition={{ delay: index * 0.1 }}
                 className="border-t border-gray-100 hover:bg-indigo-50"
               >
-                <td className="py-4 px-4 text-gray-700 font-semibold">{index + 1}</td>
-                <td className="py-4 px-4 text-gray-900 font-bold">
+                <td className={`py-4 px-4 ${textColor} font-semibold`}>{index + 1}</td>
+                <td className={`py-4 px-4 ${textColor} font-bold`}>
                   {teams[teamId]?.name || 'Memuat...'}
                 </td>
-                <td className="py-4 px-4 text-center text-yellow-500 font-bold">{counts.gold}</td>
-                <td className="py-4 px-4 text-center text-gray-500 font-bold">{counts.silver}</td>
-                <td className="py-4 px-4 text-center text-orange-500 font-bold">{counts.bronze}</td>
-                <td className="py-4 px-4 text-center font-extrabold" style={{ color: 'rgb(0, 52, 98)' }}>
+                <td className={`py-4 px-4 text-center ${textColor} font-bold`}>{counts.gold}</td>
+                <td className={`py-4 px-4 text-center ${textColor} font-bold`}>{counts.silver}</td>
+                <td className={`py-4 px-4 text-center ${textColor} font-bold`}>{counts.bronze}</td>
+                <td className={`py-4 px-4 text-center font-extrabold ${textColor}`}>
                   {counts.total}
                 </td>
               </motion.tr>
