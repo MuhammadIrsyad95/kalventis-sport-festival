@@ -136,7 +136,7 @@ export default function SportDetailPage() {
   const matchesAkanDatang = matches.filter(m => m.match_time && new Date(m.match_time) > new Date(now.getTime() + 2 * 60 * 60 * 1000));
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-indigo-100 to-white text-gray-800">
+    <main className="min-h-screen bg-transparent">
       <div className="max-w-screen-xl mx-auto px-6 py-12">
         <h1 className="text-4xl font-extrabold mb-8" style={{ color: 'rgb(0, 52, 98)' }}>{sport.name}</h1>
 
