@@ -87,7 +87,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-indigo-100 to-white">
+<main className="min-h-screen bg-transparent">
       <div className="max-w-screen-xl mx-auto px-6 py-12">
         <HeroSection />
         <MatchesSection matches={matches} />

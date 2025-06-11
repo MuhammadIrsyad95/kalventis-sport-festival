@@ -2,22 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom CSS Variables */
 :root {
   --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 17, 24, 39; /* gray-900 */
-  --background-end-rgb: 31, 41, 55;   /* gray-800 */
+  --background-start-rgb: 17, 24, 39;
+  --background-end-rgb: 31, 41, 55;
 }
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+  }
+
+  html, body {
+    height: 100%;
+  }
 
 body {
+  @apply antialiased;
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-    to bottom right,
-    rgb(var(--background-start-rgb)),
-    rgb(var(--background-end-rgb))
-  );
+
+  background: url('/images/supper3.png') no-repeat center top, white;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
-/* Glassmorphism effect */
+/* Optional: Responsif untuk layar kecil */
+@media (max-width: 768px) {
+  body {
+    background-size: cover;
+    background-position: top center;
+  }
+}
+
+
+
+}
+
+/* Glassmorphism */
 .glass {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
@@ -25,7 +49,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Animations */
+/* Animation */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -35,19 +59,7 @@ body {
   animation: fadeIn 0.5s ease-in-out;
 }
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-  }
-
-  body {
-    @apply antialiased;
-    background: linear-gradient(to bottom right, #111827, #1f2937);
-    color: #e2e8f0;
-  }
-}
-
+/* Tailwind Components */
 @layer components {
   .card {
     @apply bg-white/10 backdrop-blur-lg rounded-xl shadow-lg border border-white/10 hover:border-white/20 transition-all duration-300;
@@ -66,6 +78,7 @@ body {
   }
 }
 
+/* Custom Utility */
 @layer utilities {
   .text-balance {
     text-wrap: balance;

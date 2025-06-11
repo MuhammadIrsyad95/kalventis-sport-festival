@@ -4,7 +4,7 @@ export default function ContactSection() {
   return (
     <section
       id="contact-section"
-      className="w-full bg-white shadow-inner rounded-t-2xl border-t border-gray-200 py-12 mt-8"
+      className="w-full bg-white shadow-inner rounded-t-2xl border-t border-gray-200 py-12 mt-8 "
     >
       <div className="max-w-screen-xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-gray-700 text-sm">
 
