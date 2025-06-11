@@ -12,7 +12,7 @@ export default function HeroSection() {
     >
       <div className="flex-1 text-center md:text-left">
         <h1
-          className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight"
+          className="text-4xl md:text-6xl font-bold  mb-6 leading-tight"
           style={{ color: 'rgb(0, 52, 98)' }}
         >
           Kalventis Sport Festival

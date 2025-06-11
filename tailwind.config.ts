@@ -1,4 +1,4 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
@@ -26,11 +26,15 @@ const config: Config = {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       fontFamily: {
-        sans: ['Poppins', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        sans: ['Ageo', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        ageo: ['Ageo', 'sans-serif'],
+      },
+      fontSize: {
+        base: '18px', // Naikkan ukuran default font
       },
     },
   },
   plugins: [],
-}
+};
 
-export default config
+export default config;

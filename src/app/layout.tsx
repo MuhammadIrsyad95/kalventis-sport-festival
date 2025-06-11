@@ -1,13 +1,6 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import '../styles/globals.css';
-import { Poppins } from 'next/font/google';
-
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['400', '600', '700'],
-  display: 'swap',
-});
 
 export const metadata = {
   title: 'Sports Live Score',
@@ -16,7 +9,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={poppins.className}>
+    <html lang="en">
       <body className="min-h-screen flex flex-col font-sans">
         <Header />
         <main className="flex-1 pt-16">

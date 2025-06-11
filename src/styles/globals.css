@@ -2,46 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom CSS Variables */
-:root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 17, 24, 39;
-  --background-end-rgb: 31, 41, 55;
-}
-
+/* Font-face declarations for Ageo (tanpa topi) */
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+  @font-face {
+    font-family: 'Ageo';
+    src: url('/font/ageo/Ageo-Medium.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
   }
 
-  html, body {
-    height: 100%;
+  @font-face {
+    font-family: 'Ageo';
+    src: url('/font/ageo/Ageo-Heavy.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
   }
 
-body {
-  @apply antialiased;
-  color: rgb(var(--foreground-rgb));
+  @font-face {
+    font-family: 'Ageo';
+    src: url('/font/ageo/Ageo-Light.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
 
-  background: url('/images/supper3.png') no-repeat center top, white;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
+  html {
+    font-size: 18px; /* Besarin font default */
+  }
 
-/* Optional: Responsif untuk layar kecil */
-@media (max-width: 768px) {
   body {
+    @apply antialiased font-sans;
+    color: rgb(var(--foreground-rgb));
+    background: url('/images/supper3.png') no-repeat center top, white;
     background-size: cover;
-    background-position: top center;
+    background-attachment: fixed;
+  }
+
+  @media (max-width: 768px) {
+    body {
+      background-size: cover;
+      background-position: top center;
+    }
   }
 }
 
-
-
-}
-
-/* Glassmorphism */
+/* Glassmorphism utility */
 .glass {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
@@ -54,7 +61,6 @@ body {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-
 .animate-fadeIn {
   animation: fadeIn 0.5s ease-in-out;
 }
