@@ -75,7 +75,7 @@ export default function MatchesSection({ matches }: { matches: Match[] }) {
   }
 
   return (
-    <section id="matches-section" className="mb-12">
+<section id="matches-section" className="mb-12 scroll-mt-24">
       <h2
         className="text-2xl font-bold mb-6"
         style={{ color: 'rgb(0, 52, 98)' }}

@@ -28,7 +28,7 @@ export default function SportsSection({ sports }: { sports: Sport[] }) {
     }, {})
 
   return (
-    <section id="sports-section" className="mb-12 space-y-12">
+      <section id="sports-section" className="mb-12 space-y-12 scroll-mt-24">
       {/* Bagian: Olahraga (kategori sport) */}
       <div>
         <h2 className="text-2xl font-bold mb-6" style={{ color: 'rgb(0, 52, 98)' }}>

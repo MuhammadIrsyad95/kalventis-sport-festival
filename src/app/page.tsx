@@ -52,6 +52,21 @@ export default function Home() {
     fetchData()
   }, [])
 
+  // ⬇️ Tambahan: Scroll ke anchor jika ada hash di URL
+  useEffect(() => {
+    if (!loading) {
+      const hash = window.location.hash
+      if (hash) {
+        const el = document.querySelector(hash)
+        if (el) {
+          setTimeout(() => {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }, 100) // Delay untuk pastikan elemen sudah render
+        }
+      }
+    }
+  }, [loading])
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
