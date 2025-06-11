@@ -18,7 +18,7 @@ export default function HeroSection() {
           Kalventis Sport Festival
         </h1>
         <p className="text-gray-700 text-lg mb-8 max-w-xl">
-          Sehat bersama menggapai asa.
+          Sehat Bersama, Menggapai Asa.
         </p>
         <Link href="#sports-section">
           <button
@@ -29,13 +29,14 @@ export default function HeroSection() {
         </Link>
       </div>
 
-      <div className="flex-1 flex justify-center">
+      <div className="flex-1 flex justify-center items-center">
         <img
-          src="/images/3.svg"
+          src="/images/new-image-5.svg"
           alt="Athlete Illustration"
-          className="w-full max-w-md h-auto object-contain drop-shadow-xl"
+          className="w-full h-full object-contain drop-shadow-xl"
         />
       </div>
+
     </motion.section>
   )
 }

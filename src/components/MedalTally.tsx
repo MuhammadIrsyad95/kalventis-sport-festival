@@ -106,14 +106,15 @@ export default function MedalTally({ medals }: MedalTallyProps) {
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="bg-indigo-200">
-              <th className={`py-4 px-4 text-left ${headerTextStyle} ${textColor}`}>Peringkat</th>
-              <th className={`py-4 px-4 text-left ${headerTextStyle} ${textColor}`}>Grup</th>
-              <th className={`py-4 px-4 text-center ${headerTextStyle} ${textColor}`}>Emas</th>
-              <th className={`py-4 px-4 text-center ${headerTextStyle} ${textColor}`}>Perak</th>
-              <th className={`py-4 px-4 text-center ${headerTextStyle} ${textColor}`}>Perunggu</th>
-              <th className={`py-4 px-4 text-center ${headerTextStyle} ${textColor}`}>Total</th>
-            </tr>
+           <tr className="bg-[rgb(0,52,98)] text-white text-lg rounded-2xl shadow-xl transition hover:bg-[rgb(0,42,88)]">
+            <th className="py-4 px-8 text-left rounded-l-2xl">Peringkat</th>
+            <th className="py-4 px-8 text-left">Grup</th>
+            <th className="py-4 px-8 text-center">Emas</th>
+            <th className="py-4 px-8 text-center">Perak</th>
+            <th className="py-4 px-8 text-center">Perunggu</th>
+            <th className="py-4 px-8 text-center rounded-r-2xl">Total</th>
+          </tr>
+
           </thead>
           <tbody>
             {finalSorted.map(([teamId, counts], index) => (
