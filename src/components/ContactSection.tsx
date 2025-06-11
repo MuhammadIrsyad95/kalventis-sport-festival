@@ -14,7 +14,7 @@ export default function ContactSection() {
             Hubungi Kami
           </h3>
           <p className="mb-4">
-            Apabila terdapat pertanyaan seputar KSF (Kalventis Sport Festival), silakan hubungi panitia Kalventis untuk informasi lebih lanjut.
+          Apabila terdapat pertanyaan seputar KSF (Kalventis Sport Festival) 2025, silakan hubungi panitia KSF untuk informasi lebih lanjut.
           </p>
         </div>
 
