@@ -1,5 +1,6 @@
 // components/MatchCarousel.tsx
 'use client';
+
 import Slider from 'react-slick';
 import MatchCard from './MatchCard';
 import type { Database } from '@/types/supabase';
@@ -43,7 +44,7 @@ function Arrow(props: any) {
 function getSliderSettings(length: number) {
   return {
     dots: false,
-    infinite: length > 3,
+    infinite: true, // terus bergerak
     speed: 500,
     slidesToShow: length >= 3 ? 3 : length,
     slidesToScroll: 1,
@@ -68,7 +69,16 @@ export default function MatchCarousel({ matches }: { matches: Match[] }) {
     <Slider {...getSliderSettings(matches.length)}>
       {matches.map((match) => (
         <div key={match.id} className="px-2">
-          <MatchCard match={match} />
+          <div
+            className="
+              border border-gray-200 rounded-2xl shadow-sm 
+              transition duration-300 ease-in-out
+              hover:shadow-md hover:border-gray-400
+              hover:scale-105 active:scale-95 cursor-pointer
+            "
+          >
+            <MatchCard match={match} />
+          </div>
         </div>
       ))}
     </Slider>

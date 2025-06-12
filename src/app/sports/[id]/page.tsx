@@ -174,43 +174,95 @@ export default function SportDetailPage() {
         </>
       )}
 
-      <section className="mt-10">
-        <div className="flex gap-4 overflow-x-auto mb-4">
-          {(['ongoing', 'upcoming', 'past'] as const).map(k => (
-            <button
-              key={k}
-              onClick={() => setFilter(k)}
-              className={`pb-2 border-b-2 ${filter === k ? 'border-blue-800 text-blue-900 font-semibold' : 'border-transparent text-gray-600'}`}
-            >
-              {k === 'ongoing' ? 'Sedang Berlangsung' : k === 'upcoming' ? 'Akan Datang' : 'Selesai'}
-            </button>
-          ))}
-        </div>
+     <section className="mt-10">
+  <div className="flex gap-4 overflow-x-auto mb-4">
+    {(['ongoing', 'upcoming', 'past'] as const).map(k => (
+      <button
+        key={k}
+        onClick={() => setFilter(k)}
+        className={`pb-2 border-b-2 ${
+          filter === k
+            ? 'border-blue-800 text-blue-900 font-semibold'
+            : 'border-transparent text-gray-600'
+        }`}
+      >
+        {k === 'ongoing' ? 'Sedang Berlangsung' : k === 'upcoming' ? 'Akan Datang' : 'Selesai'}
+      </button>
+    ))}
+  </div>
 
-        <div>
-          {filter === 'ongoing' && (
-            matchesSekarang.length > 0 ? (
-              <Slider {...getSliderSettings(matchesSekarang.length)}>
-                {matchesSekarang.map(match => <div key={match.id} className="px-2"><MatchCard match={match} /></div>)}
-              </Slider>
-            ) : <p className="text-center text-gray-600">Tidak ada pertandingan sedang berlangsung.</p>
-          )}
-          {filter === 'upcoming' && (
-            matchesAkanDatang.length > 0 ? (
-              <Slider {...getSliderSettings(matchesAkanDatang.length)}>
-                {matchesAkanDatang.map(match => <div key={match.id} className="px-2"><MatchCard match={match} /></div>)}
-              </Slider>
-            ) : <p className="text-center text-gray-600">Tidak ada pertandingan akan datang.</p>
-          )}
-          {filter === 'past' && (
-            matchesLalu.length > 0 ? (
-              <Slider {...getSliderSettings(matchesLalu.length)}>
-                {matchesLalu.map(match => <div key={match.id} className="px-2"><MatchCard match={match} /></div>)}
-              </Slider>
-            ) : <p className="text-center text-gray-600">Tidak ada pertandingan yang telah selesai.</p>
-          )}
-        </div>
-      </section>
+  <div>
+    {filter === 'ongoing' && (
+      matchesSekarang.length > 0 ? (
+        <Slider {...getSliderSettings(matchesSekarang.length)}>
+          {matchesSekarang.map(match => (
+            <div key={match.id} className="px-2">
+              <div
+                className="
+                  border border-gray-200 rounded-2xl shadow-sm 
+                  transition duration-300 ease-in-out
+                  hover:shadow-md hover:border-gray-400
+                  hover:scale-105 active:scale-95 cursor-pointer
+                "
+              >
+                <MatchCard match={match} />
+              </div>
+            </div>
+          ))}
+        </Slider>
+      ) : (
+        <p className="text-center text-gray-600">Tidak ada pertandingan sedang berlangsung.</p>
+      )
+    )}
+
+    {filter === 'upcoming' && (
+      matchesAkanDatang.length > 0 ? (
+        <Slider {...getSliderSettings(matchesAkanDatang.length)}>
+          {matchesAkanDatang.map(match => (
+            <div key={match.id} className="px-2">
+              <div
+                className="
+                  border border-gray-200 rounded-2xl shadow-sm 
+                  transition duration-300 ease-in-out
+                  hover:shadow-md hover:border-gray-400
+                  hover:scale-105 active:scale-95 cursor-pointer
+                "
+              >
+                <MatchCard match={match} />
+              </div>
+            </div>
+          ))}
+        </Slider>
+      ) : (
+        <p className="text-center text-gray-600">Tidak ada pertandingan akan datang.</p>
+      )
+    )}
+
+    {filter === 'past' && (
+      matchesLalu.length > 0 ? (
+        <Slider {...getSliderSettings(matchesLalu.length)}>
+          {matchesLalu.map(match => (
+            <div key={match.id} className="px-2">
+              <div
+                className="
+                  border border-gray-200 rounded-2xl shadow-sm 
+                  transition duration-300 ease-in-out
+                  hover:shadow-md hover:border-gray-400
+                  hover:scale-105 active:scale-95 cursor-pointer
+                "
+              >
+                <MatchCard match={match} />
+              </div>
+            </div>
+          ))}
+        </Slider>
+      ) : (
+        <p className="text-center text-gray-600">Tidak ada pertandingan yang telah selesai.</p>
+      )
+    )}
+  </div>
+</section>
+
 
       <section className="mt-10">
         <h2 className="text-2xl font-bold mb-2">Peraturan</h2>

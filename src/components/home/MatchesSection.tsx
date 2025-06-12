@@ -101,13 +101,23 @@ export default function MatchesSection({ matches }: { matches: Match[] }) {
 
       <div>
         {matchList[filter].length > 0 ? (
-          <Slider {...getSliderSettings(matchList[filter].length)}>
-            {matchList[filter].map(match => (
-              <div key={match.id} className="px-2">
+         <Slider {...getSliderSettings(matchList[filter].length)}>
+          {matchList[filter].map((match) => (
+            <div key={match.id} className="px-2">
+              <div
+                className="
+                  border border-gray-200 rounded-2xl shadow-sm 
+                  transition duration-300 ease-in-out
+                  hover:shadow-md hover:border-gray-400
+                  active:scale-95 cursor-pointer
+                "
+              >
                 <MatchCard match={match} />
               </div>
-            ))}
-          </Slider>
+            </div>
+          ))}
+        </Slider>
+
         ) : (
           <div className="text-gray-500 px-4 py-8 text-center">
             Tidak ada pertandingan{' '}
