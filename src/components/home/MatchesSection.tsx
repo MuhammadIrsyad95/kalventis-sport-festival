@@ -120,8 +120,8 @@ export default function MatchesSection({ matches }: { matches: Match[] }) {
 
         ) : (
           <div className="text-gray-500 px-4 py-8 text-center">
-            Tidak ada pertandingan{' '}
-            {filter === 'ongoing' ? 'Sedang Berlangsung' : filter === 'upcoming' ? 'Akan Datang' : 'Selesai'} yang tersedia.
+            Jadwal pertandingan yang{' '}
+            {filter === 'ongoing' ? 'Sedang Berlangsung' : filter === 'upcoming' ? 'Akan Datang' : 'Selesai'} belum tersedia.
           </div>
         )}
       </div>
