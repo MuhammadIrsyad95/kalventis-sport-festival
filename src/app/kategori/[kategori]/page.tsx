@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import MatchCarousel from '@/components/MatchCarousel';
 import SportCard from '@/components/SportCard';
 import clsx from 'clsx';
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
 import type { Database } from '@/types/supabase';
 
@@ -34,6 +35,7 @@ export default function SportsByKategoriPage() {
   const [matchesBySport, setMatchesBySport] = useState<Record<string, Match[]>>({});
   const [activeTab, setActiveTab] = useState<'ongoing' | 'upcoming' | 'past'>('ongoing');
   const [loading, setLoading] = useState(true);
+  const [zoomed, setZoomed] = useState(false);
 
   useEffect(() => {
     async function fetchSports() {
@@ -69,6 +71,7 @@ export default function SportsByKategoriPage() {
 
   function closeModal() {
     setSelectedSport(null);
+    setZoomed(false);
   }
 
   useEffect(() => {
@@ -121,13 +124,60 @@ export default function SportsByKategoriPage() {
 
             {/* Gambar Bagan */}
             {selectedSport.bagan_url && (
-              <div className="mb-6">
+              <>
                 <img
                   src={selectedSport.bagan_url}
                   alt="Bagan Turnamen"
-                  className="w-full rounded-lg shadow-md transition-transform hover:scale-105 cursor-zoom-in"
+                  className="w-full rounded-lg shadow-md transition-transform hover:scale-105 cursor-zoom-in mb-6"
+                  onClick={() => setZoomed(true)}
                 />
-              </div>
+                {zoomed && (
+                  <div
+                    className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center"
+                    onClick={(e) => {
+                      if (e.target === e.currentTarget) setZoomed(false);
+                    }}
+                  >
+                    <button
+                      className="absolute top-4 right-4 text-white bg-gray-800 bg-opacity-70 hover:bg-opacity-100 rounded-full w-10 h-10 flex items-center justify-center text-2xl z-50"
+                      onClick={() => setZoomed(false)}
+                    >
+                      &times;
+                    </button>
+                    <TransformWrapper
+                      wheel={{ step: 0.2 }}
+                      pinch={{ step: 5 }}
+                      panning={{ velocityDisabled: true }}
+                      initialScale={1}
+                    >
+                      {({ zoomIn, resetTransform }) => {
+                        let isZoomed = false;
+                        return (
+                          <div
+                            onDoubleClick={(e) => {
+                              e.stopPropagation();
+                              if (isZoomed) {
+                                resetTransform();
+                              } else {
+                                zoomIn();
+                              }
+                              isZoomed = !isZoomed;
+                            }}
+                          >
+                            <TransformComponent>
+                              <img
+                                src={selectedSport.bagan_url ?? undefined}
+                                alt={selectedSport.name}
+                                className="max-w-full max-h-full object-contain"
+                              />
+                            </TransformComponent>
+                          </div>
+                        );
+                      }}
+                    </TransformWrapper>
+                  </div>
+                )}
+              </>
             )}
 
             {/* Tab Filter */}
@@ -159,11 +209,11 @@ export default function SportsByKategoriPage() {
                 />
               ) : (
                 <div className="text-gray-500 text-left py-6">
-                  Jadwal Pertandingan yang {activeTab === 'ongoing'
-                    ? 'Sedang Berlangsung'
+                  Jadwal pertandingan {activeTab === 'ongoing'
+                    ? 'sedang berlangsung'
                     : activeTab === 'upcoming'
-                    ? 'Akan Datang'
-                    : 'Selesai'} belum tersedia.
+                    ? 'yang akan datang'
+                    : 'yang telah selesai'} belum tersedia.
                 </div>
               )
             ) : (
@@ -173,12 +223,10 @@ export default function SportsByKategoriPage() {
             {/* Peraturan */}
             {selectedSport.rules && (
               <div>
-                <h4 className="text-lg font-semibold text-indigo-600 mt-6 mb-2">
-                  Peraturan
-                </h4>
-                <ul className="list-disc pl-5 text-gray-700 text-sm space-y-1">
-                  {selectedSport.rules.split('\n').map((r, i) => (
-                    <li key={i}>{r}</li>
+                <h4 className="text-lg font-semibold text-indigo-600 mt-6 mb-2">Peraturan</h4>
+                <ul className="list-disc pl-5 text-gray-700 space-y-1">
+                  {selectedSport.rules.split('\n').map((rule, idx) => (
+                    <li key={idx}>{rule}</li>
                   ))}
                 </ul>
               </div>
