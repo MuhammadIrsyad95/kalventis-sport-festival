@@ -98,23 +98,21 @@ export default function MedalTally({ medals }: MedalTallyProps) {
     )
   }
 
-  const headerTextStyle = 'text-base font-bold'
   const textColor = 'text-gray-800'
 
   return (
     <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
       <div className="overflow-x-auto">
-        <table className="w-full">
+        <table className="w-full min-w-[800px]">
           <thead>
-           <tr className="bg-[rgb(0,52,98)] text-white text-lg rounded-2xl shadow-xl transition hover:bg-[rgb(0,42,88)]">
-            <th className="py-4 px-8 text-left rounded-l-2xl">Peringkat</th>
-            <th className="py-4 px-8 text-left">Grup</th>
-            <th className="py-4 px-8 text-center">Emas</th>
-            <th className="py-4 px-8 text-center">Perak</th>
-            <th className="py-4 px-8 text-center">Perunggu</th>
-            <th className="py-4 px-8 text-center rounded-r-2xl">Total</th>
-          </tr>
-
+            <tr className="bg-[rgb(0,52,98)] text-white text-base shadow-md">
+              <th className="py-4 px-6 text-center font-semibold">Peringkat</th>
+              <th className="py-4 px-6 text-center font-semibold">Grup</th>
+              <th className="py-4 px-6 text-center font-semibold">Emas</th>
+              <th className="py-4 px-6 text-center font-semibold">Perak</th>
+              <th className="py-4 px-6 text-center font-semibold">Perunggu</th>
+              <th className="py-4 px-6 text-center font-semibold">Total</th>
+            </tr>
           </thead>
           <tbody>
             {finalSorted.map(([teamId, counts], index) => (
@@ -122,19 +120,17 @@ export default function MedalTally({ medals }: MedalTallyProps) {
                 key={teamId}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="border-t border-gray-100 hover:bg-indigo-50"
+                transition={{ delay: index * 0.05 }}
+                className="border-t border-gray-100 hover:bg-indigo-50 text-center"
               >
                 <td className={`py-4 px-4 ${textColor} font-semibold`}>{index + 1}</td>
                 <td className={`py-4 px-4 ${textColor} font-bold`}>
                   {teams[teamId]?.name || 'Memuat...'}
                 </td>
-                <td className={`py-4 px-4 text-center ${textColor} font-bold`}>{counts.gold}</td>
-                <td className={`py-4 px-4 text-center ${textColor} font-bold`}>{counts.silver}</td>
-                <td className={`py-4 px-4 text-center ${textColor} font-bold`}>{counts.bronze}</td>
-                <td className={`py-4 px-4 text-center font-extrabold ${textColor}`}>
-                  {counts.total}
-                </td>
+                <td className={`py-4 px-4 font-bold ${textColor}`}>{counts.gold}</td>
+                <td className={`py-4 px-4 font-bold ${textColor}`}>{counts.silver}</td>
+                <td className={`py-4 px-4 font-bold ${textColor}`}>{counts.bronze}</td>
+                <td className={`py-4 px-4 font-extrabold ${textColor}`}>{counts.total}</td>
               </motion.tr>
             ))}
           </tbody>
