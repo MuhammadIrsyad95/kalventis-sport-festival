@@ -7,6 +7,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import type { Database } from '@/types/supabase';
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 function Arrow(props: any) {
   const { style, onClick, direction } = props;
@@ -140,7 +141,7 @@ export default function SportDetailPage() {
       <div className="max-w-screen-xl mx-auto px-6 py-12">
         <h1 className="text-4xl font-extrabold mb-8" style={{ color: 'rgb(0, 52, 98)' }}>{sport.name}</h1>
 
-        {/* Ganti imageurl -> bagan_url */}
+        {/* Bagan */}
         {sport.bagan_url && (
           <>
             <img
@@ -150,97 +151,129 @@ export default function SportDetailPage() {
               onClick={() => setZoomed(true)}
             />
             {zoomed && (
-              <div className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center" onClick={() => setZoomed(false)}>
-                <img
-                  src={sport.bagan_url}
-                  alt={sport.name}
-                  className="max-w-2xl max-h-[80vh] rounded shadow-lg cursor-zoom-out"
-                  onClick={e => { e.stopPropagation(); setZoomed(false); }}
-                />
+              <div
+                className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center"
+                onClick={(e) => {
+                  if (e.target === e.currentTarget) setZoomed(false);
+                }}
+              >
+                {/* Tombol X */}
+                <button
+                  className="absolute top-4 right-4 text-white bg-gray-800 bg-opacity-70 hover:bg-opacity-100 rounded-full w-10 h-10 flex items-center justify-center text-2xl z-50"
+                  onClick={() => setZoomed(false)}
+                >
+                  &times;
+                </button>
+
+                <TransformWrapper
+                  wheel={{ step: 0.2 }}
+                  pinch={{ step: 5 }}
+                  panning={{ velocityDisabled: true }}
+                  initialScale={1}
+                >
+                  {({ zoomIn, resetTransform, instance }) => {
+                    let isZoomed = false;
+
+                    return (
+                      <div
+                        onDoubleClick={(e) => {
+                          e.stopPropagation();
+                          if (isZoomed) {
+                            resetTransform();
+                          } else {
+                            zoomIn();
+                          }
+                          isZoomed = !isZoomed;
+                        }}
+                      >
+                       <TransformComponent>
+                        <img
+                          src={sport.bagan_url ?? undefined}
+                          alt={sport.name}
+                          className="max-w-full max-h-full object-contain"
+                        />
+                      </TransformComponent>
+
+                      </div>
+                    );
+                  }}
+                </TransformWrapper>
               </div>
             )}
           </>
         )}
 
+        {/* Filter Pertandingan */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-4" style={{ color: 'rgb(0, 52, 98)' }}>Pertandingan</h2>
 
           <div className="flex space-x-4 mb-8 overflow-x-auto">
-            <button
-              className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'ongoing' ? 'border-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
-              style={filter === 'ongoing' ? { color: 'rgb(0, 52, 98)' } : undefined}
-              onClick={() => setFilter('ongoing')}
-            >
-              Sedang Berlangsung
-            </button>
-            <button
-              className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'upcoming' ? 'border-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
-              style={filter === 'upcoming' ? { color: 'rgb(0, 52, 98)' } : undefined}
-              onClick={() => setFilter('upcoming')}
-            >
-              Akan Datang
-            </button>
-            <button
-              className={`pb-2 border-b-2 whitespace-nowrap ${filter === 'past' ? 'border-indigo-600 font-semibold' : 'border-transparent text-gray-600 hover:text-indigo-600 transition'}`}
-              style={filter === 'past' ? { color: 'rgb(0, 52, 98)' } : undefined}
-              onClick={() => setFilter('past')}
-            >
-              Selesai
-            </button>
+            {(['ongoing', 'upcoming', 'past'] as const).map((type) => (
+              <button
+                key={type}
+                className={`pb-2 border-b-2 whitespace-nowrap ${
+                  filter === type
+                    ? 'border-indigo-600 font-semibold'
+                    : 'border-transparent text-gray-600 hover:text-indigo-600 transition'
+                }`}
+                style={filter === type ? { color: 'rgb(0, 52, 98)' } : undefined}
+                onClick={() => setFilter(type)}
+              >
+                {{
+                  ongoing: 'Sedang Berlangsung',
+                  upcoming: 'Akan Datang',
+                  past: 'Selesai',
+                }[type]}
+              </button>
+            ))}
           </div>
 
           <div className="space-y-8">
             {filter === 'ongoing' && (
-              <div>
-                {matchesSekarang.length > 0 ? (
-                  <Slider {...getSliderSettings(matchesSekarang.length)}>
-                    {matchesSekarang.map((match) => (
-                      <div key={match.id} className="px-2">
-                        <MatchCard match={match} />
-                      </div>
-                    ))}
-                  </Slider>
-                ) : (
-                  <div className="text-gray-700 px-4 py-8 text-center text-lg">Tidak ada pertandingan Sedang Berlangsung yang tersedia.</div>
-                )}
-              </div>
+              matchesSekarang.length > 0 ? (
+                <Slider {...getSliderSettings(matchesSekarang.length)}>
+                  {matchesSekarang.map((match) => (
+                    <div key={match.id} className="px-2">
+                      <MatchCard match={match} />
+                    </div>
+                  ))}
+                </Slider>
+              ) : (
+                <div className="text-gray-700 px-4 py-8 text-center text-lg">Tidak ada pertandingan Sedang Berlangsung yang tersedia.</div>
+              )
             )}
 
             {filter === 'upcoming' && (
-              <div>
-                {matchesAkanDatang.length > 0 ? (
-                  <Slider {...getSliderSettings(matchesAkanDatang.length)}>
-                    {matchesAkanDatang.map((match) => (
-                      <div key={match.id} className="px-2">
-                        <MatchCard match={match} />
-                      </div>
-                    ))}
-                  </Slider>
-                ) : (
-                  <div className="text-gray-700 px-4 py-8 text-center text-lg">Tidak ada pertandingan Akan Datang yang tersedia.</div>
-                )}
-              </div>
+              matchesAkanDatang.length > 0 ? (
+                <Slider {...getSliderSettings(matchesAkanDatang.length)}>
+                  {matchesAkanDatang.map((match) => (
+                    <div key={match.id} className="px-2">
+                      <MatchCard match={match} />
+                    </div>
+                  ))}
+                </Slider>
+              ) : (
+                <div className="text-gray-700 px-4 py-8 text-center text-lg">Tidak ada pertandingan Akan Datang yang tersedia.</div>
+              )
             )}
 
             {filter === 'past' && (
-              <div>
-                {matchesLalu.length > 0 ? (
-                  <Slider {...getSliderSettings(matchesLalu.length)}>
-                    {matchesLalu.map((match) => (
-                      <div key={match.id} className="px-2">
-                        <MatchCard match={match} />
-                      </div>
-                    ))}
-                  </Slider>
-                ) : (
-                  <div className="text-gray-700 px-4 py-8 text-center text-lg">Tidak ada pertandingan Selesai yang tersedia.</div>
-                )}
-              </div>
+              matchesLalu.length > 0 ? (
+                <Slider {...getSliderSettings(matchesLalu.length)}>
+                  {matchesLalu.map((match) => (
+                    <div key={match.id} className="px-2">
+                      <MatchCard match={match} />
+                    </div>
+                  ))}
+                </Slider>
+              ) : (
+                <div className="text-gray-700 px-4 py-8 text-center text-lg">Tidak ada pertandingan Selesai yang tersedia.</div>
+              )
             )}
           </div>
         </section>
 
-        {/* Rules dari kolom sport.rules */}
+        {/* Peraturan */}
         <section>
           <h2 className="text-2xl font-bold mb-4" style={{ color: 'rgb(0, 52, 98)' }}>Peraturan</h2>
           {sport.rules ? (
