@@ -239,7 +239,7 @@ export default function SportDetailPage() {
                   ))}
                 </Slider>
               ) : (
-                <div className="text-gray-700 px-4 py-8 text-center text-lg">Tidak ada pertandingan Sedang Berlangsung yang tersedia.</div>
+                <div className="text-gray-700 px-4 py-8 text-center text-lg">Jadwal pertandingan yang sedang berlangsung belum tersedia..</div>
               )
             )}
 
@@ -253,7 +253,7 @@ export default function SportDetailPage() {
                   ))}
                 </Slider>
               ) : (
-                <div className="text-gray-700 px-4 py-8 text-center text-lg">Tidak ada pertandingan Akan Datang yang tersedia.</div>
+                <div className="text-gray-700 px-4 py-8 text-center text-lg">Jadwal pertandingan yang akan datang belum tersedia.</div>
               )
             )}
 
@@ -267,7 +267,7 @@ export default function SportDetailPage() {
                   ))}
                 </Slider>
               ) : (
-                <div className="text-gray-700 px-4 py-8 text-center text-lg">Tidak ada pertandingan Selesai yang tersedia.</div>
+                <div className="text-gray-700 px-4 py-8 text-center text-lg">Jadwal pertandingan selesai belum tersedia.</div>
               )
             )}
           </div>

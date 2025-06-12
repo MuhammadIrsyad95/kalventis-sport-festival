@@ -159,11 +159,11 @@ export default function SportsByKategoriPage() {
                 />
               ) : (
                 <div className="text-gray-500 text-center py-6">
-                  Tidak ada pertandingan {activeTab === 'ongoing'
+                  Jadwal Pertandingan yang {activeTab === 'ongoing'
                     ? 'Sedang Berlangsung'
                     : activeTab === 'upcoming'
                     ? 'Akan Datang'
-                    : 'Selesai'}.
+                    : 'Selesai'} belum tersedia.
                 </div>
               )
             ) : (
