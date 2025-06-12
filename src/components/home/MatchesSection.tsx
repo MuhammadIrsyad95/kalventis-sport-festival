@@ -119,7 +119,7 @@ export default function MatchesSection({ matches }: { matches: Match[] }) {
         </Slider>
 
         ) : (
-          <div className="text-gray-500 px-4 py-8 text-center">
+          <div className="text-gray-500 px-4 py-8 text-left">
             Jadwal pertandingan yang{' '}
             {filter === 'ongoing' ? 'Sedang Berlangsung' : filter === 'upcoming' ? 'Akan Datang' : 'Selesai'} belum tersedia.
           </div>

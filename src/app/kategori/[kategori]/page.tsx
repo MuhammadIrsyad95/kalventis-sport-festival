@@ -158,7 +158,7 @@ export default function SportsByKategoriPage() {
                   matches={filterMatchesByTime(matchesBySport[selectedSport.id])[activeTab]}
                 />
               ) : (
-                <div className="text-gray-500 text-center py-6">
+                <div className="text-gray-500 text-left py-6">
                   Jadwal Pertandingan yang {activeTab === 'ongoing'
                     ? 'Sedang Berlangsung'
                     : activeTab === 'upcoming'
