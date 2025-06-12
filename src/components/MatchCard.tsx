@@ -71,7 +71,7 @@ export default function MatchCard({ match }: MatchCardProps) {
         <div className="flex justify-between items-center gap-4">
           <div className="flex-1 min-w-0">
             <p className="text-gray-900 font-bold text-lg truncate">{team1?.name || 'Loading...'}</p>
-            <p className="text-sm text-gray-500 truncate">{team1?.company || ''}</p>
+            {/* <p className="text-sm text-gray-500 truncate">{team1?.company || ''}</p> */}
           </div>
           <div className="px-6 flex flex-col items-center">
             <span style={{ color: primaryColor }} className="font-bold text-xl">VS</span>
@@ -83,7 +83,7 @@ export default function MatchCard({ match }: MatchCardProps) {
           </div>
           <div className="flex-1 text-right min-w-0">
             <p className="text-gray-900 font-bold text-lg truncate">{team2?.name || 'Loading...'}</p>
-            <p className="text-sm text-gray-500 truncate">{team2?.company || ''}</p>
+            {/* <p className="text-sm text-gray-500 truncate">{team2?.company || ''}</p> */}
           </div>
         </div>
 
