@@ -56,50 +56,57 @@ export default function MatchCard({ match }: MatchCardProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-6 transition cursor-pointer flex flex-col gap-4"
+      className="bg-white rounded-2xl p-4 transition cursor-pointer flex flex-col gap-3"
     >
-      <div className="flex justify-between items-center mb-2">
+      {/* Sport Name */}
+      <div className="flex justify-between items-center mb-1">
         <span
-          className="text-base font-semibold truncate block max-w-[120px] sm:max-w-none"
-          style={{ color: primaryColor }}
+          className="text-sm font-medium text-[rgb(0,52,98)] w-full break-words whitespace-normal"
         >
           {sport?.name || 'Loading...'}
         </span>
       </div>
 
-      <div className="flex flex-col gap-6">
-        <div className="flex justify-between items-center gap-4">
-          <div className="flex-1 min-w-0">
-            <p className="text-gray-900 font-bold text-lg truncate">{team1?.name || 'Loading...'}</p>
-            {/* <p className="text-sm text-gray-500 truncate">{team1?.company || ''}</p> */}
-          </div>
-          <div className="px-6 flex flex-col items-center">
-            <span style={{ color: primaryColor }} className="font-bold text-xl">VS</span>
-            {(typeof match.team1_score === 'number' && typeof match.team2_score === 'number') && (
-              <span className="text-2xl font-extrabold mt-1" style={{ color: primaryColor }}>
-                {match.team1_score} : {match.team2_score}
-              </span>
-            )}
-          </div>
-          <div className="flex-1 text-right min-w-0">
-            <p className="text-gray-900 font-bold text-lg truncate">{team2?.name || 'Loading...'}</p>
-            {/* <p className="text-sm text-gray-500 truncate">{team2?.company || ''}</p> */}
-          </div>
+      {/* Teams & Score */}
+      <div className="flex justify-between items-center gap-3 flex-wrap sm:flex-nowrap">
+        {/* Team 1 */}
+        <div className="flex-1 min-w-0">
+          <p className="text-gray-900 font-semibold text-sm break-words whitespace-normal">
+            {team1?.name || 'Loading...'}
+          </p>
         </div>
 
-        <div className="border-t border-gray-100 pt-4 flex flex-wrap justify-between text-sm text-gray-500 gap-2">
-          <span>
-            Round: <span className="font-semibold text-gray-700">{match.round || 'TBD'}</span>
-          </span>
-          {match.match_time && (
-            <span>{new Date(match.match_time).toLocaleString()}</span>
-          )}
-          {match.winner_id && (
-            <span style={{ color: primaryColor }} className="font-semibold">
-              Winner: {match.winner_id === team1?.id ? team1.name : team2?.name}
+        {/* VS & Score */}
+        <div className="px-3 flex flex-col items-center min-w-fit">
+          <span style={{ color: primaryColor }} className="font-bold text-sm">VS</span>
+          {(typeof match.team1_score === 'number' && typeof match.team2_score === 'number') && (
+            <span className="text-base font-bold mt-1" style={{ color: primaryColor }}>
+              {match.team1_score} : {match.team2_score}
             </span>
           )}
         </div>
+
+        {/* Team 2 */}
+        <div className="flex-1 min-w-0 text-right">
+          <p className="text-gray-900 font-semibold text-sm break-words whitespace-normal">
+            {team2?.name || 'Loading...'}
+          </p>
+        </div>
+      </div>
+
+      {/* Info Bawah */}
+      <div className="border-t border-gray-100 pt-2 flex flex-wrap justify-between text-xs text-gray-500 gap-2">
+        <span>
+          Round: <span className="font-medium text-gray-700 break-words whitespace-normal">{match.round || 'TBD'}</span>
+        </span>
+        {match.match_time && (
+          <span>{new Date(match.match_time).toLocaleString()}</span>
+        )}
+        {match.winner_id && (
+          <span style={{ color: primaryColor }} className="font-semibold">
+            Winner: {match.winner_id === team1?.id ? team1.name : team2?.name}
+          </span>
+        )}
       </div>
     </motion.div>
   )
