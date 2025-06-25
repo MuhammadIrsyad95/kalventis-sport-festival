@@ -3,7 +3,8 @@ import Footer from '@/components/Footer';
 import '../styles/globals.css';
 
 export const metadata = {
-  title: 'Sports Live Score',
+  title: 'Kalventis Sport Festival 2025',
+  
   description: 'Live sports scores and medal tally',
 };
 

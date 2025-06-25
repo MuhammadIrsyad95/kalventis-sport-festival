@@ -234,7 +234,16 @@ export default function SportDetailPage() {
                 <Slider {...getSliderSettings(matchesSekarang.length)}>
                   {matchesSekarang.map((match) => (
                     <div key={match.id} className="px-2">
-                      <MatchCard match={match} />
+                     <div
+                                     className="
+                                       border border-gray-200 rounded-2xl shadow-sm 
+                                       transition duration-300 ease-in-out
+                                       hover:shadow-md hover:border-gray-400
+                                       active:scale-95 cursor-pointer
+                                     "
+                                   >
+                                     <MatchCard match={match} />
+                                   </div>
                     </div>
                   ))}
                 </Slider>
@@ -248,7 +257,16 @@ export default function SportDetailPage() {
                 <Slider {...getSliderSettings(matchesAkanDatang.length)}>
                   {matchesAkanDatang.map((match) => (
                     <div key={match.id} className="px-2">
-                      <MatchCard match={match} />
+                     <div
+                                     className="
+                                       border border-gray-200 rounded-2xl shadow-sm 
+                                       transition duration-300 ease-in-out
+                                       hover:shadow-md hover:border-gray-400
+                                       active:scale-95 cursor-pointer
+                                     "
+                                   >
+                                     <MatchCard match={match} />
+                                   </div>
                     </div>
                   ))}
                 </Slider>
@@ -262,7 +280,16 @@ export default function SportDetailPage() {
                 <Slider {...getSliderSettings(matchesLalu.length)}>
                   {matchesLalu.map((match) => (
                     <div key={match.id} className="px-2">
-                      <MatchCard match={match} />
+                     <div
+                                     className="
+                                       border border-gray-200 rounded-2xl shadow-sm 
+                                       transition duration-300 ease-in-out
+                                       hover:shadow-md hover:border-gray-400
+                                       active:scale-95 cursor-pointer
+                                     "
+                                   >
+                                     <MatchCard match={match} />
+                                   </div>
                     </div>
                   ))}
                 </Slider>
