@@ -15,7 +15,7 @@ export default function HeroSection() {
           className="text-4xl md:text-6xl font-bold  mb-6 leading-tight"
           style={{ color: 'rgb(0, 52, 98)' }}
         >
-          Kalventis Sport Festival
+           Sport Festival
         </h1>
         <p className="text-gray-700 text-lg mb-8 max-w-xl">
           Sehat Bersama, Menggapai Asa.

@@ -9,7 +9,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const isAdmin = pathname.startsWith('/admin');
-  const isHome = pathname === '/'; // ✅ Tambahkan ini
+  const isHome = pathname === '/';
 
   return (
     <header className="w-full z-50 fixed top-0 left-0 bg-white shadow-xl rounded-b-2xl py-4">
@@ -25,10 +25,13 @@ export default function Header() {
               <Menu className="h-7 w-7" />
             </button>
           )}
-          <Link href="/" className="flex items-center space-x-2 ml-auto">
-            <img src="/images/ksf2.png" alt="Logo KSF" className="h-16 w-auto object-contain" />
-            <span className="mx-1 text-gray-400">|</span>
-            <img src="/images/kalventis.png" alt="Logo Kalventis" className="h-16 w-auto object-contain" />
+
+          <Link href="/" className="ml-auto">
+            <div className="flex items-center space-x-3">
+              <img src="/images/ksf2.jpg" alt="Logo KSF" className="h-16 w-auto object-contain" />
+              <span className="text-gray-400 text-xl font-light">|</span>
+              <img src="/images/kalventis.jpg" alt="Logo Kalventis" className="h-16 w-auto object-contain" />
+            </div>
           </Link>
         </div>
 
@@ -41,11 +44,13 @@ export default function Header() {
         </div>
 
         {/* Logo kanan desktop */}
-        <div className="hidden md:flex items-center space-x-2">
-          <Link href="/" className="flex items-center space-x-2">
-            <img src="/images/ksf2.png" alt="Logo KSF" className="h-12 w-auto object-contain" />
-            <span className="text-gray-400">|</span>
-            <img src="/images/kalventis.png" alt="Logo Kalventis" className="h-12 w-auto object-contain" />
+        <div className="hidden md:flex items-center">
+          <Link href="/">
+            <div className="flex items-center space-x-3">
+              <img src="/images/ksf2.jpg" alt="Logo KSF" className="h-14 w-auto object-contain" />
+              <span className="text-gray-400 text-xl font-light">|</span>
+              <img src="/images/kalventis.jpg" alt="Logo Kalventis" className="h-14 w-auto object-contain" />
+            </div>
           </Link>
         </div>
       </nav>
@@ -62,11 +67,14 @@ export default function Header() {
               <X className="h-7 w-7" />
             </button>
 
-            <div className="flex items-center justify-center h-20 border-b border-gray-200 px-4">
-              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center space-x-2">
-                <img src="/images/ksf2.png" alt="Logo KSF" className="h-12 w-auto object-contain" />
-                <span className="text-gray-400">|</span>
-                <img src="/images/kalventis.png" alt="Logo Kalventis" className="h-12 w-auto object-contain" />
+            {/* Logo dalam drawer */}
+            <div className="flex items-center justify-center h-24 border-b border-gray-200 px-4">
+              <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+                <div className="flex items-center space-x-3">
+                  <img src="/images/ksf2.png" alt="Logo KSF" className="h-14 w-auto object-contain" />
+                  <span className="text-gray-400 text-xl font-light">|</span>
+                  <img src="/images/kalventis.png" alt="Logo Kalventis" className="h-14 w-auto object-contain" />
+                </div>
               </Link>
             </div>
 

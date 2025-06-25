@@ -14,7 +14,7 @@ export default function ContactSection() {
             Hubungi Kami
           </h3>
           <p className="mb-4">
-          Apabila terdapat pertanyaan seputar KSF (Kalventis Sport Festival) 2025, silakan hubungi panitia KSF untuk informasi lebih lanjut.
+          Apabila terdapat pertanyaan seputar KSF ( Sport Festival) 2025, silakan hubungi panitia KSF untuk informasi lebih lanjut.
           </p>
         </div>
 
@@ -28,7 +28,7 @@ export default function ContactSection() {
           </h3>
           <div className="flex flex-col space-y-2">
             <a
-              href="https://instagram.com/kalventis"
+              href="https://kalventis-sport-festival.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="transition flex items-center gap-1 hover:underline"
@@ -44,7 +44,7 @@ export default function ContactSection() {
               Instagram
             </a>
             <a
-              href="https://www.youtube.com/@kalventis"
+              href="https://kalventis-sport-festival.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="transition flex items-center gap-1 hover:underline"
@@ -59,7 +59,7 @@ export default function ContactSection() {
               YouTube
             </a>
             <a
-              href="https://www.linkedin.com/company/kalventis/posts/?feedView=all"
+              href="https://kalventis-sport-festival.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="transition flex items-center gap-1 hover:underline"
